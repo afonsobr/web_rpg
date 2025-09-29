@@ -1,0 +1,230 @@
+/* --- Reset Básico e Configuração Global --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; */
+    font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--color-background-canvas);
+    font-weight: lighter;
+}
+
+/* --- Cabeçalho Fixo e Sobreposto --- */
+.cabecalho-sobreposto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0 auto;
+    /* padding: 15px 20px; */
+    text-align: center;
+    z-index: 10;
+    background-color: var(--color-transparent-background);
+    backdrop-filter: blur(var(--blur-1));
+    -webkit-backdrop-filter: blur(var(--blur-1));
+    color: var(--color-text);
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+}
+
+/* --- Menu Fixo e Sobreposto --- */
+.menu-sobreposto {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 500px;
+    z-index: 10;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    /* animation: subtle-breathing 5s infinite ease-in-out; */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+/* O BRILHO LÍQUIDO */
+.menu-sobreposto::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--mouse-x) var(--mouse-y),
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0) 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    /* --- CORREÇÃO 1: GARANTIR QUE O BRILHO FIQUE ATRÁS --- */
+    z-index: -1;
+}
+
+/* ANIMAÇÃO "RESPIRAÇÃO" */
+@keyframes subtle-breathing {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.02);
+    }
+}
+
+/* --- ESTILOS DA NAVEGAÇÃO E LINKS (AJUSTADOS) --- */
+
+.menu-sobreposto nav {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+    /* Essencial para posicionar o indicador */
+    z-index: 1;
+    padding: 0 5px;
+    /* Cria uma pequena margem interna */
+}
+
+/* O NOVO INDICADOR VIAJANTE */
+.active-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: calc(100% - 10px);
+    width: 0%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 999px;
+    z-index: -1;
+    /* AQUI ESTÁ A MÁGICA DA ANIMAÇÃO! */
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    /* Easing suave e elástico */
+}
+
+
+.menu-sobreposto nav a {
+    /* Renomeei para .nav-link se você usou a classe */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    color: #767676;
+    text-decoration: none;
+    position: relative;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Efeito hover continua o mesmo */
+.menu-sobreposto nav a:hover {
+    /* transform: scale(1.1); */
+}
+
+/* O item ativo agora só muda a cor do texto, o fundo é o indicador */
+.menu-sobreposto nav a.active {
+    color: #fff;
+    /* font-weight: 600; */
+}
+
+.menu-sobreposto .material-icons,
+.menu-sobreposto .fa-solid {
+    font-size: 24px;
+}
+
+.menu-sobreposto .menu-texto {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* --- Conteúdo Principal (Ajustado) --- */
+.conteudo-principal {
+    padding-top: 60px;
+    padding-bottom: 90px;
+    /* Aumentei um pouco para dar mais espaço para o menu com texto */
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: var(--color-background-canvas);
+    color: var(--color-text);
+
+    /* 1. Garante que ele continue se adaptando em telas menores */
+    width: 100%;
+
+    /* 2. Define o limite máximo da largura do conteúdo.
+       Valores comuns variam de 960px a 1280px. 1120px é um ótimo valor moderno. */
+    max-width: 800px;
+
+    /* 3. A "mágica" para centralizar o bloco na horizontal */
+    margin-left: auto;
+    margin-right: auto;
+
+    /* Não se esqueça do padding lateral para telas menores! */
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
+
+/* --- Apenas para o exemplo visual ficar melhor --- */
+.bloco-imagem-fundo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    background-image: url('https://source.unsplash.com/random/800x600?nature');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+.conteudo-principal h2 {
+    margin-bottom: 20px;
+}
+
+.conteudo-principal p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.bloco-exemplo {
+    height: 300px;
+    background-color: var(--color-background-surface);
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+.header-menu>div {
+    cursor: pointer;
+}
+
+.header-menu>:not(.active) {
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.5;
+}
+
+.header-menu>.active {
+    color: var(--color-text);
+    opacity: 1;
+    font-weight: 400;
+    text-shadow: 0px 0px 2px var(--color-text), 0px 0px 2px var(--color-text);
+}
+
+.icon-div {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+}

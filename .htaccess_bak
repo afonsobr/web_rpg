@@ -1,0 +1,9 @@
+# Desativa a listagem de diretórios
+Options -Indexes
+
+# Bloqueia o acesso direto a pastas sensíveis
+RewriteEngine On
+RewriteRule ^(config|src|vendor)/ - [F,L]
+
+# Bloqueia o acesso a arquivos específicos
+RewriteRule ^(composer\.json|composer\.lock)$ - [F,L]

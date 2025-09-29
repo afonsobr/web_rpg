@@ -1,0 +1,187 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// CONFIGURAÇÃO DE ERROS (PRODUÇÃO)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// INICIALIZAÇÃO
+include_once $_SERVER["DOCUMENT_ROOT"] . "/src/autoload.php";
+
+
+// PEGA INFORMAÇÕES DO PLAYER
+$player = new Player;
+$playerArray = $player->getPlayerArrayByID($_SESSION["playerID"]);
+
+// Lista de destinos
+$destinations = [
+    [
+        "id" => "dw_file_vb_native_forest",
+        "icon" => "fa-tree",
+        "title" => "TRAVEL TO NATIVE FOREST",
+        "description" => 'Recommended Level: 1 to 5<br>' . $__map_description['dw_file_vb_native_forest']
+    ],
+    [
+        "id" => "dw_file_vb_machina",
+        "icon" => "fa-gears",
+        "title" => "TRAVEL TO FAULTY EX MACHINA",
+        "description" => 'Recommended Level: 6 to 10<br>' . $__map_description['dw_file_vb_faulty_ex_machina']
+    ],
+    [
+        "id" => "freezland",
+        "icon" => "fa-snowflake",
+        "title" => "TRAVEL TO FREEZLAND",
+        "description" => "FREEZLAND DESCRIPTION"
+    ],
+    [
+        "id" => "tropical_jungle",
+        "icon" => "fa-trees",
+        "title" => "TRAVEL TO TROPICAL JUNGLE",
+        "description" => "TROPICAL JUNGLE DESCRIPTION"
+    ],
+    [
+        "id" => "logic_volcano",
+        "icon" => "fa-volcano",
+        "title" => "TRAVEL TO LOGIC VOLCANO",
+        "description" => "LOGIC VOLCANO DESCRIPTION"
+    ],
+    [
+        "id" => "logic_volcano",
+        "icon" => "fa-mountain-sun",
+        "title" => "TRAVEL TO GREAT CANYON",
+        "description" => "GREAT CANYON DESCRIPTION"
+    ],
+    [
+        "id" => "gear_savanna",
+        "icon" => "fa-tree-deciduous",
+        "title" => "TRAVEL TO GEAR SAVANNA",
+        "description" => "GEAR SAVANNA DESCRIPTION"
+    ],
+    [
+        "id" => "bony_resort",
+        "icon" => "fa-bone",
+        "title" => "TRAVEL TO BONY RESORT",
+        "description" => "BONY RESORT DESCRIPTION"
+    ],
+    [
+        "id" => "dw_hub",
+        "icon" => "fa-circle-nodes",
+        "title" => "RETURN TO DIGITAL HUB",
+        "description" => "The central point of the Digital World"
+    ],
+    [
+        "id" => "real_world",
+        "icon" => "fa-globe",
+        "title" => "RETURN TO REAL WORLD",
+        "description" => "Exit the digital realm and return to your physical body"
+    ]
+];
+?>
+
+
+
+$__map_description = array();
+$__map_description['dw_file_vb'] = 'An Enigmatic Island at the Heart of the Digital World';
+$__map_description['dw_file_vb_native_forest'] = 'A dense forest full of life, with gigantic trees and a peaceful atmosphere';
+$__map_description['dw_file_vb_faulty_ex_machina'] = 'An abandoned industrial area, full of broken machinery and ruined factories';
+
+$__map_description['dw_sc_park'] = 'A place full of scorching deserts';
+?>
+
+<div class="game-area">
+    <div class="font-s text-left">
+        Digital World • File Island • <span style="color: var(--ion-color-secondary)">Village of Beginnings</span>
+    </div>
+    <div class="map-head mb-1">
+        <div class="map-name">Village of Beginnings</div>
+        <div class="image-map">
+        </div>
+        <style>
+            .image-map {
+                background-image: url('https://i.imgur.com/6aPozOC.png');
+                width: 100%;
+                height: 100px;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;
+            }
+        </style>
+    </div>
+    <div class="divider mb-1 text-left">INTERACTION</div>
+    <div class="interaction-options mb-2 interaction-background">
+        <div class="interaction-div flex-container" onclick="travel('dw_file_vb_greymon_shop')">
+            <div class="icon-container">
+                <i class="fa-regular fa-shop mr-1rem ml-1rem"></i>
+            </div>
+            <div class="text-container text-left">
+                <div class="font-weight-500">
+                    <span class="font-bold">greymon's shop</span>
+                </div>
+            </div>
+        </div>
+        <div class="interaction-div flex-container" onclick="travel('dw_file_vb_restaurant')">
+            <div class="icon-container">
+                <i class="fa-regular fa-pot-food mr-1rem ml-1rem"></i>
+            </div>
+            <div class="text-container text-left">
+                <div class="font-weight-500">
+                    <span class="font-bold">renamon's restaurant</span>
+                </div>
+            </div>
+        </div>
+        <div class="interaction-div flex-container" onclick="travel('dw_file_vb_clinic')">
+            <div class="icon-container">
+                <i class="fa-regular fa-house-medical mr-1rem ml-1rem"></i>
+            </div>
+            <div class="text-container text-left">
+                <div class="font-weight-500">
+                    <span class="font-bold">angemon'S CLINIC</span>
+                </div>
+            </div>
+        </div>
+        <div class="interaction-div flex-container" onclick="travel('dw_file_vb_jijimon_house')">
+            <div class="icon-container">
+                <i class="fa-regular fa-house mr-1rem ml-1rem"></i>
+            </div>
+            <div class="text-container text-left">
+                <div class="font-weight-500">
+                    <span class="font-bold">JIJIMON'S HOUSE</span>
+                </div>
+            </div>
+        </div>
+        <div class="interaction-div flex-container" onclick="travel('dw_file_vb_gym')">
+            <div class="icon-container">
+                <i class="fa-regular fa-dumbbell mr-1rem ml-1rem"></i>
+            </div>
+            <div class="text-container text-left">
+                <div class="font-weight-500">
+                    <span class="font-bold">GREEM GYM</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="divider mb-1 text-left">travel</div>
+    <div class="travel-options">
+        <?php foreach ($destinations as $destination): ?>
+            <div class="clipped-div-alt-border cursor-pointer mb-1" onclick="travel('<?= $destination['id'] ?>')">
+                <div class="clipped-div-alt-background"></div>
+                <div class="clipped-div-alt-content text-left flex-container">
+                    <div class="icon-container font-xl">
+                        <i class="fa-solid <?= $destination['icon'] ?> ml-1rem mr-1rem"></i>
+                    </div>
+                    <div class="text-container">
+                        <div class="font-weight-500">
+                            <span class="font-bold"><?= $destination['title'] ?></span>
+                            <br>
+                            <?= $destination['description'] ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
