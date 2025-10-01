@@ -80,14 +80,14 @@ $location['FILE ISLAND'] = [
     foreach ($location as $mainPlaceName => $mainPlace) {
         echo '<div class="pb-4">';
         echo '  <div class="font-normal text-sm py-1 pl-3">' . $mainPlaceName . '</div>';
-        echo '  <div class="rounded bg-surface p-3">';
+        echo '  <div class="rounded bg-surface">';
         $last_key = array_key_last($mainPlace);
 
         foreach ($mainPlace as $subPlaceName => $subPlace) {
             if ($subPlaceName != $last_key)
-                echo '<div class="d-flex w-100 pb-4">';
+                echo '<div class="d-flex w-100 p-3">';
             else
-                echo '<div class="d-flex w-100">';
+                echo '<div class="d-flex w-100 p-3">';
             // Icone
             if (true) {
                 echo '<div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">';

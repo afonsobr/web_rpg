@@ -7,14 +7,16 @@ use PDO;
 
 class AccountRepository
 {
+    private readonly string $databaseName;
     // Injetando a dependência do PDO para facilitar testes e clareza
     public function __construct(private PDO $pdo)
     {
+        $this->databaseName = 'var_accounts';
     }
 
     public function findByUsername(string $username)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM var_accounts WHERE username = ?");
+        $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE username = ?');
         $stmt->execute([$username]);
         $data = $stmt->fetch();
 
@@ -27,7 +29,7 @@ class AccountRepository
 
     public function findById(int $id)
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM var_accounts WHERE id = ?");
+        $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE id = ?');
         $stmt->execute([$id]);
         $data = $stmt->fetch();
 

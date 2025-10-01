@@ -1,7 +1,7 @@
 <?php
 namespace TamersNetwork\Model;
 
-class Digimon
+class DigimonSpecies
 {
     public function __construct(
         public readonly int $id,

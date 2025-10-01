@@ -14,7 +14,8 @@ $_SESSION['account_uuid'] = 1;
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
     <title>Title</title>
     <link rel="stylesheet" href="style.css">
 
@@ -48,7 +49,7 @@ $_SESSION['account_uuid'] = 1;
     <footer class="menu-sobreposto">
         <nav>
             <div class="active-indicator"></div>
-            <a href="javascript:void(0)" id="btn-home" onclick="navigateTo('home')" class="nav-link">
+            <a href="javascript:void(0)" id="btn-home" data-page="home" class="nav-link">
                 <span class="material-icons">home</span>
                 <span class="menu-texto">Home</span>
             </a>
@@ -56,167 +57,142 @@ $_SESSION['account_uuid'] = 1;
                 <span class="material-icons">storage</span>
                 <span class="menu-texto">Storage</span>
             </a>
-            <a href="javascript:void(0)" id="btn-bag" onclick="navigateTo('bag')" class="nav-link">
+            <a href="javascript:void(0)" id="btn-bag" data-page="bag" class="nav-link">
                 <span class="material-icons">backpack</span>
                 <span class="menu-texto">Bag</span>
             </a>
-            <a href="javascript:void(0)" id="btn-bag" onclick="navigateTo('map')" class="nav-link">
+            <a href="javascript:void(0)" id="btn-bag" data-page="map" class="nav-link">
                 <span class="material-icons">map</span>
                 <span class="menu-texto">Map</span>
             </a>
-            <a href="javascript:void(0)" id="btn-bag" onclick="navigateTo('chat')" class="nav-link">
+            <a href="javascript:void(0)" id="btn-bag" data-page="chat" class="nav-link">
                 <span class="material-icons">chat</span>
                 <span class="menu-texto">Chat</span>
             </a>
         </nav>
     </footer>
 
+    <div id="modal-container" class="modal-overlay">
+        <div class="modal-content">
+            <div class="w-100 d-flex items-center pb-3">
+                <div style="width: 50px; text-align: left;">
+                    <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button>
+                </div>
+                <div class="flex-grow text-center">
+                </div>
+                <div style="width: 50px; text-align: right;">
+                    <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <h2 class="text-xl font-bold mb-4">Título do Modal</h2>
+            <p>Este é o conteúdo do seu modal. Você pode colocar formulários, textos, imagens, ou até carregar outra página aqui dentro via JavaScript.</p>
+            <div class="bloco-exemplo mt-4">
+                Um conteúdo de exemplo.
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- Seleção dos Elementos ---
-        const menu = document.querySelector('.menu-sobreposto');
-        const navContainer = document.querySelector('.menu-sobreposto nav');
-        const navLinks = document.querySelectorAll('.menu-sobreposto .nav-link');
-        const activeIndicator = document.querySelector('.active-indicator');
+        // --- SCRIPT PRINCIPAL DA APLICAÇÃO ---
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- ELEMENTOS GLOBAIS ---
+            const mainContentContainer = document.querySelector('.conteudo-principal');
+            const headerContainer = document.querySelector('.cabecalho-sobreposto');
+            const navContainer = document.querySelector('.menu-sobreposto nav');
+            const activeIndicator = document.querySelector('.active-indicator');
 
-        // Função única para mover o indicador
-        function moveIndicator(target) {
-            if (!target) return;
-            const linkRect = target.getBoundingClientRect();
-            const navRect = navContainer.getBoundingClientRect();
-            const leftPosition = linkRect.left - navRect.left;
+            // --- DELEGAÇÃO DE EVENTOS (A SOLUÇÃO) ---
 
-            activeIndicator.style.width = `${linkRect.width}px`;
-            activeIndicator.style.left = `${leftPosition}px`;
-        }
+            // Adiciona um único listener de eventos ao container principal.
+            // Ele vai "ouvir" tudo o que acontece dentro dele.
+            mainContentContainer.addEventListener('keyup', function (event) {
+                // Se o elemento que disparou o evento tem o ID 'inventory-search-input'...
+                if (event.target && event.target.id === 'inventory-search-input') {
+                    // ...chama a função de filtro que está em bag.js
+                    console.log('opa')
+                    filterInventory();
+                }
+            });
 
-        // Lida com o clique nos links
-        navLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
+            // Delegação de eventos para o menu de navegação
+            navContainer.addEventListener('click', (event) => {
+                const clickedLink = event.target.closest('a.nav-link');
+                if (!clickedLink) return;
+
                 event.preventDefault();
 
-                // Remove 'active' de todos antes de adicionar no clicado
-                navLinks.forEach(item => item.classList.remove('active'));
-                const clickedLink = event.currentTarget;
+                navContainer.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active'));
                 clickedLink.classList.add('active');
-
-                // Move o indicador para o novo alvo
                 moveIndicator(clickedLink);
-            });
-        });
 
-
-        // --- FUNCIONALIDADE 3 (NOVO!): ATUALIZAÇÃO EM RESIZE ---
-
-        // Cria um observador que fica de olho em mudanças de tamanho na 'nav'
-        const resizeObserver = new ResizeObserver(() => {
-            // Quando a 'nav' mudar de tamanho, encontre o link que está ativo...
-            const currentActiveLink = document.querySelector('.menu-sobreposto .nav-link.active');
-            // ... e recalcule a posição do indicador para ele.
-            moveIndicator(currentActiveLink);
-        });
-
-        // Inicia a observação no container da navegação
-        resizeObserver.observe(navContainer);
-
-        // FIM
-
-        // No seu arquivo .js ou na tag <script>
-        // const settingsLink = document.getElementById('link-settings');
-
-        // settingsLink.addEventListener('click', (event) => {
-        //     event.preventDefault(); // Impede o comportamento padrão do link
-        //     loadPage('setting');
-        // });
-
-        // Coloque esta função no seu script principal,
-        // pode ser junto com os outros scripts que já criamos.
-        /**
-         * Orquestra a navegação da página de forma otimizada (carregamento em paralelo).
-         * @param {string} pageName - O nome da página para a qual navegar.
-         */
-        async function navigateTo(pageName) {
-            // 1. Criamos um array para guardar todas as "promessas" de carregamento.
-            const promisesToLoad = [];
-            const headerContainer = document.querySelector('.cabecalho-sobreposto');
-
-            // 2. Lógica do Header: em vez de 'await', nós "empurramos" a promessa para o array.
-            // A tarefa começa a ser executada em segundo plano imediatamente.
-            switch (pageName) {
-                case 'home':
-                case 'map':
-                case 'chat':
-                case 'profile':
-                    promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
-                    break;
-                case 'bag':
-                    promisesToLoad.push(fetchContent('includes/header-bag', '.cabecalho-sobreposto'));
-                    break;
-                case 'news':
-                    headerContainer.innerHTML = '';
-                    break;
-                default:
-                    headerContainer.innerHTML = '<div></div>';
-                    break;
-            }
-
-            // 3. Também "empurramos" a promessa de carregar o conteúdo principal para o array.
-            // Agora as duas requisições (header e content) estão rodando AO MESMO TEMPO.
-            promisesToLoad.push(fetchContent('pages/' + pageName, '.conteudo-principal'));
-
-            try {
-                // 4. Promise.all() espera que TODAS as promessas no array sejam resolvidas.
-                // O código só continua depois que AMBOS os conteúdos (header e main) tiverem chegado.
-                await Promise.all(promisesToLoad);
-
-                // 5. Agora que tudo está garantidamente na tela, resetamos o scroll.
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'auto'
-                });
-
-            } catch (error) {
-                // Se QUALQUER uma das promessas falhar, o Promise.all é rejeitado
-                // e o erro é capturado aqui, o que é ótimo para o tratamento de erros.
-                console.error("Uma ou mais tarefas de carregamento falharam:", error);
-            }
-        }
-
-
-        /**
-         * Função auxiliar que busca o conteúdo
-         * @param {string} fileName - O nome do arquivo a ser buscado.
-         * @param {string} targetSelector - O seletor CSS do elemento alvo.
-         */
-        async function fetchContent(fileName, targetSelector) {
-            const targetElement = document.querySelector(targetSelector);
-            if (!targetElement) {
-                // Lança um erro para ser capturado pelo Promise.all
-                throw new Error(`Elemento alvo não encontrado: ${targetSelector}`);
-            }
-            const url = `src/${fileName}.php`;
-
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Erro na rede ao buscar ${url}: ${response.statusText}`);
-            }
-
-            // O await aqui dentro é normal, ele só atualiza o HTML DEPOIS que o fetch termina.
-            targetElement.innerHTML = await response.text();
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(() => {
-                // 1. Encontra o elemento (link ou botão) pelo seu ID único.
-                const homeButton = document.getElementById('btn-home');
-
-                // 2. Uma verificação de segurança: só tenta clicar se o elemento realmente existir.
-                if (homeButton) {
-                    // 3. Simula um clique no elemento.
-                    homeButton.click();
+                const pageName = clickedLink.dataset.page;
+                if (pageName) {
+                    navigateTo(pageName);
                 }
-            }, 200);
+            });
+
+            // --- LÓGICA DO MENU ---
+            function moveIndicator(target) {
+                if (!target) return;
+                const linkRect = target.getBoundingClientRect();
+                const navRect = navContainer.getBoundingClientRect();
+                const leftPosition = linkRect.left - navRect.left;
+                activeIndicator.style.width = `${linkRect.width}px`;
+                activeIndicator.style.left = `${leftPosition}px`;
+            }
+
+            // Observador para redimensionamento
+            const resizeObserver = new ResizeObserver(() => {
+                const currentActiveLink = document.querySelector('.menu-sobreposto .nav-link.active');
+                moveIndicator(currentActiveLink);
+            });
+            resizeObserver.observe(navContainer);
+
+            // --- CARREGAMENTO DE CONTEÚDO ---
+            async function fetchContent(fileName, targetSelector) {
+                const targetElement = document.querySelector(targetSelector);
+                if (!targetElement) throw new Error(`Alvo não encontrado: ${targetSelector}`);
+
+                const response = await fetch(`src/${fileName}.php`);
+                if (!response.ok) throw new Error(`Erro na rede: ${response.statusText}`);
+
+                targetElement.innerHTML = await response.text();
+            }
+
+            async function navigateTo(pageName) {
+                const promisesToLoad = [];
+                switch (pageName) {
+                    case 'home': case 'map': case 'chat':
+                        promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
+                        break;
+                    case 'bag':
+                        promisesToLoad.push(fetchContent('includes/header-bag', '.cabecalho-sobreposto'));
+                        break;
+                    default:
+                        headerContainer.innerHTML = '';
+                        break;
+                }
+                promisesToLoad.push(fetchContent('pages/' + pageName, '.conteudo-principal'));
+                try {
+                    await Promise.all(promisesToLoad);
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                } catch (error) {
+                    console.error("Falha no carregamento:", error);
+                }
+            }
+
+            // --- INICIALIZAÇÃO ---
+            const homeButton = document.getElementById('btn-home');
+            if (homeButton) {
+                homeButton.click();
+            }
         });
+
     </script>
+    <script src="assets/js/modal.js"></script>
+    <script src="assets/js/bag.js"></script>
+
 </body>
 
 </html>

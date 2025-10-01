@@ -45,7 +45,7 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
     /* animation: subtle-breathing 5s infinite ease-in-out; */
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     --mouse-x: 50%;
@@ -220,11 +220,123 @@ body {
     color: var(--color-text);
     opacity: 1;
     font-weight: 400;
-    text-shadow: 0px 0px 2px var(--color-text), 0px 0px 2px var(--color-text);
+    /* text-shadow: 0px 0px 2px var(--color-text), 0px 0px 2px var(--color-text); */
 }
 
 .icon-div {
     width: 60px;
     min-width: 60px;
     max-width: 60px;
+}
+
+/* style.css ou utilities.css */
+
+/* =========================== MODAL =========================== */
+
+/* O Fundo Escuro que Cobre TUDO */
+.modal-overlay {
+    /* 1. Começa escondido */
+    display: none;
+
+    /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
+    position: fixed;
+    inset: 0;
+    /* cobre 100% da tela */
+    width: 100vw;
+    height: 100vh;
+    /* fallback */
+    height: 100dvh;
+    /* suporte a navegadores modernos */
+    height: -webkit-fill-available;
+    /* suporte iOS Safari */
+
+    /* 3. Fundo semi-transparente */
+    background-color: var(--color-transparent-background);
+    backdrop-filter: blur(var(--blur-1));
+    -webkit-backdrop-filter: blur(var(--blur-1));
+    color: var(--color-text);
+
+    /* 4. O SEGREDO MÁGICO: Z-INDEX! */
+    /* Seu header/footer tem z-index: 10. Um número maior como 1000 garante que o modal fique por cima de TUDO. */
+    z-index: 1000;
+
+    /* 5. Usa flexbox para centralizar o conteúdo do modal na tela */
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+
+    /* Começa invisível para uma transição suave */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Classe que será adicionada via JavaScript para mostrar o modal */
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* A "Janela" Branca do Modal */
+.modal-content {
+    /* background-color: var(--color-background-surface); */
+    padding: 20px;
+    /* 24px */
+    border-radius: var(--border-radius);
+    /* 1rem */
+    /* box-shadow: var(--shadow-lg); */
+    max-width: 600px;
+    /* width: calc(100% - 20px); */
+    /* Ocupa 100% da largura menos 20px de cada lado */
+    max-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    /* Adiciona scroll se o conteúdo for muito grande */
+    position: relative;
+    /* Necessário para posicionar o botão de fechar */
+
+    /* Animação de entrada */
+    transform: scale(0.95);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+/* O Botão de Fechar (X) */
+.modal-close-button {
+    /* position: absolute; */
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    opacity: 0.5;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
+
+.modal-close-button:hover {
+    opacity: 1;
+}
+
+/* SCROLLBAR  */
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }

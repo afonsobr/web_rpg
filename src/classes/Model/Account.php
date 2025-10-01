@@ -5,6 +5,9 @@ use TamersNetwork\Helper\Helper;
 
 class Account
 {
+    public int $energy = 100;
+    public int $maxExp = 0;
+    public string $displayCoin = '';
     public function __construct(
         public readonly int $id,
         public string $username,
@@ -16,9 +19,7 @@ class Account
         public float $coin,
         public int $cash,
         public string $lastIp,
-        public int $energy = 100,
-        public int $maxExp = 0,
-        public string $displayCoin = '',
+
     ) {
         $this->maxExp = 10 + ($level * 5);
         $this->displayCoin = Helper::formatCoinClassic($coin);

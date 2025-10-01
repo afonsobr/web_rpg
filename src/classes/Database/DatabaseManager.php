@@ -20,10 +20,33 @@ class DatabaseManager
     public static function getConnection(): PDO
     {
         if (self::$pdo === null) {
-            $host = 'localhost';
-            $db = 'tamers_network';
-            $user = 'root';
-            $pass = 'root';
+
+            if ($_SERVER['HTTP_HOST'] == 'teste.virtual-vice.com') {
+                $environment = 'production';
+            }
+
+            if ($_SERVER['HTTP_HOST'] == 'teste.virtual-vice.com') {
+                $__localhost = false;
+
+                // VOU CONFIGURAR DEPOIS
+                $host = 'localhost';
+                $db = 'u375202774_tamers_network';
+                $user = 'u375202774_user';
+                $pass = '68d7c3a6b76ebd24bc952f674a40a1227457347fc8419997dA';
+
+            } else {
+                $__localhost = true;
+
+                $host = 'localhost';
+                $db = 'tamers_network';
+                $user = 'root';
+                $pass = 'root';
+
+            }
+            // $host = 'localhost';
+            // $db = 'tamers_network';
+            // $user = 'root';
+            // $pass = 'root';
 
             $dsn = "mysql:host=$host;dbname=$db";
             $options = [
