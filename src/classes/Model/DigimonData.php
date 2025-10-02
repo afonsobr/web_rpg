@@ -4,6 +4,8 @@ namespace TamersNetwork\Model;
 class DigimonData
 {
     public string $attrToDisplay;
+    public array $traitCommon;
+    public array $traitSpecific;
     public function __construct(
         public readonly int $digimonId,
         public string $name,
@@ -67,6 +69,10 @@ class DigimonData
         $a['da'] = 'Data';
         $a['un'] = 'Unknown';
         $this->attrToDisplay = $a[$this->attr] ?? 'Unknown';
+
+        if ($this->traitCommon1 != 0) {
+            $this->traitCommon[] = new TraitCommon();
+        }
     }
 }
 ?>

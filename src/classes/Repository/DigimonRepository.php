@@ -5,6 +5,8 @@ namespace TamersNetwork\Repository;
 use PDO;
 use TamersNetwork\Model\DigimonData;
 use TamersNetwork\Model\Digimon;
+use TamersNetwork\Model\TraitCommon;
+use TamersNetwork\Model\TraitSpecific;
 
 class DigimonRepository
 {
@@ -44,6 +46,34 @@ class DigimonRepository
         }
 
         return Digimon::fromDatabaseRow($data);
+    }
+
+    public function getCommonTrait(int $id): ?TraitCommon
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM fix_trait_common
+        WHERE id = ?');
+        $stmt->execute([$id]);
+        $data = $stmt->fetch();
+
+        if ($data === false) {
+            return null;
+        }
+
+        return TraitCommon::fromDatabaseRow($data);
+    }
+
+    public function getSpecificTrait(int $id): ?TraitSpecific
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM fix_trait_specific
+        WHERE id = ?');
+        $stmt->execute([$id]);
+        $data = $stmt->fetch();
+
+        if ($data === false) {
+            return null;
+        }
+
+        return TraitSpecific::fromDatabaseRow($data);
     }
 
     public function saveInformation(Digimon $digimon): bool

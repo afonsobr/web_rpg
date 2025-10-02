@@ -2,6 +2,7 @@
 use TamersNetwork\Helper\Helper;
 ?>
 <div class="w-100">
+
     <div class="w-100 d-flex items-center pb-3">
         <div style="width: 50px; text-align: left;">
             <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button>
@@ -13,73 +14,8 @@ use TamersNetwork\Helper\Helper;
             <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
-    <div class="pb-3">
-        <div class="rounded bg-surface">
-            <div class="d-flex w-100">
-                <div class="w-50 text-center p-1">
-                    <img src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
-                </div>
-                <div class="d-flex w-50 items-center justify-center flex-col">
-                    <div class="font-normal">
-                        <?= $digimon->digimonData->name ?>
-                    </div>
-                    <div class="text-sm">
-                        Lv. <?= $digimon->level ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="pb-3">
-        <div class="font-normal text-sm py-1 pl-3">
-            BASIC INFO
-        </div>
-        <div class="rounded bg-surface">
-            <div class="d-flex w-100 flex-col">
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-heart"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            HP
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->currentHp ?>/<?= $digimon->maxHp ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-atom"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            DS
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->currentDs ?>/<?= $digimon->maxDs ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-star-christmas"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            EXP
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->exp ?>/<?= $digimon->maxExp ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="pb-3">
+    <div class="pb-3" hidden>
         <div class="w-100 d-flex items-center text-center dw-btn-stage" style="gap: 10px">
             <div class="text-sm rounded bg-surface-1 w-100 py-4 px-1 active" onclick="">
                 ROOKIE
@@ -95,148 +31,222 @@ use TamersNetwork\Helper\Helper;
             </div>
         </div>
     </div>
-
-    <div class="pb-3">
-        <div class="font-normal text-sm py-1 pl-3">
-            BASIC CHARACTERISTICS
-        </div>
-        <div class="rounded bg-surface">
-            <div class="d-flex w-100 flex-col text-center">
-                <div class="d-flex justify-between p-3">
-                    <div class="w-50">
-                        <?= $digimon->statStr ?><br>
-                        STR
-                    </div>
-                    <div class="w-50">
-                        <?= $digimon->statAgi ?><br>
-                        AGI
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="w-50">
-                        <?= $digimon->statCon ?><br>
-                        CON
-                    </div>
-                    <div class="w-50">
-                        <?= $digimon->statInt ?><br>
-                        INT
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="pb-3">
-        <div class="font-normal text-sm py-1 pl-3">
-            BATTLE CHARACTERISTICS
-        </div>
-        <div class="rounded bg-surface">
-            <div class="d-flex w-100 flex-col">
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-hand-back-fist"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Attack
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->attack ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-shield"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Defense
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->defense ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid fa-gauge"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Battle Rating
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->battleRating ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="pb-3">
-        <div class="font-normal text-sm py-1 pl-3">
-            ADITIONAL INFO
-        </div>
-        <div class="rounded bg-surface">
-            <div class="d-flex w-100 flex-col">
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getAttributeIcon($digimon->digimonData->attr); ?>"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Attribute
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->digimonData->attrToDisplay ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getElementIcon($digimon->digimonData->element); ?>"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Element
-                        </div>
-                        <div class="item-name">
-                            <?= ucfirst($digimon->digimonData->element) ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-between p-3">
-                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getFamilyIcon($digimon->digimonData->family); ?>"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Family
-                        </div>
-                        <div class="item-name">
-                            <?= $digimon->digimonData->family ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="pb-3">
-        <div class="font-normal text-sm py-1 pl-3">
-            TRAITS
-        </div>
-        <div class="rounded bg-surface">
-            <div class="p-3 cursor-pointer">
+    <div>
+        <div class="pb-3">
+            <div class="rounded bg-surface">
                 <div class="d-flex w-100">
-                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                        <i class="fa-solid fa-cards-blank"></i>
+                    <div class="w-50 text-center p-1">
+                        <img src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
                     </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Twin Spear
+                    <div class="d-flex w-50 items-center justify-center flex-col" style="gap: 4px">
+                        <div class="font-normal">
+                            <?= $digimon->digimonData->name ?>
+                        </div>
+                        <div class="text-sm">
+                            Lv. <?= $digimon->level ?>
+                        </div>
+                        <div class="text-xs">
+                            [<?= strtoupper($digimon->digimonData->stage) ?>]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pb-3">
+            <div class="font-normal text-sm py-1 pl-3">
+                BASIC INFO
+            </div>
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                HP
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->currentHp ?><span class="text-sm">/<?= $digimon->maxHp ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-atom"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                DS
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->currentDs ?><span class="text-sm">/<?= $digimon->maxDs ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-star-christmas"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                EXP
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->exp ?><span class="text-sm">/<?= $digimon->maxExp ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="pb-3">
+            <div class="font-normal text-sm py-1 pl-3">
+                BASIC CHARACTERISTICS
+            </div>
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col text-center">
+                    <div class="d-flex justify-between p-3">
+                        <div class="w-50">
+                            <?= $digimon->statStr ?><br>
+                            STR
+                        </div>
+                        <div class="w-50">
+                            <?= $digimon->statAgi ?><br>
+                            AGI
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="w-50">
+                            <?= $digimon->statCon ?><br>
+                            CON
+                        </div>
+                        <div class="w-50">
+                            <?= $digimon->statInt ?><br>
+                            INT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-3">
+            <div class="font-normal text-sm py-1 pl-3">
+                BATTLE CHARACTERISTICS
+            </div>
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-hand-back-fist"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Attack
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->attack ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-shield"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Defense
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->defense ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-gauge"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Battle Rating
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->battleRating ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-3">
+            <div class="font-normal text-sm py-1 pl-3">
+                ADITIONAL INFO
+            </div>
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid <?= Helper::getAttributeIcon($digimon->digimonData->attr); ?>"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Attribute
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->digimonData->attrToDisplay ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid <?= Helper::getElementIcon($digimon->digimonData->element); ?>"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Element
+                            </div>
+                            <div class="item-name">
+                                <?= ucfirst($digimon->digimonData->element) ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid <?= Helper::getFamilyIcon($digimon->digimonData->family); ?>"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Family
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->digimonData->family ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-3">
+            <div class="font-normal text-sm py-1 pl-3">
+                TRAITS
+            </div>
+            <div class="rounded bg-surface">
+                <div class="p-3 cursor-pointer">
+                    <div class="d-flex w-100">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-cards-blank"></i>
+                        </div>
+                        <div class="d-flex w-100 justify-between flex-col">
+                            <div class="item-name font-normal">
+                                Twin Spear
+                            </div>
+                            <div class="">
+                                Description
+                            </div>
                         </div>
                     </div>
                 </div>
