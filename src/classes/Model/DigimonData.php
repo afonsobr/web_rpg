@@ -3,6 +3,7 @@ namespace TamersNetwork\Model;
 
 class DigimonData
 {
+    public string $attrToDisplay;
     public function __construct(
         public readonly int $digimonId,
         public string $name,
@@ -27,6 +28,7 @@ class DigimonData
         public string $skillText2,
         public string $skillText3,
     ) {
+        $this->processDigimonData();
     }
     public static function fromDatabaseRow(array $data): self
     {
@@ -56,6 +58,15 @@ class DigimonData
             skillText2: $data['skill_text2'] ?? '',
             skillText3: $data['skill_text3'] ?? '',
         );
+    }
+
+    public function processDigimonData()
+    {
+        $a['va'] = 'Vaccine';
+        $a['vi'] = 'Virus';
+        $a['da'] = 'Data';
+        $a['un'] = 'Unknown';
+        $this->attrToDisplay = $a[$this->attr] ?? 'Unknown';
     }
 }
 ?>

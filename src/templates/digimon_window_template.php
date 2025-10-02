@@ -7,7 +7,7 @@ use TamersNetwork\Helper\Helper;
             <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button>
         </div>
         <div class="flex-grow text-center">
-            NoName
+            <?= $digimon->nickname ?>
         </div>
         <div style="width: 50px; text-align: right;">
             <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
@@ -17,14 +17,14 @@ use TamersNetwork\Helper\Helper;
         <div class="rounded bg-surface">
             <div class="d-flex w-100">
                 <div class="w-50 text-center p-1">
-                    <img src="assets/img/digis/agumon.gif" alt="">
+                    <img src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
                 </div>
                 <div class="d-flex w-50 items-center justify-center flex-col">
                     <div class="font-normal">
-                        Agumon
+                        <?= $digimon->digimonData->name ?>
                     </div>
                     <div class="text-sm">
-                        Lv.100
+                        Lv. <?= $digimon->level ?>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ use TamersNetwork\Helper\Helper;
                             HP
                         </div>
                         <div class="item-name">
-                            3000/3000
+                            <?= $digimon->currentHp ?>/<?= $digimon->maxHp ?>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ use TamersNetwork\Helper\Helper;
                             DS
                         </div>
                         <div class="item-name">
-                            3000/3000
+                            <?= $digimon->currentDs ?>/<?= $digimon->maxDs ?>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ use TamersNetwork\Helper\Helper;
                             EXP
                         </div>
                         <div class="item-name">
-                            3000/3000
+                            <?= $digimon->exp ?>/<?= $digimon->maxExp ?>
                         </div>
                     </div>
                 </div>
@@ -104,21 +104,21 @@ use TamersNetwork\Helper\Helper;
             <div class="d-flex w-100 flex-col text-center">
                 <div class="d-flex justify-between p-3">
                     <div class="w-50">
-                        150<br>
+                        <?= $digimon->statStr ?><br>
                         STR
                     </div>
                     <div class="w-50">
-                        500<br>
+                        <?= $digimon->statAgi ?><br>
                         AGI
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
                     <div class="w-50">
-                        150<br>
+                        <?= $digimon->statCon ?><br>
                         CON
                     </div>
                     <div class="w-50">
-                        500<br>
+                        <?= $digimon->statInt ?><br>
                         INT
                     </div>
                 </div>
@@ -141,7 +141,7 @@ use TamersNetwork\Helper\Helper;
                             Attack
                         </div>
                         <div class="item-name">
-                            300
+                            <?= $digimon->attack ?>
                         </div>
                     </div>
                 </div>
@@ -154,7 +154,7 @@ use TamersNetwork\Helper\Helper;
                             Defense
                         </div>
                         <div class="item-name">
-                            300
+                            <?= $digimon->defense ?>
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@ use TamersNetwork\Helper\Helper;
                             Battle Rating
                         </div>
                         <div class="item-name">
-                            300
+                            <?= $digimon->battleRating ?>
                         </div>
                     </div>
                 </div>
@@ -183,40 +183,40 @@ use TamersNetwork\Helper\Helper;
             <div class="d-flex w-100 flex-col">
                 <div class="d-flex justify-between p-3">
                     <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getAttributeIcon('va'); ?>"></i>
+                        <i class="fa-solid <?= Helper::getAttributeIcon($digimon->digimonData->attr); ?>"></i>
                     </div>
                     <div class="d-flex w-100 items-center justify-between">
                         <div class="item-name">
                             Attribute
                         </div>
                         <div class="item-name">
-                            Vaccine
+                            <?= $digimon->digimonData->attrToDisplay ?>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
                     <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getElementIcon('fire'); ?>"></i>
+                        <i class="fa-solid <?= Helper::getElementIcon($digimon->digimonData->element); ?>"></i>
                     </div>
                     <div class="d-flex w-100 items-center justify-between">
                         <div class="item-name">
                             Element
                         </div>
                         <div class="item-name">
-                            Fire
+                            <?= ucfirst($digimon->digimonData->element) ?>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
                     <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                        <i class="fa-solid <?= Helper::getFamilyIcon('NSp'); ?>"></i>
+                        <i class="fa-solid <?= Helper::getFamilyIcon($digimon->digimonData->family); ?>"></i>
                     </div>
                     <div class="d-flex w-100 items-center justify-between">
                         <div class="item-name">
                             Family
                         </div>
                         <div class="item-name">
-                            NSp
+                            <?= $digimon->digimonData->family ?>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
-// use TamersNetwork\Repository\DigimonRepository;
+use TamersNetwork\Repository\DigimonRepository;
 
 // Toda a lógica de "Chef" que vimos antes fica aqui.
 try {
@@ -17,14 +17,14 @@ try {
 
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
-    // $digimonRepo = new DigimonRepository($pdo);
+    $digimonRepo = new DigimonRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     // $digimons = $digimonRepo->findAllByOwnerUuid($account->uuid);
     // $partner = $digimons[0] ?? null;
 
-    // A "mágica" está aqui. Em vez de mostrar na tela, a saída do include
-    // será a resposta do seu fetch.
+    $digimon = $digimonRepo->getDigimonById(1);
+
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/digimon_window_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
