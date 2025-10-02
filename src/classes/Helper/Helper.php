@@ -47,4 +47,70 @@ class Helper
         return number_format($value, $decimals) . $units[$power];
     }
 
+    public static function getAttributeIcon(string $attr): string
+    {
+        if ($attr == 'vi') {
+            return 'fa-virus';
+        }
+        if ($attr == 'va') {
+            return 'fa-syringe';
+        }
+        if ($attr == 'da') {
+            return 'fa-sim-card';
+        }
+        if ($attr == 'un') {
+            return 'fa-question';
+        }
+        return 'fa-question';
+    }
+
+    public static function getElementIcon(string $element): string
+    {
+        $icon['neutral'] = 'minus';
+        $icon['light'] = 'star-christmas';
+        $icon['dark'] = 'moon';
+        $icon['fire'] = 'fire';
+        $icon['water'] = 'tint';
+        $icon['ice'] = 'snowflake';
+        $icon['wind'] = 'wind';
+        $icon['steel'] = 'cog';
+        $icon['nature'] = 'leaf';
+        $icon['thunder'] = 'bolt';
+
+        return 'fa-' . $icon[$element];
+    }
+
+    public static function getFamilyIcon(string $family): string
+    {
+        $family = strtolower($family);
+        if ($family == 'nso') {
+            return 'fa-skull-cow';
+        }
+        if ($family == 'nsp') {
+            return 'fa-paw-claws';
+        }
+        if ($family == 'vb') {
+            return 'fa-cross';
+        }
+        if ($family == 'dr') {
+            return 'fa-dragon';
+        }
+        if ($family == 'ds') {
+            return 'fa-dolphin';
+        }
+        if ($family == 'jt') {
+            return 'fa-bug';
+        }
+        if ($family == 'me') {
+            return 'fa-gears';
+        }
+        if ($family == 'wg') {
+            return 'fa-dove';
+        }
+        if ($family == 'da') {
+            return 'fa-eye-evil';
+        }
+        return 'fa-question';
+    }
+
 }

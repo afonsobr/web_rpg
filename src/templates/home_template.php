@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="pt-4 cursor-pointer" onclick="openModal()">
+    <div class="pt-4 cursor-pointer" onclick="openDigimonWindow()">
         <div class="font-normal text-sm py-1 pl-3">
             PARTNER
         </div>

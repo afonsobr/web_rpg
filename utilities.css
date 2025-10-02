@@ -12,8 +12,10 @@
 
     --color-background-canvas: #000;
     --color-background-surface: #161618;
+    --color-background-surface-1: #212124;
 
     --color-text: #fff;
+    --color-text-muted: #818181;
 }
 
 /* 
@@ -635,4 +637,8 @@
 
 .bg-surface {
     background-color: var(--color-background-surface);
+}
+
+.bg-surface-1 {
+    background-color: var(--color-background-surface-1);
 }

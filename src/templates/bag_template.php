@@ -14,7 +14,7 @@
             } ?>
             <div class="p-3 cursor-pointer inventory-item">
                 <div class="d-flex w-100">
-                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
+                    <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                         <i class="fa-solid <?= $playerItem->item->icon ?>"></i>
                     </div>
                     <div class="d-flex w-100 items-center justify-between">
@@ -58,7 +58,7 @@ $availableSlots = array(
             </div>
             <div class="p-3 rounded bg-surface cursor-pointer">
                 <div class="d-flex w-100">
-                    <div class="d-flex items-center justify-center flex-col text-xl" style="width: 60px">
+                    <div class="d-flex items-center justify-center flex-col" style="width: 60px">
                         <i class="fa-solid fa-<?= $icon ?>"></i>
                     </div>
                     <div class="d-flex w-100 items-center justify-between">

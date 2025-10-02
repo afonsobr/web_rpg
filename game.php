@@ -74,22 +74,7 @@ $_SESSION['account_uuid'] = 1;
 
     <div id="modal-container" class="modal-overlay">
         <div class="modal-content">
-            <div class="w-100 d-flex items-center pb-3">
-                <div style="width: 50px; text-align: left;">
-                    <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button>
-                </div>
-                <div class="flex-grow text-center">
-                </div>
-                <div style="width: 50px; text-align: right;">
-                    <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            </div>
 
-            <h2 class="text-xl font-bold mb-4">Título do Modal</h2>
-            <p>Este é o conteúdo do seu modal. Você pode colocar formulários, textos, imagens, ou até carregar outra página aqui dentro via JavaScript.</p>
-            <div class="bloco-exemplo mt-4">
-                Um conteúdo de exemplo.
-            </div>
         </div>
     </div>
 
@@ -150,7 +135,7 @@ $_SESSION['account_uuid'] = 1;
             resizeObserver.observe(navContainer);
 
             // --- CARREGAMENTO DE CONTEÚDO ---
-            async function fetchContent(fileName, targetSelector) {
+            window.fetchContent = async function (fileName, targetSelector) {
                 const targetElement = document.querySelector(targetSelector);
                 if (!targetElement) throw new Error(`Alvo não encontrado: ${targetSelector}`);
 
@@ -167,7 +152,7 @@ $_SESSION['account_uuid'] = 1;
                         promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
                         break;
                     case 'bag':
-                        promisesToLoad.push(fetchContent('includes/header-bag', '.cabecalho-sobreposto'));
+                        promisesToLoad.push(fetchContent('includes/header_bag', '.cabecalho-sobreposto'));
                         break;
                     default:
                         headerContainer.innerHTML = '';
@@ -190,6 +175,7 @@ $_SESSION['account_uuid'] = 1;
         });
 
     </script>
+    <script src="assets/js/digimon.js"></script>
     <script src="assets/js/modal.js"></script>
     <script src="assets/js/bag.js"></script>
 
