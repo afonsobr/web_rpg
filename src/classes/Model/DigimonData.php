@@ -4,8 +4,8 @@ namespace TamersNetwork\Model;
 class DigimonData
 {
     public string $attrToDisplay;
-    public array $traitCommon;
-    public array $traitSpecific;
+    // public array $traitCommon;
+    // public array $traitSpecific;
     public function __construct(
         public readonly int $digimonId,
         public string $name,
@@ -20,9 +20,11 @@ class DigimonData
         public int $buildAgi,
         public int $buildCon,
         public int $buildInt,
+        public array $traitCommon,
         public int $traitCommon1,
         public int $traitCommon2,
         public int $traitCommon3,
+        public array $traitSpecific,
         public int $traitSpecific1,
         public int $traitSpecific2,
         public int $traitSpecific3,
@@ -50,9 +52,11 @@ class DigimonData
             buildAgi: (int) ($data['build_agi'] ?? 0),
             buildCon: (int) ($data['build_con'] ?? 0),
             buildInt: (int) ($data['build_int'] ?? 0),
+            traitCommon: $data['trait_common'],
             traitCommon1: (int) ($data['trait_common_1'] ?? 0),
             traitCommon2: (int) ($data['trait_common_2'] ?? 0),
             traitCommon3: (int) ($data['trait_common_3'] ?? 0),
+            traitSpecific: $data['trait_specific'],
             traitSpecific1: (int) ($data['trait_specific_1'] ?? 0),
             traitSpecific2: (int) ($data['trait_specific_2'] ?? 0),
             traitSpecific3: (int) ($data['trait_specific_3'] ?? 0),
@@ -70,9 +74,6 @@ class DigimonData
         $a['un'] = 'Unknown';
         $this->attrToDisplay = $a[$this->attr] ?? 'Unknown';
 
-        if ($this->traitCommon1 != 0) {
-            $this->traitCommon[] = new TraitCommon();
-        }
     }
 }
 ?>

@@ -15,6 +15,15 @@ try {
         exit();
     }
 
+    // 2️⃣ Pega e valida o ID do Digimon
+    $digimonId = $_GET['id'] ?? null;
+    if (!$digimonId || !is_numeric($digimonId)) {
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'ID do Digimon inválido.']);
+        exit();
+    }
+
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
@@ -23,7 +32,13 @@ try {
     // $digimons = $digimonRepo->findAllByOwnerUuid($account->uuid);
     // $partner = $digimons[0] ?? null;
 
-    $digimon = $digimonRepo->getDigimonById(1);
+    $digimon = $digimonRepo->getDigimonById((int) $digimonId);
+    if (!$digimon) {
+        http_response_code(404);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Digimon não encontrado.']);
+        exit();
+    }
 
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/digimon_window_template.php'; // Use o nome do seu arquivo de template
 

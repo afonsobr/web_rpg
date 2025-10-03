@@ -1,5 +1,68 @@
 <?php
 use TamersNetwork\Helper\Helper;
+use TamersNetwork\Model\DigimonData;
+// var_dump($digimon->digimonData->traitCommon);
+
+function showTraits(DigimonData $digimonData)
+{
+    $c = 0;
+    foreach ($digimonData->traitCommon as $t): ?>
+        <div class="p-3">
+            <div class="d-flex w-100">
+                <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                    <i class="fa-solid <?= $t->icon ?>"></i>
+                </div>
+                <div class="d-flex w-100 justify-between flex-col">
+                    <div class="item-name font-normal">
+                        <?= $t->name ?>
+                    </div>
+                    <div class="">
+                        <?= $t->description ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php $c++;
+    endforeach;
+
+    foreach ($digimonData->traitSpecific as $t): ?>
+        <div class="p-3">
+            <div class="d-flex w-100">
+                <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                    <i class="fa-solid <?= $t->icon ?>"></i>
+                </div>
+                <div class="d-flex w-100 justify-between flex-col">
+                    <div class="item-name font-normal">
+                        <?= $t->name ?>
+                    </div>
+                    <div class="">
+                        <?= str_replace(['%CHANCE%', '%MULTIPLIER%'], [$t->chance, $t->multiplier], $t->description); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php $c++;
+    endforeach;
+
+    if ($c == 0) {
+        ?>
+        <div class="p-3">
+            <div class="d-flex w-100">
+                <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                    <i class="fa-solid fa-empty-set"></i>
+                </div>
+                <div class="d-flex w-100 justify-between flex-col">
+                    <div class="item-name font-normal">
+                        None
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}
+
+
 ?>
 <div class="w-100">
 
@@ -67,7 +130,7 @@ use TamersNetwork\Helper\Helper;
                                 HP
                             </div>
                             <div class="item-name">
-                                <?= $digimon->currentHp ?><span class="text-sm">/<?= $digimon->maxHp ?></span>
+                                <?= $digimon->currentHp ?><span class="text-sm"> / <?= $digimon->maxHp ?></span>
                             </div>
                         </div>
                     </div>
@@ -80,7 +143,7 @@ use TamersNetwork\Helper\Helper;
                                 DS
                             </div>
                             <div class="item-name">
-                                <?= $digimon->currentDs ?><span class="text-sm">/<?= $digimon->maxDs ?></span>
+                                <?= $digimon->currentDs ?><span class="text-sm"> / <?= $digimon->maxDs ?></span>
                             </div>
                         </div>
                     </div>
@@ -93,7 +156,7 @@ use TamersNetwork\Helper\Helper;
                                 EXP
                             </div>
                             <div class="item-name">
-                                <?= $digimon->exp ?><span class="text-sm">/<?= $digimon->maxExp ?></span>
+                                <?= $digimon->exp ?><span class="text-sm"> / <?= Helper::nFormat($digimon->maxExp) ?></span>
                             </div>
                         </div>
                     </div>
@@ -226,6 +289,19 @@ use TamersNetwork\Helper\Helper;
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-percent"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Size
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->size ?>%
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,21 +311,9 @@ use TamersNetwork\Helper\Helper;
                 TRAITS
             </div>
             <div class="rounded bg-surface">
-                <div class="p-3 cursor-pointer">
-                    <div class="d-flex w-100">
-                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                            <i class="fa-solid fa-cards-blank"></i>
-                        </div>
-                        <div class="d-flex w-100 justify-between flex-col">
-                            <div class="item-name font-normal">
-                                Twin Spear
-                            </div>
-                            <div class="">
-                                Description
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                showTraits($digimon->digimonData);
+                ?>
             </div>
         </div>
     </div>

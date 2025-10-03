@@ -12,11 +12,13 @@ class DigimonRepository
 {
     private readonly string $databaseVarName;
     private readonly string $databaseFixName;
+    private readonly TraitRepository $traitRepository;
     // Injetando a dependência do PDO para facilitar testes e clareza
     public function __construct(private PDO $pdo)
     {
         $this->databaseFixName = 'fix_digidex';
-        $this->databaseVarName = 'var_digimon';
+        $this->databaseVarName = 'var_digimons';
+        $this->traitRepository = new TraitRepository($pdo);
     }
 
     public function getDigimonData(int $digimonId): ?DigimonData
@@ -45,36 +47,51 @@ class DigimonRepository
             return null;
         }
 
+        $data = $this->getDigimonTraits($data);
         return Digimon::fromDatabaseRow($data);
     }
 
-    public function getCommonTrait(int $id): ?TraitCommon
+    public function getDigimonsByAccountId(int $id): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM fix_trait_common
-        WHERE id = ?');
+        $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseVarName . '
+        INNER JOIN ' . $this->databaseFixName . '
+        ON ' . $this->databaseVarName . '.digimon_id = ' . $this->databaseFixName . '.digimon_id
+        WHERE account_id = ?
+        ORDER BY ' . $this->databaseVarName . '.digimon_id ASC');
         $stmt->execute([$id]);
-        $data = $stmt->fetch();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($data === false) {
-            return null;
+        $digimonList = [];
+
+        foreach ($rows as $row) {
+            $digimon = $this->getDigimonTraits($row);
+            $digimonList[] = Digimon::fromDatabaseRow($digimon);
         }
 
-        return TraitCommon::fromDatabaseRow($data);
+        return $digimonList;
     }
 
-    public function getSpecificTrait(int $id): ?TraitSpecific
+    public function getDigimonTraits(array $data): array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM fix_trait_specific
-        WHERE id = ?');
-        $stmt->execute([$id]);
-        $data = $stmt->fetch();
-
-        if ($data === false) {
-            return null;
+        $traitCommon = [];
+        foreach (['trait_common_1', 'trait_common_2', 'trait_common_3'] as $col) {
+            if (!empty($data[$col])) {
+                $traitCommon[] = $this->traitRepository->getCommonTrait($data[$col]);
+            }
         }
+        $data['trait_common'] = $traitCommon;
 
-        return TraitSpecific::fromDatabaseRow($data);
+        $traitSpecific = [];
+        foreach (['trait_specific_1', 'trait_specific_2', 'trait_specific_3'] as $col) {
+            if (!empty($data[$col])) {
+                $traitSpecific[] = $this->traitRepository->getSpecificTrait($data[$col]);
+            }
+        }
+        $data['trait_specific'] = $traitSpecific;
+
+        return $data;
     }
+
 
     public function saveInformation(Digimon $digimon): bool
     {
@@ -136,50 +153,4 @@ class DigimonRepository
 
         return null; // Retorna nulo se a inserção falhar
     }
-
-    public function saveInformation2(Digimon $digimon): bool
-    {
-        // Converte objeto em array (propriedade => valor)
-        $props = get_object_vars($digimon);
-
-        // Define colunas que realmente existem no banco (ajuste conforme sua tabela)
-        $allowed = [
-            'level',
-            'exp',
-            'currentHp',
-            'maxHp',
-            'currentDs',
-            'maxDs',
-            'size',
-            'tier',
-            'statStr',
-            'statAgi',
-            'statCon',
-            'statInt',
-            'point',
-            'gymStr',
-            'gymAgi',
-            'gymCon',
-            'gymInt',
-            'isPartner',
-            'isBlocked',
-            'nickname'
-        ];
-
-        // Filtra só as colunas válidas
-        $fields = array_intersect_key($props, array_flip($allowed));
-
-        // Monta dinamicamente a query SET
-        $setPart = implode(', ', array_map(fn($col) => strtolower(preg_replace('/[A-Z]/', '_$0', $col)) . " = :$col", array_keys($fields)));
-
-        $sql = "UPDATE {$this->databaseVarName} SET $setPart WHERE id = :id";
-
-        $stmt = $this->pdo->prepare($sql);
-
-        // Adiciona o id no bind
-        $fields['id'] = $digimon->id;
-
-        return $stmt->execute($fields);
-    }
-
 }

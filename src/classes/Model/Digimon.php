@@ -76,12 +76,26 @@ class Digimon
 
     public function calculateStats(): void
     {
-        $base = 20;
+        $baseValues = [
+            'rookie' => 20,
+            'champion' => 80,
+            'ultimate' => 190,
+            'mega' => 350,
+            'ultra' => 400,
+        ];
 
-        $this->statStr = $this->level * $this->digimonData->buildStr + $base;
-        $this->statAgi = $this->level * $this->digimonData->buildAgi + $base;
-        $this->statCon = $this->level * $this->digimonData->buildCon + $base;
-        $this->statInt = $this->level * $this->digimonData->buildInt + $base;
+        $base = $baseValues[$this->digimonData->stage] ?? 20;
+
+        $builds = [
+            'statStr' => $this->digimonData->buildStr,
+            'statAgi' => $this->digimonData->buildAgi,
+            'statCon' => $this->digimonData->buildCon,
+            'statInt' => $this->digimonData->buildInt,
+        ];
+
+        foreach ($builds as $prop => $build) {
+            $this->$prop = $this->level * $build + $base;
+        }
 
         $this->attack = $this->statStr * 2 + $this->statAgi * 1;
         $this->defense = $this->statCon * 2 + $this->statInt * 1;
@@ -89,6 +103,13 @@ class Digimon
 
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
+
+        // Size
+        $this->attack = floor($this->size / 100 * $this->attack);
+        $this->defense = floor($this->size / 100 * $this->defense);
+        $this->battleRating = floor($this->size / 100 * $this->battleRating);
+        $this->maxHp = floor($this->size / 100 * $this->maxHp);
+        $this->maxDs = floor($this->size / 100 * $this->maxDs);
 
         $this->maxExp = $this->getRequiredExp();
     }

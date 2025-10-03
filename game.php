@@ -53,7 +53,7 @@ $_SESSION['account_uuid'] = 1;
                 <span class="material-icons">home</span>
                 <span class="menu-texto">Home</span>
             </a>
-            <a href="#" class="nav-link">
+            <a href="javascript:void(0)" id="btn-storage" data-page="storage" class="nav-link">
                 <span class="material-icons">storage</span>
                 <span class="menu-texto">Storage</span>
             </a>
@@ -93,10 +93,16 @@ $_SESSION['account_uuid'] = 1;
             // Ele vai "ouvir" tudo o que acontece dentro dele.
             mainContentContainer.addEventListener('keyup', function (event) {
                 // Se o elemento que disparou o evento tem o ID 'inventory-search-input'...
+                console.log(event.target, event.target.id);
                 if (event.target && event.target.id === 'inventory-search-input') {
                     // ...chama a função de filtro que está em bag.js
                     console.log('opa')
                     filterInventory();
+                }
+                else if (event.target && event.target.id === 'storage-search-input') {
+                    // ...chama a função de filtro que está em bag.js
+                    console.log('opa2')
+                    filterStorage();
                 }
             });
 
@@ -135,20 +141,32 @@ $_SESSION['account_uuid'] = 1;
             resizeObserver.observe(navContainer);
 
             // --- CARREGAMENTO DE CONTEÚDO ---
-            window.fetchContent = async function (fileName, targetSelector) {
+            window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET') {
                 const targetElement = document.querySelector(targetSelector);
                 if (!targetElement) throw new Error(`Alvo não encontrado: ${targetSelector}`);
 
-                const response = await fetch(`src/${fileName}.php`);
+                let url = `src/${fileName}.php`;
+                let fetchOptions = { method };
+
+                if (method.toUpperCase() === 'GET' && Object.keys(params).length) {
+                    const queryString = new URLSearchParams(params).toString();
+                    url += '?' + queryString;
+                } else if (method.toUpperCase() === 'POST') {
+                    fetchOptions.body = new URLSearchParams(params);
+                    fetchOptions.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+                }
+
+                const response = await fetch(url, fetchOptions);
                 if (!response.ok) throw new Error(`Erro na rede: ${response.statusText}`);
 
                 targetElement.innerHTML = await response.text();
-            }
+            };
+
 
             async function navigateTo(pageName) {
                 const promisesToLoad = [];
                 switch (pageName) {
-                    case 'home': case 'map': case 'chat':
+                    case 'home': case 'storage': case 'map': case 'chat':
                         promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
                         break;
                     case 'bag':

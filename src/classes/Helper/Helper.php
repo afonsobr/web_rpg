@@ -113,4 +113,9 @@ class Helper
         return 'fa-question';
     }
 
+    public static function nFormat(int $n): string
+    {
+        return number_format($n, 0, ".", " ");
+    }
+
 }
