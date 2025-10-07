@@ -2,11 +2,22 @@
 const modalContainer = document.getElementById('modal-container');
 
 function openModal() {
-    if (modalContainer) modalContainer.classList.add('active');
+    if (modalContainer) {
+        modalContainer.classList.add('active');
+        document.body.classList.add('modal-open');
+    }
 }
 
 function closeModal() {
-    if (modalContainer) modalContainer.classList.remove('active');
+    if (modalContainer) {
+        modalContainer.classList.remove('active');
+
+        // Ajuste do Scroll do Body
+        const scrollY = Math.abs(parseInt(document.body.style.top || '0'));
+        document.body.style.position = '';
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
+    }
 }
 
 // Fecha ao clicar no overlay

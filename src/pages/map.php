@@ -76,6 +76,14 @@ $location['FILE ISLAND'] = [
 
 ?>
 <div>
+    <div class="map-background rounded p-3">
+        <span>
+            Village of Beginnings
+        </span>
+
+    </div>
+</div>
+<div>
     <?php
     foreach ($location as $mainPlaceName => $mainPlace) {
         echo '<div class="pb-4">';
@@ -184,3 +192,22 @@ $location['FILE ISLAND'] = [
         </div>
     </div>
 </div>
+
+<style>
+    .map-background {
+        background-image: url('assets/img/maps/map_8.png');
+        background-position: center;
+        background-size: cover;
+        min-height: 200px;
+        display: flex;
+        align-content: flex-end;
+        align-items: flex-end;
+    }
+
+    .map-background span {
+        /* mix-blend-mode: difference; */
+        font-size: 32px;
+        color: black;
+        text-shadow: rgb(228, 228, 228) 2px 0px 0px, rgb(228, 228, 228) 1.75517px 0.958851px 0px, rgb(228, 228, 228) 1.0806px 1.68294px 0px, rgb(228, 228, 228) 0.141474px 1.99499px 0px, rgb(228, 228, 228) -0.832294px 1.81859px 0px, rgb(228, 228, 228) -1.60229px 1.19694px 0px, rgb(228, 228, 228) -1.97998px 0.28224px 0px, rgb(228, 228, 228) -1.87291px -0.701566px 0px, rgb(228, 228, 228) -1.30729px -1.5136px 0px, rgb(228, 228, 228) -0.421592px -1.95506px 0px, rgb(228, 228, 228) 0.567324px -1.91785px 0px, rgb(228, 228, 228) 1.41734px -1.41108px 0px, rgb(228, 228, 228) 1.92034px -0.558831px 0px;
+    }
+</style>

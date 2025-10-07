@@ -1,6 +1,7 @@
 <?php
 
-$digimon = $digimonList[0];
+use TamersNetwork\Helper\Helper;
+
 ?>
 <div id="storage-list">
     <div class="w-100 input-area pb-4">
@@ -21,6 +22,12 @@ $digimon = $digimonList[0];
                 </div>
                 <div class="d-flex w-100 items-center justify-center digimon-name">
                     <?= $digimon->digimonData->name ?>
+                </div>
+                <div class="dc-attr-icon">
+                    <i class="fa-regular <?= Helper::getAttributeIcon($digimon->digimonData->attr); ?>"></i>
+                </div>
+                <div class="dc-element-icon">
+                    <i class="fa-regular <?= Helper::getElementIcon($digimon->digimonData->element); ?>"></i>
                 </div>
             </div>
             <?php
@@ -51,6 +58,10 @@ $digimon = $digimonList[0];
         align-items: center;
     }
 
+    .digimon-card {
+        position: relative;
+    }
+
     .digimon-name {
         display: block;
         max-width: 100%;
@@ -62,5 +73,17 @@ $digimon = $digimonList[0];
         text-overflow: ellipsis;
         /* adiciona "..." */
         text-align: center;
+    }
+
+    .dc-attr-icon {
+        position: absolute;
+        top: 2.75rem;
+        right: 0.75rem;
+    }
+
+    .dc-element-icon {
+        position: absolute;
+        top: 4.75rem;
+        right: 0.75rem;
     }
 </style>

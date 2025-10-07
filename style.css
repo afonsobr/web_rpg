@@ -233,10 +233,16 @@ body {
 
 /* =========================== MODAL =========================== */
 
+/* Adicionado para travar o scroll quando o modal estiver aberto */
+body.modal-open {
+    overflow-y: hidden;
+    height: 100vh;
+}
+
 /* O Fundo Escuro que Cobre TUDO */
 .modal-overlay {
     /* 1. Começa escondido */
-    display: none;
+    display: flex;
 
     /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
     position: fixed;
@@ -268,12 +274,17 @@ body {
     /* Começa invisível para uma transição suave */
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    /* invisível inicialmente */
+    pointer-events: none;
+    /* não clicável enquanto invisível */
+
 }
 
 /* Classe que será adicionada via JavaScript para mostrar o modal */
 .modal-overlay.active {
     display: flex;
     opacity: 1;
+    pointer-events: all;
 }
 
 /* A "Janela" Branca do Modal */

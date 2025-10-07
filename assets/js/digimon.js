@@ -16,7 +16,18 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             // Usa fetchContent global
             await fetchFunc('pages/digimon_window', '.modal-content', { id: id });
+
+            // Reset modal scroll
+            const modalContent = digimonWindow.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0; // reseta o scroll do conteúdo
+            }
+
             digimonWindow.classList.add('active');
+            // Ajuste do Scroll do Body
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
         } catch (error) {
             console.error("Erro ao abrir a janela do Digimon:", error);
         }

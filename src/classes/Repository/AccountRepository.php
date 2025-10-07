@@ -8,15 +8,24 @@ use PDO;
 class AccountRepository
 {
     private readonly string $databaseName;
+    private readonly string $databaseDigimonName;
     // Injetando a dependência do PDO para facilitar testes e clareza
     public function __construct(private PDO $pdo)
     {
         $this->databaseName = 'var_accounts';
+        $this->databaseDigimonName = 'var_digimons';
     }
 
     public function findByUsername(string $username)
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE username = ?');
+        $stmt = $this->pdo->prepare('SELECT
+        a.*, 
+        (SELECT COUNT(d.id) 
+        FROM ' . $this->databaseDigimonName . ' d 
+        WHERE d.account_id = a.id) AS total_digimon
+        FROM ' . $this->databaseName . ' a
+        WHERE a.username = ?');
+        // $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE username = ?');
         $stmt->execute([$username]);
         $data = $stmt->fetch();
 
@@ -29,7 +38,14 @@ class AccountRepository
 
     public function findById(int $id)
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE id = ?');
+        // $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseName . ' WHERE id = ?');
+        $stmt = $this->pdo->prepare('SELECT
+        a.*, 
+        (SELECT COUNT(d.id) 
+        FROM ' . $this->databaseDigimonName . ' d 
+        WHERE d.account_id = a.id) AS total_digimon
+        FROM ' . $this->databaseName . ' a
+        WHERE a.id = ?');
         $stmt->execute([$id]);
         $data = $stmt->fetch();
 

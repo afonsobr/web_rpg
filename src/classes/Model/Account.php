@@ -18,6 +18,8 @@ class Account
         public int $exp,
         public float $coin,
         public int $cash,
+        public int $storageSize,
+        public int $totalDigimon,
         public string $lastIp,
 
     ) {
@@ -38,6 +40,8 @@ class Account
             exp: $data['exp'],
             coin: $data['coin'],
             cash: $data['cash'],
+            storageSize: $data['storage_size'],
+            totalDigimon: $data['total_digimon'],
             lastIp: $data['last_ip'],
         );
     }

@@ -166,8 +166,11 @@ $_SESSION['account_uuid'] = 1;
             async function navigateTo(pageName) {
                 const promisesToLoad = [];
                 switch (pageName) {
-                    case 'home': case 'storage': case 'map': case 'chat':
+                    case 'home': case 'map': case 'chat':
                         promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
+                        break;
+                    case 'storage':
+                        promisesToLoad.push(fetchContent('includes/header_storage', '.cabecalho-sobreposto'));
                         break;
                     case 'bag':
                         promisesToLoad.push(fetchContent('includes/header_bag', '.cabecalho-sobreposto'));
