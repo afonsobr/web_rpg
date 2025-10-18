@@ -8,6 +8,10 @@ class Digimon
     public int $attack;
     public int $defense;
     public int $battleRating;
+    public int $speed;
+    public float $traitRate;
+    public float $criticalRate;
+    public float $criticalDamage;
     public int $maxExp;
     public function __construct(
         public readonly int $id,
@@ -100,14 +104,20 @@ class Digimon
         $this->attack = $this->statStr * 2 + $this->statAgi * 1;
         $this->defense = $this->statCon * 2 + $this->statInt * 1;
         $this->battleRating = $this->statAgi * 3 + $this->statInt * 1;
+        $this->speed = $this->statAgi * 4;
 
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
+
+        $this->traitRate = floor($this->statInt / 20);
+        $this->criticalDamage = 2;
+        $this->criticalRate = 5;
 
         // Size
         $this->attack = floor($this->size / 100 * $this->attack);
         $this->defense = floor($this->size / 100 * $this->defense);
         $this->battleRating = floor($this->size / 100 * $this->battleRating);
+        $this->speed = floor($this->size / 100 * $this->speed);
         $this->maxHp = floor($this->size / 100 * $this->maxHp);
         $this->maxDs = floor($this->size / 100 * $this->maxDs);
 
@@ -141,6 +151,16 @@ class Digimon
     }
 
     public function getRequiredExp(): int
+    {
+        return $this->level * 8 + floor(pow(($this->level), 3) * 4);
+    }
+
+    private function baseCalcExp(): int
+    {
+        return $this->level * 8 + floor(pow(($this->level), 3) * 4);
+
+    }
+    public function getRequiredExp2(): int
     {
         $expTable = [
             1 => 24,

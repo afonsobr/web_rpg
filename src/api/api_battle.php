@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
-use TamersNetwork\Helper\Helper;
+use TamersNetwork\Repository\DigimonRepository;
 
 try {
     if (!isset($_SESSION['account_uuid'])) {
@@ -14,10 +14,37 @@ try {
         exit();
     }
 
+    $action = $_POST['action'] ?? null;
+    if (!$action) {
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'Invalid action.']);
+        exit();
+    }
+
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
+    $digimonRepo = new DigimonRepository($pdo);
+
     $account = $accountRepo->findById($_SESSION['account_uuid']);
-    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/header_storage_template.php'; // Use o nome do seu arquivo de template
+    $digimon = $digimonRepo->getPartnerByAccountId((int) $account->id);
+
+    if ($_SESSION['inBattle'] !== true) {
+        echo json_encode(false);
+        exit;
+    }
+
+    if ($action == 'attack') {
+        if (isset($_POST['skill'])) {
+            $skillOption = $_POST['skill'];
+
+            if ($skillOption < 1 || $skillOption > 3) {
+                $skillOption = 1;
+            }
+        }
+
+        echo json_encode(true);
+    }
 
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error

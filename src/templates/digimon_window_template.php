@@ -68,7 +68,7 @@ function showTraits(DigimonData $digimonData)
 
     <div class="w-100 d-flex items-center pb-3">
         <div style="width: 50px; text-align: left;">
-            <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button>
+            <!-- <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button> -->
         </div>
         <div class="flex-grow text-center">
             <?= $digimon->nickname ?>
@@ -99,7 +99,7 @@ function showTraits(DigimonData $digimonData)
             <div class="rounded bg-surface">
                 <div class="d-flex w-100">
                     <div class="w-50 text-center p-1">
-                        <img src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
+                        <img class="digimon-image" src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
                     </div>
                     <div class="d-flex w-50 items-center justify-center flex-col" style="gap: 4px">
                         <div class="font-normal">
@@ -197,7 +197,7 @@ function showTraits(DigimonData $digimonData)
 
         <div class="pb-3">
             <div class="font-normal text-sm py-1 pl-3">
-                BATTLE CHARACTERISTICS
+                BATTLE CHARACTERISTICS <span class="cursor-pointer" onclick="toggleAditionalInfo()"><i class="fa-solid fa-info-circle"></i></span>
             </div>
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 flex-col">
@@ -233,10 +233,51 @@ function showTraits(DigimonData $digimonData)
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
-                                Battle Rating
+                                Speed
                             </div>
                             <div class="item-name">
-                                <?= $digimon->battleRating ?>
+                                <?= $digimon->speed ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="aditional-info">
+                        <div class="d-flex justify-between p-3">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Trait Activation Rate
+                                </div>
+                                <div class="item-name">
+                                    <?= $digimon->traitRate ?>%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-between p-3">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-percent"></i>
+                            </div>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Critical Rate
+                                </div>
+                                <div class="item-name">
+                                    <?= $digimon->criticalRate ?>%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-between p-3">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-explosion"></i>
+                            </div>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Critical Damage
+                                </div>
+                                <div class="item-name">
+                                    x<?= $digimon->criticalDamage ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -318,3 +359,18 @@ function showTraits(DigimonData $digimonData)
         </div>
     </div>
 </div>
+
+<style>
+    #aditional-info {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+    }
+
+    #aditional-info.show {
+        max-height: 500px;
+        /* valor maior que a altura máxima do conteúdo */
+        opacity: 1;
+    }
+</style>

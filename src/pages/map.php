@@ -1,213 +1,114 @@
 <?php
-$locations = array();
-$location['FILE ISLAND'] = [
-    'Village of Beginnings' =>
-        [
-            'icon' => 'fa-house-tree',
-            'description' => 'A serene meadow dotted with cradles and DigiEggs, where new life quietly begins.'
-        ],
-    'Tropical Jungle' =>
-        [
-            'icon' => 'fa-trees',
-            'description' => 'A dense, humid jungle filled with towering trees, tangled vines, and endless greenery.',
-            'level' => '1 - 5'
-        ],
-    'Faulty Ex Machina' =>
-        [
-            'icon' => 'fa-gears',
-            'description' => 'A massive, decaying factory of rusted gears and silent machines frozen in time.',
-            'level' => '6 - 10'
-        ],
-    'Sewers' =>
-        [
-            'icon' => 'fa-faucet',
-            'description' => 'Dark underground tunnels where dripping water echoes and rusted pipes stretch endlessly.',
-            'level' => '11 - 15'
-        ],
-    'Railroad Plains' =>
-        [
-            'icon' => 'fa-faucet',
-            'description' => 'Vast plains crossed by abandoned tracks and broken railcars, silent under the open sky.',
-            'level' => '16 - 20'
-        ],
-    'Gravel Wasteland' =>
-        [
-            'icon' => 'fa-faucet',
-            'description' => 'A barren land of cracked stone and dust, scattered with jagged rocks and forgotten ruins.',
-            'level' => '21 - 25'
-        ],
-    'Ancient Bone Swamp' =>
-        [
-            'icon' => 'fa-water',
-            'description' => 'A foggy marshland littered with enormous skeletal remains and murky waters.',
-            'level' => '26 - 30'
-        ],
-    'Freezland' =>
-        [
-            'icon' => 'fa-snowflake',
-            'description' => 'A frozen tundra of snowfields and icy peaks, where blizzards never cease.',
-            'level' => '31 - 35'
-        ],
-    'Great Canyon' =>
-        [
-            'icon' => 'fa-mountain-sun',
-            'description' => 'A vast canyon carved by time, with towering cliffs and endless winding paths.',
-            'level' => '36 - 40'
-        ],
-    'Gear Savannah' =>
-        [
-            'icon' => 'fa-cloud',
-            'description' => 'A wide plain where colossal gears rise from the earth among dry grasslands.',
-            'level' => '41 - 45'
-        ],
-    'Logic Volcano' =>
-        [
-            'icon' => 'fa-volcano',
-            'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
-            'level' => '46 - 50'
-        ],
-    'Overdell' =>
-        [
-            'icon' => 'fa-tombstone',
-            'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
-            'level' => '51 - 55'
-        ],
-];
+// Este arquivo é o alvo do seu fetch. É um ponto de entrada completo.
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
+
+use TamersNetwork\Database\DatabaseManager;
+use TamersNetwork\Repository\AccountRepository;
+
+// Toda a lógica de "Chef" que vimos antes fica aqui.
+try {
+    if (!isset($_SESSION['account_uuid'])) {
+        http_response_code(401); // Unauthorized
+        echo "Usuário não autenticado.";
+        exit();
+    }
+
+    if (isset($_GET['mapName'])) {
+        $mapName = htmlspecialchars(strip_tags($_GET['mapName']), ENT_QUOTES, 'UTF-8');
+        $_SESSION['map'] = $mapName;
+    }
+
+    $pdo = DatabaseManager::getConnection();
+    $accountRepo = new AccountRepository($pdo);
+
+    $account = $accountRepo->findById($_SESSION['account_uuid']);
+
+    $map = 'hub';
+    if (isset($_SESSION['map'])) {
+        $map = $_SESSION['map'];
+    }
+    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/maps/' . $map . '.php'; // Use o nome do seu arquivo de template
+
+} catch (Exception $e) {
+    http_response_code(500); // Internal Server Error
+    echo "Ocorreu um erro ao carregar os dados: " . $e->getMessage();
+    error_log($e->getMessage()); // Loga o erro para você ver depois
+}
+
+function returnToDigitalWorldBtn()
+{
+    return '    
+    <div>
+        <div class="pb-4">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap(\'hub\')">
+                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> <i class="fa-solid fa-planet-ringed"></i></div>
+                    <div class="d-flex w-100 justify-center flex-col">
+                        <div class="font-normal">Return to Digital World</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ';
+}
+
+function findEnemiesBtn()
+{
+    return '    
+    <div>
+        <div class="pb-4">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 p-3 cursor-pointer" onclick="searchForEnemies()" id="search-enemies-btn">
+                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> <i class="fa-solid fa-radar"></i></div>
+                    <div class="d-flex w-100 justify-center flex-col">
+                        <div class="font-normal">Analyze and search for enemies</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ';
+}
+
+function enemiesTable()
+{
+    return '<div id="enemies-table">
+    </div>';
+
+    return '    
+    <div>
+        <div class="pb-4">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap(\'hub\')">
+                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> 
+                        <img src="assets/img/digis/agumon.gif" style="width: 100%">
+                    </div>
+                     <div class="d-flex w-100 items-center">
+                        <div class="font-normal nowrap pr-3"><i class="fa-solid fa-b"></i><i class="fa-regular fa-syringe"></i><i class="fa-regular fa-fire"></i></div>
+                        <div class="font-normal pr-3">Agumon Warmode Lv. 12 </div>
+                    </div>
+                    <div class="d-flex justify-center flex-col">
+                        <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap(\'hub\')">
+                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> 
+                        <img src="assets/img/digis/metalgreymon.gif" style="width: 100%">
+                    </div>
+                    <div class="d-flex w-100 items-center">
+                        <div class="font-normal nowrap pr-3"><i class="fa-solid fa-e"></i><i class="fa-regular fa-virus"></i><i class="fa-regular fa-water"></i></div>
+                        <div class="font-normal pr-3">MetalGreymon Warmode Lv. 12 </div>
+                    </div>
+                    <div class="d-flex justify-center flex-col">
+                        <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    ';
+}
 ?>
-<div>
-    <div class="map-background rounded p-3">
-        <span>
-            Village of Beginnings
-        </span>
-
-    </div>
-</div>
-<div>
-    <?php
-    foreach ($location as $mainPlaceName => $mainPlace) {
-        echo '<div class="pb-4">';
-        echo '  <div class="font-normal text-sm py-1 pl-3">' . $mainPlaceName . '</div>';
-        echo '  <div class="rounded bg-surface">';
-        $last_key = array_key_last($mainPlace);
-
-        foreach ($mainPlace as $subPlaceName => $subPlace) {
-            if ($subPlaceName != $last_key)
-                echo '<div class="d-flex w-100 p-3">';
-            else
-                echo '<div class="d-flex w-100 p-3">';
-            // Icone
-            if (true) {
-                echo '<div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">';
-                if (isset($subPlace['icon']))
-                    echo '  <i class="fa-solid ' . $subPlace['icon'] . '"></i>';
-                else
-                    echo '  <i class="fa-solid fa-lock"></i>';
-                echo '</div>';
-            }
-            // Conteúdo
-            if (true) {
-                echo '<div class="d-flex w-100 justify-center flex-col">';
-                if (true) {
-                    echo '<div class="font-normal">';
-                    echo $subPlaceName;
-                    echo '</div>';
-                }
-                if (isset($subPlace['description'])) {
-                    echo '<div class="text-sm italic">';
-                    echo $subPlace['description'];
-                    echo '</div>';
-                }
-                if (isset($subPlace['level'])) {
-                    echo '<div class="text-sm">';
-                    echo 'Recommended Level: ' . $subPlace['level'];
-                    echo '</div>';
-                }
-                echo '</div>';
-            }
-            echo '</div>';
-        }
-        echo '  </div>';
-        echo '</div>';
-    }
-    ?>
-    <div hidden>
-
-        <div class="font-normal text-sm py-1">
-            FILE ISLAND
-        </div>
-        <div class="rounded bg-surface p-3">
-            <div class="d-flex w-100">
-                <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="d-flex w-100 justify-center flex-col">
-                    <div class="font-normal">
-                        Village of Beginnings
-                    </div>
-                    <div class="text-sm italic">
-                        An Enigmatic Island at the Heart of the Digital World
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex w-100 pt-4">
-                <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="d-flex w-100 justify-center flex-col">
-                    <div class="font-normal">
-                        Native Forest
-                    </div>
-                    <div class="text-sm italic">
-                        A dense forest full of life, with gigantic trees and a peaceful atmosphere
-                    </div>
-                    <div class="text-sm">
-                        Recommended Level: 1 - 5
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div hidden class="pt-4">
-        <div class="font-normal text-sm py-1">
-            SERVER CONTINENT
-        </div>
-        <div class="rounded bg-surface p-3">
-            <div class="d-flex w-100">
-                <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                    <i class="fa-solid fa-lock"></i>
-                </div>
-                <div class="d-flex w-100 justify-center flex-col">
-                    <div class="font-normal">
-                        afonsobr
-                    </div>
-                    <div class="text-sm">
-                        Robust Tamer
-                    </div>
-                    <div class="text-sm">
-                        [Guild Name]
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
-    .map-background {
-        background-image: url('assets/img/maps/map_8.png');
-        background-position: center;
-        background-size: cover;
-        min-height: 200px;
-        display: flex;
-        align-content: flex-end;
-        align-items: flex-end;
-    }
-
-    .map-background span {
-        /* mix-blend-mode: difference; */
-        font-size: 32px;
-        color: black;
-        text-shadow: rgb(228, 228, 228) 2px 0px 0px, rgb(228, 228, 228) 1.75517px 0.958851px 0px, rgb(228, 228, 228) 1.0806px 1.68294px 0px, rgb(228, 228, 228) 0.141474px 1.99499px 0px, rgb(228, 228, 228) -0.832294px 1.81859px 0px, rgb(228, 228, 228) -1.60229px 1.19694px 0px, rgb(228, 228, 228) -1.97998px 0.28224px 0px, rgb(228, 228, 228) -1.87291px -0.701566px 0px, rgb(228, 228, 228) -1.30729px -1.5136px 0px, rgb(228, 228, 228) -0.421592px -1.95506px 0px, rgb(228, 228, 228) 0.567324px -1.91785px 0px, rgb(228, 228, 228) 1.41734px -1.41108px 0px, rgb(228, 228, 228) 1.92034px -0.558831px 0px;
-    }
-</style>

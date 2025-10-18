@@ -113,6 +113,20 @@ class Helper
         return 'fa-question';
     }
 
+    public static function getEnemyClass(int $class): string
+    {
+        $classes = [
+            1 => 'fa-b',
+            2 => 'fa-v',
+            3 => 'fa-e',
+            4 => 'fa-l',
+            5 => 'fa-h',
+        ];
+
+        // Retorna o valor correspondente ou o padrão 'fa-b' se não existir
+        return $classes[$class] ?? 'fa-b';
+    }
+
     public static function nFormat(int $n): string
     {
         return number_format($n, 0, ".", " ");

@@ -18,7 +18,7 @@ use TamersNetwork\Helper\Helper;
                     Lv. <?= $digimon->level ?>
                 </div>
                 <div class="d-flex w-100 items-center justify-center">
-                    <img src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
+                    <img class="digimon-image" src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
                 </div>
                 <div class="d-flex w-100 items-center justify-center digimon-name">
                     <?= $digimon->digimonData->name ?>

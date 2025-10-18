@@ -19,7 +19,28 @@ class TraitRepository
         $this->databaseNameSpecific = 'fix_trait_specific';
     }
 
-    public function getCommonTrait(int $id): ?TraitCommon
+    public function getDigimonTraits(array $data): array
+    {
+        $traitCommon = [];
+        foreach (['trait_common_1', 'trait_common_2', 'trait_common_3'] as $col) {
+            if (!empty($data[$col])) {
+                $traitCommon[] = $this->getCommonTrait($data[$col]);
+            }
+        }
+        $data['trait_common'] = $traitCommon;
+
+        $traitSpecific = [];
+        foreach (['trait_specific_1', 'trait_specific_2', 'trait_specific_3'] as $col) {
+            if (!empty($data[$col])) {
+                $traitSpecific[] = $this->getSpecificTrait($data[$col]);
+            }
+        }
+        $data['trait_specific'] = $traitSpecific;
+
+        return $data;
+    }
+
+    private function getCommonTrait(int $id): ?TraitCommon
     {
         $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseNameCommon . ' WHERE id = ?');
         $stmt->execute([$id]);
@@ -32,7 +53,7 @@ class TraitRepository
         return TraitCommon::fromDatabaseRow($data);
     }
 
-    public function getSpecificTrait(int $id): ?TraitSpecific
+    private function getSpecificTrait(int $id): ?TraitSpecific
     {
         $stmt = $this->pdo->prepare('SELECT * FROM ' . $this->databaseNameSpecific . ' WHERE id = ?');
         $stmt->execute([$id]);

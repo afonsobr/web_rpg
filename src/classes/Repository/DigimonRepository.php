@@ -47,9 +47,31 @@ class DigimonRepository
             return null;
         }
 
-        $data = $this->getDigimonTraits($data);
+        $data = $this->traitRepository->getDigimonTraits($data);
         return Digimon::fromDatabaseRow($data);
     }
+
+    public function getPartnerByAccountId(int $accountId): ?Digimon
+    {
+        $sql = 'SELECT * FROM ' . $this->databaseVarName . '
+        INNER JOIN ' . $this->databaseFixName . '
+        ON ' . $this->databaseVarName . '.digimon_id = ' . $this->databaseFixName . '.digimon_id
+        WHERE ' . $this->databaseVarName . '.account_id = ? 
+        AND ' . $this->databaseVarName . '.is_partner = 1
+        LIMIT 1';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$accountId]);
+        $data = $stmt->fetch();
+
+        if ($data === false) {
+            return null;
+        }
+
+        $data = $this->traitRepository->getDigimonTraits($data);
+        return Digimon::fromDatabaseRow($data);
+    }
+
 
     public function getDigimonsByAccountId(int $id): ?array
     {
@@ -64,34 +86,12 @@ class DigimonRepository
         $digimonList = [];
 
         foreach ($rows as $row) {
-            $digimon = $this->getDigimonTraits($row);
+            $digimon = $this->traitRepository->getDigimonTraits($row);
             $digimonList[] = Digimon::fromDatabaseRow($digimon);
         }
 
         return $digimonList;
     }
-
-    public function getDigimonTraits(array $data): array
-    {
-        $traitCommon = [];
-        foreach (['trait_common_1', 'trait_common_2', 'trait_common_3'] as $col) {
-            if (!empty($data[$col])) {
-                $traitCommon[] = $this->traitRepository->getCommonTrait($data[$col]);
-            }
-        }
-        $data['trait_common'] = $traitCommon;
-
-        $traitSpecific = [];
-        foreach (['trait_specific_1', 'trait_specific_2', 'trait_specific_3'] as $col) {
-            if (!empty($data[$col])) {
-                $traitSpecific[] = $this->traitRepository->getSpecificTrait($data[$col]);
-            }
-        }
-        $data['trait_specific'] = $traitSpecific;
-
-        return $data;
-    }
-
 
     public function saveInformation(Digimon $digimon): bool
     {

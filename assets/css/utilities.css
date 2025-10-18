@@ -16,16 +16,26 @@
 
     --color-text: #fff;
     --color-text-muted: #818181;
+
+    --color-link: #4bb9ea;
+    --color-blue: #4bb9ea;
+    --color-red: #ff7979;
+
 }
 
-/* 
-:root {
+
+/* :root {
     --color-transparent-background: rgba(255, 255, 255, 0.4);
 
     --color-background-canvas: #fff;
     --color-background-surface: #d0d0d0;
 
     --color-text: #000;
+    --color-text-muted: #818181;
+
+    --color-link: #006fa0;
+    --color-blue: #006fa0;
+    --color-red: #f33939;
 } */
 
 :root {
@@ -280,6 +290,9 @@
     flex-wrap: nowrap;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
 
 /* -------------------------------------------------------------------------- */
 /* 6. ESPAÇAMENTO (Margins e Paddings)
@@ -641,4 +654,13 @@
 
 .bg-surface-1 {
     background-color: var(--color-background-surface-1);
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.flip-x {
+    transform: scaleX(-1);
 }

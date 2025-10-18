@@ -1,13 +1,10 @@
 <?php
-// Este arquivo é o alvo do seu fetch. É um ponto de entrada completo.
-
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
-// use TamersNetwork\Repository\DigimonRepository;
+use TamersNetwork\Repository\DigimonRepository;
 
-// Toda a lógica de "Chef" que vimos antes fica aqui.
 try {
     if (!isset($_SESSION['account_uuid'])) {
         http_response_code(401); // Unauthorized
@@ -17,14 +14,10 @@ try {
 
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
-    // $digimonRepo = new DigimonRepository($pdo);
+    $digimonRepo = new DigimonRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
-    // $digimons = $digimonRepo->findAllByOwnerUuid($account->uuid);
-    // $partner = $digimons[0] ?? null;
-
-    // A "mágica" está aqui. Em vez de mostrar na tela, a saída do include
-    // será a resposta do seu fetch.
+    $partner = $digimonRepo->getPartnerByAccountId((int) $account->id);
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/home_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {

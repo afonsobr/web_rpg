@@ -10,7 +10,7 @@
                 </div>
                 <div class="d-flex w-50 items-center justify-center flex-col">
                     <div class="font-normal">
-                        <?= $account->username ?> [<?= $_SESSION['account_uuid'] ?>]
+                        <?= $account->username ?>
                     </div>
                     <div class="text-sm">
                         Robust Tamer
@@ -29,20 +29,81 @@
         <div class="rounded bg-surface p-3">
             <div class="d-flex w-100">
                 <div class="w-50 text-center p-1">
-                    <img src="assets/img/digis/agumon.gif" alt="">
+                    <img src="assets/img/digis/<?= $partner->digimonData->image ?>.gif" alt="">
                 </div>
                 <div class="d-flex w-50 items-center justify-center flex-col">
                     <div class="font-normal">
-                        Agumon
+                        <?= $partner->digimonData->name ?>
                     </div>
                     <div class="text-sm">
-                        Lv.100
+                        Lv. <?= $partner->level ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="pt-4">
+        <div class="font-normal text-sm py-1 pl-3">
+            ADVENTURE PASS
+        </div>
+        <div class="pb-4">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="d-flex justify-between p-3">
+                        <div>
+                            Level
+                        </div>
+                        <div>
+                            1
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div>
+                            Exp
+                        </div>
+                        <div>
+                            0/10
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3 cursor-pointer">
+                        <div>
+                            Check Rewards
+                        </div>
+                        <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div hidden class="rounded bg-surface">
+            <div class="d-flex w-100 flex-col">
+                <div class="d-flex justify-between overflow-auto p-3">
+                    <div>
+                        <table class="table text-center">
+                            <tr>
+                                <td class="p-3" style="">Prizes</td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3" style="">Level</td>
+                                <td class="p-3" style="">1</td>
+                                <td class="p-3" style="">2</td>
+                                <td class="p-3" style="">3</td>
+                                <td class="p-3" style="">4</td>
+                                <td class="p-3" style="">5</td>
+                                <td class="p-3" style="">6</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div hidden class="pt-4">
         <div class="font-normal text-sm py-1 pl-3">
             FAST INFORMATION
         </div>

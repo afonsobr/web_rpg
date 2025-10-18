@@ -280,6 +280,11 @@ body.modal-open {
 
 }
 
+#battle-window {
+    background-color: var(--color-background-canvas);
+
+}
+
 /* Classe que será adicionada via JavaScript para mostrar o modal */
 .modal-overlay.active {
     display: flex;
@@ -342,6 +347,7 @@ html {
 
 ::-webkit-scrollbar {
     width: 0;
+    height: 0;
     /* Remove scrollbar space */
     background: transparent;
     /* Optional: just make scrollbar invisible */
@@ -352,6 +358,10 @@ html {
     background: #FF0000;
 }
 
+.overflow-auto {
+    overflow: auto;
+}
+
 /* DIGIMON WINDOW  */
 
 .dw-btn-stage>div {
@@ -360,4 +370,145 @@ html {
 
 .dw-btn-stage>.active {
     font-weight: 500;
+}
+
+/* CONFIRM WINDOW - BATTLE START  */
+.confirm-modal {
+    /* 1. Começa escondido */
+    display: flex;
+    flex-direction: column;
+    /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
+    position: fixed;
+    inset: 0;
+    /* cobre 100% da tela */
+    width: 100vw;
+    height: 100vh;
+    /* fallback */
+    height: 100dvh;
+    /* suporte a navegadores modernos */
+    height: -webkit-fill-available;
+    /* suporte iOS Safari */
+
+    /* 3. Fundo semi-transparente */
+    background-color: var(--color-transparent-background);
+    backdrop-filter: blur(var(--blur-1));
+    -webkit-backdrop-filter: blur(var(--blur-1));
+    color: var(--color-text);
+
+    /* 4. O SEGREDO MÁGICO: Z-INDEX! */
+    /* Seu header/footer tem z-index: 10. Um número maior como 1000 garante que o modal fique por cima de TUDO. */
+    z-index: 1000;
+
+    /* 5. Usa flexbox para centralizar o conteúdo do modal na tela */
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.confirm-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.confirm-modal>#question-div {
+    background-color: var(--color-background-surface);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom: 1px solid var(--color-background-surface-1);
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    /* transform: scale(0.95); */
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+.confirm-modal>#yes-div {
+    background-color: var(--color-background-surface);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 400;
+    /* transform: scale(0.95);
+            transition: transform 0.3s ease-in-out; */
+}
+
+.confirm-modal>#no-div {
+    margin-top: 20px;
+    background-color: var(--color-background-surface);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    cursor: pointer;
+    color: var(--color-red);
+    font-weight: 400;
+}
+
+.digimon-image {
+    image-rendering: pixelated;
+}
+
+.table {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    border-collapse: separate;
+    /* permite o arredondamento */
+    border-spacing: 0;
+    /* remove espaço entre células */
+    overflow: hidden;
+    /* mantém o arredondamento */
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.table th,
+.table td {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 14px;
+    text-align: left;
+}
+
+.table th {
+    background: rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.table tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.table tr:hover td {
+    background: rgba(255, 255, 255, 0.12);
+    transition: background 0.3s ease;
+}
+
+.table.text-center td,
+.table.text-center th {
+    text-align: center;
 }

@@ -39,6 +39,7 @@ $availableSlots = array(
     'hands' => 'hand',
     'jacket' => 'vest',
     'upper_body' => 'shirt',
+    'lower_body' => 'pants',
     'boots' => 'boot',
     'ring' => 'ring-diamond',
     'bracelet' => 'ring',

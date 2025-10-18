@@ -17,10 +17,11 @@ $_SESSION['account_uuid'] = 1;
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <title>Title</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/map.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="utilities.css">
+    <link rel="stylesheet" href="assets/css/utilities.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -72,9 +73,42 @@ $_SESSION['account_uuid'] = 1;
         </nav>
     </footer>
 
-    <div id="modal-container" class="modal-overlay">
-        <div class="modal-content">
+    <div id="gamepass-window" class="modal-overlay">
+        <div id="gamepass-window-content" class="modal-content">
+        </div>
+    </div>
 
+    <div id="digimon-window" class="modal-overlay">
+        <div id="digimon-window-content" class="modal-content">
+        </div>
+    </div>
+
+    <div id="battle-window" class="modal-overlay">
+        <div id="battle-window-content" class="modal-content">
+        </div>
+    </div>
+
+    <div hidden id="confirm-modal" class="confirm-modal">
+        <div id="question-div">
+            TEXT_QUESTION
+        </div>
+        <div id="yes-div">
+            Yes
+        </div>
+        <div id="no-div">
+            No
+        </div>
+    </div>
+
+    <div hidden id="abandon-battle" class="abandon-battle">
+        <div id="question-div">
+            Abandon battle now?
+        </div>
+        <div id="yes-div" onclick="confirmBattleConfirmation()">
+            Yes
+        </div>
+        <div id="no-div" onclick="cancelBattleConfirmation()">
+            No
         </div>
     </div>
 
@@ -143,7 +177,9 @@ $_SESSION['account_uuid'] = 1;
             // --- CARREGAMENTO DE CONTEÚDO ---
             window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET') {
                 const targetElement = document.querySelector(targetSelector);
-                if (!targetElement) throw new Error(`Alvo não encontrado: ${targetSelector}`);
+                if (!targetElement)
+                    return;
+                // if (!targetElement) throw new Error(`Alvo não encontrado: ${targetSelector}`);
 
                 let url = `src/${fileName}.php`;
                 let fetchOptions = { method };
@@ -163,7 +199,7 @@ $_SESSION['account_uuid'] = 1;
             };
 
 
-            async function navigateTo(pageName) {
+            async function navigateTo_bak(pageName) {
                 const promisesToLoad = [];
                 switch (pageName) {
                     case 'home': case 'map': case 'chat':
@@ -188,6 +224,77 @@ $_SESSION['account_uuid'] = 1;
                 }
             }
 
+            async function navigateTo(pageName) {
+                const headerContainer = document.querySelector('.cabecalho-sobreposto');
+                const mainContainer = document.querySelector('.conteudo-principal');
+
+                if (!headerContainer || !mainContainer) {
+                    console.error("Contêineres principais não encontrados no DOM.");
+                    return;
+                }
+
+                // Limpa o conteúdo anterior
+                headerContainer.innerHTML = '';
+                mainContainer.innerHTML = '';
+
+                // Exibe skeletons (efeito de carregamento)
+                headerContainer.innerHTML = `<div class="skeleton skeleton-header"></div>`;
+                mainContainer.innerHTML = `<div class="skeleton skeleton-main"></div>`;
+
+                // Define qual cabeçalho deve ser carregado
+                const headers = {
+                    home: 'includes/header_hud',
+                    map: 'includes/header_hud',
+                    chat: 'includes/header_hud',
+                    storage: 'includes/header_storage',
+                    bag: 'includes/header_bag'
+                };
+
+                const headerPath = headers[pageName];
+
+                try {
+                    // Carrega o cabeçalho primeiro
+                    if (headerPath) {
+                        await fetchContent(headerPath, '.cabecalho-sobreposto');
+                    } else {
+                        headerContainer.innerHTML = '';
+                    }
+
+                    // Depois carrega o conteúdo principal
+                    await fetchContent(`pages/${pageName}`, '.conteudo-principal');
+
+                    // Remove os skeletons após o carregamento
+                    headerContainer.classList.remove('skeleton');
+                    mainContainer.classList.remove('skeleton');
+
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                } catch (error) {
+                    console.error(`Erro ao carregar página "${pageName}":`, error);
+                    mainContainer.innerHTML = `
+            <div class="erro-carregamento">
+                <p>Falha ao carregar o conteúdo.</p>
+                <button onclick="navigateTo('${pageName}')">Tentar novamente</button>
+            </div>`;
+                }
+            }
+
+
+            window.loadMap = async function (mapName) {
+                const promisesToLoad = [];
+                switch (mapName) {
+                    default:
+                        promisesToLoad.push(fetchContent('includes/header_hud', '.cabecalho-sobreposto'));
+                        break;
+                }
+                promisesToLoad.push(fetchContent('pages/map', '.conteudo-principal', { mapName: mapName }));
+                try {
+                    await Promise.all(promisesToLoad);
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                } catch (error) {
+                    console.error("Falha no carregamento:", error);
+                }
+            }
+
             // --- INICIALIZAÇÃO ---
             const homeButton = document.getElementById('btn-home');
             if (homeButton) {
@@ -196,9 +303,12 @@ $_SESSION['account_uuid'] = 1;
         });
 
     </script>
+    <script src="assets/js/battle-prepare.js"></script>
+    <script src="assets/js/battle.js"></script>
     <script src="assets/js/digimon.js"></script>
-    <script src="assets/js/modal.js"></script>
+    <!-- <script src="assets/js/modal.js"></script> -->
     <script src="assets/js/bag.js"></script>
+    <script src="assets/js/api.js"></script>
 
 </body>
 

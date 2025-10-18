@@ -60,9 +60,9 @@ class DigimonData
             traitSpecific1: (int) ($data['trait_specific_1'] ?? 0),
             traitSpecific2: (int) ($data['trait_specific_2'] ?? 0),
             traitSpecific3: (int) ($data['trait_specific_3'] ?? 0),
-            skillText1: $data['skill_text1'] ?? '',
-            skillText2: $data['skill_text2'] ?? '',
-            skillText3: $data['skill_text3'] ?? '',
+            skillText1: $data['skill1_text'] ?? '',
+            skillText2: $data['skill2_text'] ?? '',
+            skillText3: $data['skill3_text'] ?? '',
         );
     }
 

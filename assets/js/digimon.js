@@ -1,7 +1,7 @@
 // digimon.js
 document.addEventListener('DOMContentLoaded', function () {
     let digimonIdWindow = 0;
-    const digimonWindow = document.getElementById('modal-container');
+    const digimonWindow = document.getElementById('digimon-window');
 
     // Certifica que fetchContent existe no window
     const fetchFunc = window.fetchContent;
@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // Usa fetchContent global
-            await fetchFunc('pages/digimon_window', '.modal-content', { id: id });
+            await fetchFunc('pages/digimon_window', '#digimon-window-content', { id: id });
 
             // Reset modal scroll
-            const modalContent = digimonWindow.querySelector('.modal-content');
+            const modalContent = digimonWindow.querySelector('#digimon-window-content');
             if (modalContent) {
                 modalContent.scrollTop = 0; // reseta o scroll do conteúdo
             }
@@ -32,6 +32,36 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Erro ao abrir a janela do Digimon:", error);
         }
     };
+
+
+    window.closeModal = function () {
+        if (digimonWindow) {
+            digimonWindow.classList.remove('active');
+
+            // Ajuste do Scroll do Body
+            const scrollY = Math.abs(parseInt(document.body.style.top || '0'));
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, scrollY);
+        }
+    }
+
+    // Fecha ao clicar no overlay
+    if (digimonWindow) {
+        digimonWindow.addEventListener('click', function (event) {
+            if (event.target === digimonWindow) closeModal();
+
+            // Fecha se clicou no botão close, mesmo que ele seja carregado dinamicamente
+            if (event.target.closest('#modal-close-btn')) closeModal();
+        });
+    }
+
+    // Fecha com ESC
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && digimonWindow.classList.contains('active')) {
+            closeModal();
+        }
+    });
 });
 
 
@@ -57,4 +87,9 @@ function filterStorage() {
             }
         }
     });
+}
+
+function toggleAditionalInfo() {
+    const ai = document.getElementById('aditional-info');
+    ai.classList.toggle('show');
 }
