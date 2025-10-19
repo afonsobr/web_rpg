@@ -132,4 +132,24 @@ class Helper
         return number_format($n, 0, ".", " ");
     }
 
+    public static function getEquipmentSlotInfo(): array
+    {
+        return [
+            'hat' => ['display' => 'Hat', 'icon' => 'head-side'],
+            'headset' => ['display' => 'Headset', 'icon' => 'headphones'],
+            'glasses' => ['display' => 'Glasses', 'icon' => 'glasses'],
+            'hands' => ['display' => 'Hands', 'icon' => 'hand'],
+            'jacket' => ['display' => 'Jacket', 'icon' => 'vest'],
+            'upper_body' => ['display' => 'Upper Body', 'icon' => 'shirt'],
+            'lower_body' => ['display' => 'Lower Body', 'icon' => 'pants'],
+            'boots' => ['display' => 'Boots', 'icon' => 'boot'],
+            'ring' => ['display' => 'Ring', 'icon' => 'ring-diamond'],
+            'bracelet' => ['display' => 'Bracelet', 'icon' => 'ring'],
+            'gem' => ['display' => 'Gem', 'icon' => 'dice-d10'],
+            'backpack' => ['display' => 'Backpack', 'icon' => 'backpack'],
+            'digivice' => ['display' => 'Digivice', 'icon' => 'mobile'],
+            'chipset' => ['display' => 'Chipset', 'icon' => 'microchip'],
+            'aura' => ['display' => 'Aura', 'icon' => 'spiral'],
+        ];
+    }
 }

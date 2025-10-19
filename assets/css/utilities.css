@@ -134,6 +134,11 @@
 /* -------------------------------------------------------------------------- */
 /* 4. TIPOGRAFIA
 /* -------------------------------------------------------------------------- */
+
+.muted {
+    color: var(--color-body-text);
+}
+
 .text-left {
     text-align: left;
 }
@@ -659,6 +664,10 @@
 .disabled {
     opacity: 0.5;
     pointer-events: none;
+}
+
+.opacity-50 {
+    opacity: 0.5;
 }
 
 .flip-x {

@@ -73,6 +73,16 @@ $_SESSION['account_uuid'] = 1;
         </nav>
     </footer>
 
+    <div id="select-equipment-window" class="modal-overlay">
+        <div id="select-equipment-window-content" class="modal-content">
+        </div>
+    </div>
+
+    <div id="select-partner-window" class="modal-overlay">
+        <div id="select-partner-window-content" class="modal-content">
+        </div>
+    </div>
+
     <div id="gamepass-window" class="modal-overlay">
         <div id="gamepass-window-content" class="modal-content">
         </div>
@@ -175,7 +185,7 @@ $_SESSION['account_uuid'] = 1;
             resizeObserver.observe(navContainer);
 
             // --- CARREGAMENTO DE CONTEÚDO ---
-            window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET') {
+            window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET', resetScroll = true) {
                 const targetElement = document.querySelector(targetSelector);
                 if (!targetElement)
                     return;
@@ -271,10 +281,10 @@ $_SESSION['account_uuid'] = 1;
                 } catch (error) {
                     console.error(`Erro ao carregar página "${pageName}":`, error);
                     mainContainer.innerHTML = `
-            <div class="erro-carregamento">
-                <p>Falha ao carregar o conteúdo.</p>
-                <button onclick="navigateTo('${pageName}')">Tentar novamente</button>
-            </div>`;
+                    <div class="erro-carregamento">
+                        <p>Falha ao carregar o conteúdo.</p>
+                        <button onclick="navigateTo('${pageName}')">Tentar novamente</button>
+                    </div>`;
                 }
             }
 
@@ -303,9 +313,11 @@ $_SESSION['account_uuid'] = 1;
         });
 
     </script>
+    <script src="assets/js/window-base.js"></script>
     <script src="assets/js/battle-prepare.js"></script>
     <script src="assets/js/battle.js"></script>
     <script src="assets/js/digimon.js"></script>
+    <script src="assets/js/partner.js"></script>
     <!-- <script src="assets/js/modal.js"></script> -->
     <script src="assets/js/bag.js"></script>
     <script src="assets/js/api.js"></script>

@@ -16,6 +16,14 @@ try {
         exit();
     }
 
+    $equipmentType = $_GET['equipmentType'] ?? null;
+    if (!$equipmentType) {
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'EquipmentType inválido.']);
+        exit();
+    }
+
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $inventoryRepo = new InventoryRepository($pdo);
@@ -28,7 +36,7 @@ try {
 
     $inventoryList = $inventory->getItems();
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/bag/bag_template.php'; // Use o nome do seu arquivo de template
+    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/bag/select_equipment_window_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
     // http_response_code(500); // Internal Server Error

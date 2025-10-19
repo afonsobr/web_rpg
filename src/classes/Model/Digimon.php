@@ -16,7 +16,7 @@ class Digimon
     public function __construct(
         public readonly int $id,
         public int $digimonId,
-        public int $accountId,
+        public readonly int $accountId,
         public string $nickname,
         public DigimonData $digimonData,
         public bool $isPartner = false,

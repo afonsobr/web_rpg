@@ -73,4 +73,6 @@ class AccountRepository
             password_hash('senha_insegura_a_ser_substituida', PASSWORD_DEFAULT)
         ]);
     }
+
+
 }
