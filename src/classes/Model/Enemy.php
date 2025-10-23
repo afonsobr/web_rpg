@@ -7,6 +7,7 @@ class Enemy
     public int $attack;
     public int $defense;
     public int $battleRating;
+    public int $speed;
     public int $statStr = 0;
     public int $statAgi = 0;
     public int $statCon = 0;
@@ -79,6 +80,7 @@ class Enemy
         $this->attack = $this->statStr * 2 + $this->statAgi * 1;
         $this->defense = $this->statCon * 2 + $this->statInt * 1;
         $this->battleRating = $this->statAgi * 3 + $this->statInt * 1;
+        $this->speed = $this->statAgi * 4;
 
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
@@ -87,8 +89,12 @@ class Enemy
         $this->attack = floor($this->size / 100 * $this->attack);
         $this->defense = floor($this->size / 100 * $this->defense);
         $this->battleRating = floor($this->size / 100 * $this->battleRating);
+        $this->speed = floor($this->size / 100 * $this->speed);
         $this->maxHp = floor($this->size / 100 * $this->maxHp);
         $this->maxDs = floor($this->size / 100 * $this->maxDs);
+
+        // Inicia HP e DS
+        $this->currentHp = $this->maxHp;
     }
 
 

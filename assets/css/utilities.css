@@ -8,11 +8,16 @@
 /* 1. VARIÁVEIS GLOBAIS (CUSTOMIZE AQUI!)
 /* -------------------------------------------------------------------------- */
 :root {
-    --color-transparent-background: rgba(0, 0, 0, 0.4);
+    --color-transparent-background: #1d1c2270;
+    --color-transparent-background-overlay: #1d1c22a6;
 
-    --color-background-canvas: #000;
+    /* --color-background-canvas: #000;
     --color-background-surface: #161618;
-    --color-background-surface-1: #212124;
+    --color-background-surface-1: #212124; */
+
+    --color-background-canvas: #1d1c22;
+    --color-background-surface: #313139;
+    --color-background-surface-1: #313139;
 
     --color-text: #fff;
     --color-text-muted: #818181;
@@ -43,7 +48,8 @@
     --color-primary: #0d6efd;
     --color-secondary: #6c757d;
     --color-success: #198754;
-    --color-danger: #dc3545;
+    --color-danger: #ff5c6c;
+    --color-danger2: #dc3545;
     --color-warning: #ffc107;
     --color-light: #f8f9fa;
     --color-dark: #212529;
@@ -96,7 +102,18 @@
 *::before,
 *::after {
     box-sizing: border-box;
+    /* -webkit-user-select: none;
+    user-select: none; */
 }
+
+
+/* Prevenir Select */
+/* *,
+*::before,
+*::after {
+    -webkit-user-select: none;
+    user-select: none;
+} */
 
 
 /* -------------------------------------------------------------------------- */

@@ -3,6 +3,7 @@
 namespace TamersNetwork\Repository;
 
 use PDO;
+use PDOException;
 use TamersNetwork\Model\DigimonData;
 use TamersNetwork\Model\Digimon;
 use TamersNetwork\Model\TraitCommon;
@@ -31,6 +32,7 @@ class DigimonRepository
             return null;
         }
 
+        $data = $this->traitRepository->getDigimonTraits($data);
         return DigimonData::fromDatabaseRow($data);
     }
 
@@ -79,7 +81,7 @@ class DigimonRepository
         INNER JOIN ' . $this->databaseFixName . '
         ON ' . $this->databaseVarName . '.digimon_id = ' . $this->databaseFixName . '.digimon_id
         WHERE account_id = ?
-        ORDER BY ' . $this->databaseVarName . '.digimon_id ASC');
+        ORDER BY ' . $this->databaseFixName . '.stage_number DESC, ' . $this->databaseFixName . '.digimon_id DESC');
         $stmt->execute([$id]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -93,6 +95,45 @@ class DigimonRepository
         return $digimonList;
     }
 
+    /**
+     * Define um novo Digimon como parceiro, garantindo que o antigo seja desmarcado.
+     * Utiliza uma transação para garantir a integridade dos dados.
+     *
+     * @param int $accountId O ID da conta do jogador.
+     * @param int $newPartnerId O ID do Digimon (da tabela var_digimons) que será o novo parceiro.
+     * @return bool Retorna true em caso de sucesso, false em caso de falha.
+     */
+    public function setNewPartner(int $accountId, int $newPartnerId): bool
+    {
+        // Inicia uma transação
+        $this->pdo->beginTransaction();
+
+        try {
+            // Passo 1: Desmarca TODOS os Digimons da conta como parceiros.
+            // Isso garante que não haja parceiros múltiplos se algo deu errado no passado.
+            $stmtUnset = $this->pdo->prepare(
+                "UPDATE {$this->databaseVarName} SET is_partner = 0 WHERE account_id = ?"
+            );
+            $stmtUnset->execute([$accountId]);
+
+            // Passo 2: Define o novo Digimon como parceiro.
+            // A cláusula WHERE garante que um jogador não possa definir o Digimon de outro jogador como parceiro.
+            $stmtSet = $this->pdo->prepare(
+                "UPDATE {$this->databaseVarName} SET is_partner = 1 WHERE id = ? AND account_id = ?"
+            );
+            $stmtSet->execute([$newPartnerId, $accountId]);
+
+            // Se ambas as queries funcionaram, confirma a transação
+            $this->pdo->commit();
+            return true;
+        } catch (PDOException $e) {
+            // Se algo deu errado, desfaz todas as alterações
+            $this->pdo->rollBack();
+            error_log("Erro ao trocar de parceiro: " . $e->getMessage()); // Loga o erro
+            return false;
+        }
+    }
+
     public function saveInformation(Digimon $digimon): bool
     {
         $stmt = $this->pdo->prepare(
@@ -102,7 +143,7 @@ class DigimonRepository
                     current_hp = :currentHp,
                     max_hp = :maxHp,
                     current_ds = :currentDs,
-                    max_ds = :maxDs,
+                    max_ds = :maxDs
                     -- adicione outras colunas que você queira atualizar --
                 WHERE id = :id"
         );
@@ -116,6 +157,58 @@ class DigimonRepository
             ':maxDs' => $digimon->maxDs,
             ':id' => $digimon->id
         ]);
+    }
+
+    public function saveTrainingInformation(Digimon $digimon): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare("
+            UPDATE {$this->databaseVarName}
+            SET 
+                gym_str = :gym_str,
+                gym_agi = :gym_agi,
+                gym_con = :gym_con,
+                gym_int = :gym_int
+            WHERE id = :id
+            LIMIT 1
+        ");
+
+            return $stmt->execute([
+                ':gym_str' => $digimon->gymStr,
+                ':gym_agi' => $digimon->gymAgi,
+                ':gym_con' => $digimon->gymCon,
+                ':gym_int' => $digimon->gymInt,
+                ':id' => $digimon->id
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erro ao salvar treino do Digimon #{$digimon->id}: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function saveEvolution(Digimon $digimon, int $toId): bool
+    {
+        try {
+            $stmt = $this->pdo->prepare("
+            UPDATE {$this->databaseVarName}
+            SET 
+                digimon_id = :digimon_id,
+                level = :level,
+                exp = :exp
+            WHERE id = :id
+            LIMIT 1
+        ");
+
+            return $stmt->execute([
+                ':digimon_id' => $toId,
+                ':level' => $digimon->level,
+                ':exp' => $digimon->exp,
+                ':id' => $digimon->id
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erro ao salvar evolução do Digimon #{$digimon->id}: " . $e->getMessage());
+            return false;
+        }
     }
 
     /**

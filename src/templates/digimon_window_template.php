@@ -78,19 +78,13 @@ function showTraits(DigimonData $digimonData)
         </div>
     </div>
 
-    <div class="pb-3" hidden>
+    <div class="pb-3">
         <div class="w-100 d-flex items-center text-center dw-btn-stage" style="gap: 10px">
             <div class="text-sm rounded bg-surface-1 w-100 py-4 px-1 active" onclick="">
-                ROOKIE
+                SIMPLIFIED
             </div>
             <div class="text-sm rounded bg-surface w-100 py-4 px-1 active" onclick="">
-                CHAMPION
-            </div>
-            <div class="text-sm rounded bg-surface w-100 py-4 px-1" onclick="">
-                ULTIMATE
-            </div>
-            <div class="text-sm rounded bg-surface w-100 py-4 px-1" onclick="">
-                MEGA
+                DETAILED
             </div>
         </div>
     </div>
@@ -169,28 +163,30 @@ function showTraits(DigimonData $digimonData)
             <div class="font-normal text-sm py-1 pl-3">
                 BASIC CHARACTERISTICS
             </div>
+
+
             <div class="rounded bg-surface">
-                <div class="d-flex w-100 flex-col text-center">
-                    <div class="d-flex justify-between p-3">
-                        <div class="w-50">
-                            <?= $digimon->statStr ?><br>
-                            STR
-                        </div>
-                        <div class="w-50">
-                            <?= $digimon->statAgi ?><br>
-                            AGI
-                        </div>
+                <!-- O container principal agora usa a classe 'stats-grid' -->
+                <div class="stats-grid">
+
+                    <!-- Cada item da grade tem uma classe simples para estilização -->
+                    <div class="stats-grid-item">
+                        <?= $digimon->statStr ?><br>
+                        STR
                     </div>
-                    <div class="d-flex justify-between p-3">
-                        <div class="w-50">
-                            <?= $digimon->statCon ?><br>
-                            CON
-                        </div>
-                        <div class="w-50">
-                            <?= $digimon->statInt ?><br>
-                            INT
-                        </div>
+                    <div class="stats-grid-item">
+                        <?= $digimon->statAgi ?><br>
+                        AGI
                     </div>
+                    <div class="stats-grid-item">
+                        <?= $digimon->statCon ?><br>
+                        CON
+                    </div>
+                    <div class="stats-grid-item">
+                        <?= $digimon->statInt ?><br>
+                        INT
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -372,5 +368,35 @@ function showTraits(DigimonData $digimonData)
         max-height: 500px;
         /* valor maior que a altura máxima do conteúdo */
         opacity: 1;
+    }
+
+    /* * Define o container como uma grade. 
+     * Por padrão (mobile-first), o layout é 2x2.
+     */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 colunas de largura igual */
+        padding: var(--space-2);
+        gap: var(--space-2);
+        /* Espaço entre os itens */
+    }
+
+    /* * Em telas com largura mínima de 500px, 
+     * o layout muda para uma grade de 4 colunas (1x4).
+     * O valor 500px foi escolhido para acomodar 4 itens com uma largura mínima razoável.
+     */
+    @media (min-width: 500px) {
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 colunas de largura igual */
+        }
+    }
+
+    /* Centraliza o texto dentro de cada item da grade */
+    .stats-grid-item {
+        text-align: center;
+        padding: var(--space-2);
+        /* Um pouco menos de padding para caber melhor */
     }
 </style>

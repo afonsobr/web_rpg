@@ -105,19 +105,48 @@ document.addEventListener('DOMContentLoaded', function () {
     window.partnerAttack = async function (skillNumber) {
         lockCommands();
 
+        battleSequence = await requestBattleTurns(skillNumber);
+        console.log(battleSequence);
+
+        await animateLog(battleSequence.data.log[0]);
+        if (battleSequence.data.log[1]) {
+            await new Promise(res => setTimeout(res, 300));
+            await animateLog(battleSequence.data.log[1]);
+        }
+        if (!battleSequence.data.battleOver) {
+            enableCommands();
+        }
+        else {
+            document.getElementById('btn-abandon-battle').hidden = true;
+            document.getElementById('btn-close-battle').hidden = false;
+        }
         // Ataque do parceiro
-        await digimonAttackAsync('partner', rand(10, 50));
-        adjustHP((parseInt(document.getElementById('enemy-hp').style.width) - 3), 'enemy')
+        // await digimonAttackAsync('partner', rand(10, 50));
+        // adjustHP((parseInt(document.getElementById('enemy-hp').style.width) - 3), 'enemy')
 
-        // Pequeno delay antes do inimigo atacar (para parecer natural)
-        await new Promise(res => setTimeout(res, 300));
+        // // Pequeno delay antes do inimigo atacar (para parecer natural)
+        // await new Promise(res => setTimeout(res, 300));
 
-        // Ataque do inimigo
-        await digimonAttackAsync('enemy', rand(10, 50));
-        adjustHP((parseInt(document.getElementById('partner-hp').style.width) - 3), 'partner')
-        enableCommands();
+        // // Ataque do inimigo
+        // await digimonAttackAsync('enemy', rand(10, 50));
+        // adjustHP((parseInt(document.getElementById('partner-hp').style.width) - 3), 'partner')
     };
 
+    async function requestBattleTurns(partnerSkillNumber = 0) {
+        const result = await apiRequest('api/api_battle', { action: 'battleTurns', partnerSkillNumber: partnerSkillNumber });
+        return result;
+    }
+
+    async function animateLog(log) {
+        if (log.attackerName == 0) {
+            await digimonAttackAsync('partner', log.damage);
+            adjustHP(log.newHpPercent, 'enemy')
+        }
+        else {
+            await digimonAttackAsync('enemy', log.damage);
+            adjustHP(log.newHpPercent, 'partner')
+        }
+    }
 
     function adjustHP(newValue, target) {
         const hpBar = document.getElementById(target + '-hp');

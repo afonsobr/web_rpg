@@ -9,6 +9,8 @@ $battleCommands = [
     ['icon' => '3', 'name' => ucwords(strtolower($digimon->digimonData->skillText3)), 'cost' => '16 DS', 'disabled' => true],
 ];
 $enemyArray = $_SESSION['enemyArray'];
+$_SESSION['inBattle'] = true;
+// var_dump($enemyArray);
 ?>
 <div class="w-100">
     <div class="w-100 d-flex items-center pb-3">
@@ -16,10 +18,10 @@ $enemyArray = $_SESSION['enemyArray'];
             <!-- <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button> -->
         </div>
         <div class="flex-grow text-center">
-            Batalha
+            Battle
         </div>
         <div style="width: 50px; text-align: right;">
-            <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
+            <!-- <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button> -->
         </div>
     </div>
 
@@ -39,7 +41,7 @@ $enemyArray = $_SESSION['enemyArray'];
                 <div class="d-flex w-100">
                     <div class="w-50 text-center p-1">
                         <div id="partner-hp-back">
-                            <div id="partner-hp" style="width: 100%">
+                            <div id="partner-hp" style="width: <?= $digimon->getHpPercent() ?>%">
                             </div>
                         </div>
                     </div>
@@ -52,7 +54,7 @@ $enemyArray = $_SESSION['enemyArray'];
                 </div>
                 <div class="d-flex w-100 text-xs pb-1">
                     <div class="w-50 text-center p-1">
-                        <span id="partner-hp-text">100</span>%
+                        <span id="partner-hp-text"><?= $digimon->getHpPercent() ?></span>%
                     </div>
                     <div class="w-50 text-center p-1">
                         <span id="enemy-hp-text">100</span>%
@@ -121,23 +123,40 @@ $enemyArray = $_SESSION['enemyArray'];
             </div>
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 flex-col">
-                    <div class="d-flex justify-between p-3 cursor-pointer" onclick="showAbandonBattleConfirmation()">
-                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                            <i class="fa-solid fa-person-running-fast"></i>
-                        </div>
-                        <div class="d-flex w-100 items-center justify-between">
-                            <div class="item-name">
-                                Run Away from Battle
+                    <div id="btn-abandon-battle">
+                        <div class="d-flex justify-between p-3 cursor-pointer" onclick="showAbandonBattleConfirmation()">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-person-running-fast"></i>
                             </div>
-                            <div class="item-name text-sm">
-                                <i class="fa-solid fa-chevron-right"></i>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Run Away from Battle
+                                </div>
+                                <div class="item-name text-sm">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="btn-close-battle" hidden>
+                        <div class="d-flex justify-between p-3 cursor-pointer" onclick="abandonBattleWithoutConfirmation()">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Close Battle
+                                </div>
+                                <div class="item-name text-sm">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pb-3">
+        <div class="pb-3" hidden>
             <div class="font-normal text-sm py-1 pl-3">
                 ENEMY INFO
             </div>
@@ -263,7 +282,7 @@ $enemyArray = $_SESSION['enemyArray'];
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-top: 20px;
+        /* margin-top: 20px; */
     }
 
     .digimon-side {

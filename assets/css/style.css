@@ -42,7 +42,8 @@ body {
     max-width: 500px;
     z-index: 10;
     border-radius: 999px;
-    background-color: rgba(255, 255, 255, 0.1);
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    background-color: #86868630;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
@@ -120,7 +121,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 12px 0;
-    color: #767676;
+    color: #818085;
     text-decoration: none;
     position: relative;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -257,7 +258,8 @@ body.modal-open {
     /* suporte iOS Safari */
 
     /* 3. Fundo semi-transparente */
-    background-color: var(--color-transparent-background);
+    /* background-color: var(--color-transparent-background); */
+    background-color: var(--color-transparent-background-overlay);
     backdrop-filter: blur(var(--blur-1));
     -webkit-backdrop-filter: blur(var(--blur-1));
     color: var(--color-text);
@@ -464,6 +466,149 @@ html {
     color: var(--color-red);
     font-weight: 400;
 }
+
+/* ALERT MODAL */
+
+.alert-modal {
+    /* 1. Começa escondido */
+    display: flex;
+    flex-direction: column;
+    /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
+    position: fixed;
+    inset: 0;
+    /* cobre 100% da tela */
+    width: 100vw;
+    height: 100vh;
+    /* fallback */
+    height: 100dvh;
+    /* suporte a navegadores modernos */
+    height: -webkit-fill-available;
+    /* suporte iOS Safari */
+
+    /* 3. Fundo semi-transparente */
+    background-color: var(--color-transparent-background);
+    backdrop-filter: blur(var(--blur-1));
+    -webkit-backdrop-filter: blur(var(--blur-1));
+    color: var(--color-text);
+
+    /* 4. O SEGREDO MÁGICO: Z-INDEX! */
+    /* Seu header/footer tem z-index: 10. Um número maior como 1000 garante que o modal fique por cima de TUDO. */
+    z-index: 1000;
+
+    /* 5. Usa flexbox para centralizar o conteúdo do modal na tela */
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.alert-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.alert-modal>#text-div {
+    background-color: var(--color-background-surface);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom: 1px solid var(--color-background-surface-1);
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    /* transform: scale(0.95); */
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+.alert-modal>#dismiss-div {
+    background-color: var(--color-background-surface);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    cursor: pointer;
+    color: var(--color-link);
+    font-weight: 400;
+    /* transform: scale(0.95);
+            transition: transform 0.3s ease-in-out; */
+}
+
+
+/* LOADING MODAL */
+
+.loading-modal {
+    /* 1. Começa escondido */
+    display: flex;
+    flex-direction: column;
+    /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
+    position: fixed;
+    inset: 0;
+    /* cobre 100% da tela */
+    width: 100vw;
+    height: 100vh;
+    /* fallback */
+    height: 100dvh;
+    /* suporte a navegadores modernos */
+    height: -webkit-fill-available;
+    /* suporte iOS Safari */
+
+    /* 3. Fundo semi-transparente */
+    background-color: var(--color-transparent-background);
+    backdrop-filter: blur(var(--blur-1));
+    -webkit-backdrop-filter: blur(var(--blur-1));
+    color: var(--color-text);
+
+    /* 4. O SEGREDO MÁGICO: Z-INDEX! */
+    /* Seu header/footer tem z-index: 10. Um número maior como 1000 garante que o modal fique por cima de TUDO. */
+    z-index: 1000;
+
+    /* 5. Usa flexbox para centralizar o conteúdo do modal na tela */
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.loading-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-modal>#text-div {
+    /* background-color: var(--color-background-surface); */
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    /* border-bottom: 1px solid var(--color-background-surface-1); */
+    max-width: 600px;
+    width: calc(100%);
+    max-height: 100%;
+    overflow-y: auto;
+    position: relative;
+    /* transform: scale(0.95); */
+    /* transition: transform 0.3s ease-in-out; */
+}
+
+/* FIM */
 
 .digimon-image {
     image-rendering: pixelated;

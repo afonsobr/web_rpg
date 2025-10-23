@@ -34,3 +34,44 @@ function showConfirmationModal(message, onConfirm, onCancel) {
         if (typeof onCancel === 'function') onCancel();
     });
 };
+
+// Exibe o modal de confirmação e configura callbacks
+function showAlertModal(message, onConfirm) {
+    const modal = document.getElementById('alert-modal');
+    const questionDiv = modal.querySelector('#text-div');
+    const yesBtn = modal.querySelector('#dismiss-div');
+
+    // Define mensagem e exibe modal
+    questionDiv.innerHTML = message;
+    // modal.hidden = false;
+    modal.querySelector('#dismiss-div').classList.remove('disabled');
+    modal.classList.add('active');
+
+    // Remove eventos antigos para evitar duplicação
+    yesBtn.replaceWith(yesBtn.cloneNode(true));
+
+    // Pega os novos botões após o clone
+    const newYesBtn = modal.querySelector('#dismiss-div');
+
+    // Atribui novos eventos
+    newYesBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modal.querySelector('#dismiss-div').classList.add('disabled');
+        if (typeof onConfirm === 'function') onConfirm();
+    });
+};
+
+
+// Exibe o modal de confirmação e configura callbacks
+function showLoadingModal(message) {
+    const modal = document.getElementById('loading-modal');
+    const questionDiv = modal.querySelector('#text-div');
+    questionDiv.innerHTML = message;
+
+    modal.classList.add('active');
+};
+
+function hideLoadingModal() {
+    const modal = document.getElementById('loading-modal');
+    modal.classList.remove('active');
+};

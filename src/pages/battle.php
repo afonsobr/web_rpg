@@ -1,5 +1,4 @@
 <?php
-// Este arquivo é o alvo do seu fetch. É um ponto de entrada completo.
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
@@ -7,7 +6,6 @@ use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
 
-// Toda a lógica de "Chef" que vimos antes fica aqui.
 try {
     if (!isset($_SESSION['account_uuid'])) {
         http_response_code(401); // Unauthorized
@@ -22,6 +20,11 @@ try {
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $digimon = $digimonRepo->getPartnerByAccountId((int) $account->id);
 
+    // $digimon->currentHp = $digimon->maxHp;
+    if ($digimon->currentHp <= 0) {
+        $digimon->currentHp = 1;
+    }
+    $digimon->save($digimonRepo);
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/battle_window_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {

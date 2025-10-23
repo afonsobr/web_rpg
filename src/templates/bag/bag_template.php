@@ -23,7 +23,7 @@ if (isset($_GET['tab'])) {
         <?php foreach ($inventoryList as $playerItem): ?>
             <?php if ($playerItem->quantity == 0)
                 continue; ?>
-            <div class="p-3 cursor-pointer inventory-item">
+            <div class="p-3 cursor-pointer inventory-item" onclick="openItemWindow(<?= $playerItem->id ?>)">
                 <div class="d-flex w-100">
                     <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                         <i class="fa-solid <?= $playerItem->item->icon ?>"></i>

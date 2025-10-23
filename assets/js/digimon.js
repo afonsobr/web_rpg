@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
 
-    window.closeModal = function () {
+    window.closeDigimonWindow = function () {
         if (digimonWindow) {
             digimonWindow.classList.remove('active');
 
@@ -49,17 +49,17 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fecha ao clicar no overlay
     if (digimonWindow) {
         digimonWindow.addEventListener('click', function (event) {
-            if (event.target === digimonWindow) closeModal();
+            if (event.target === digimonWindow) closeDigimonWindow();
 
             // Fecha se clicou no botão close, mesmo que ele seja carregado dinamicamente
-            if (event.target.closest('#modal-close-btn')) closeModal();
+            if (event.target.closest('#modal-close-btn')) closeDigimonWindow();
         });
     }
 
     // Fecha com ESC
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape' && digimonWindow.classList.contains('active')) {
-            closeModal();
+            closeDigimonWindow();
         }
     });
 });
@@ -92,4 +92,28 @@ function filterStorage() {
 function toggleAditionalInfo() {
     const ai = document.getElementById('aditional-info');
     ai.classList.toggle('show');
+}
+
+
+function confirmEvolution(lineId) {
+    showConfirmationModal('Confirm Evolution to selected Digimon?',
+        () => {
+            evolvePartner(lineId)
+        },
+        () => {
+        });
+}
+
+async function evolvePartner(lineId) {
+    try {
+        showLoadingModal('Loading...');
+        // Usa fetchContent global
+        const result = await apiRequest('api/api_digimon', { action: 'evolveDigimon', lineId: lineId });
+        await fetchContent(`pages/map`, '.conteudo-principal');
+        // navigateTo('map');
+        hideLoadingModal();
+        showAlertModal(result.message, () => { })
+    } catch (error) {
+        console.error("Erro ao abrir a janela do Item:", error);
+    }
 }

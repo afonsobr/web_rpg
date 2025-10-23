@@ -20,11 +20,36 @@
    }
 
    .bg-vb {
-       background-image: url('/assets/img/maps/map_8.png');
+       background-image: url('/assets/img/maps/vb.png');
        background-position: center;
    }
 
    .bg-tropical-jg {
-       background-image: url('/assets/img/maps/map_7.png');
+       background-image: url('/assets/img/maps/tropical_jg.png');
+       background-position: center;
+   }
+
+   .bg-jijimon-house {
+       background-image: url('/assets/img/maps/jijimons_house.png');
+       background-position: center;
+   }
+
+   .bg-leomon-gym {
+       background-image: url('/assets/img/maps/leomons_gym.png');
+       background-position: center;
+   }
+
+   .bg-dojo {
+       background-image: url('/assets/img/maps/dojo.png');
+       background-position: center;
+   }
+
+   .bg-guardromon-shack {
+       background-image: url('/assets/img/maps/guardromons_shack.png');
+       background-position: center;
+   }
+
+   .bg-greymon-shop {
+       background-image: url('/assets/img/maps/greymons_shop.png');
        background-position: center;
    }

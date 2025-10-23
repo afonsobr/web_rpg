@@ -101,6 +101,11 @@ class Digimon
             $this->$prop = $this->level * $build + $base;
         }
 
+        $this->statStr += $this->gymStr;
+        $this->statAgi += $this->gymAgi;
+        $this->statCon += $this->gymCon;
+        $this->statInt += $this->gymInt;
+
         $this->attack = $this->statStr * 2 + $this->statAgi * 1;
         $this->defense = $this->statCon * 2 + $this->statInt * 1;
         $this->battleRating = $this->statAgi * 3 + $this->statInt * 1;
@@ -109,7 +114,7 @@ class Digimon
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
 
-        $this->traitRate = floor($this->statInt / 20);
+        $this->traitRate = floor($this->statInt / 30);
         $this->criticalDamage = 2;
         $this->criticalRate = 5;
 
@@ -122,6 +127,11 @@ class Digimon
         $this->maxDs = floor($this->size / 100 * $this->maxDs);
 
         $this->maxExp = $this->getRequiredExp();
+
+        // Valores
+        if ($this->currentHp > $this->maxHp) {
+            $this->currentHp = $this->maxHp;
+        }
     }
 
     public function addExp(int $amount): void
@@ -242,6 +252,16 @@ class Digimon
             77 => 1925209472,
         ];
         return $expTable[$this->level] ?? 1925209472;
+    }
+
+    public function evolveDigimonTo($toId)
+    {
+        // $this->digimonData->digimonId = $toId;
+    }
+
+    public function getHpPercent()
+    {
+        return ceil($this->currentHp / $this->maxHp * 100);
     }
 }
 ?>

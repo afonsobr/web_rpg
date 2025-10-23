@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
-use TamersNetwork\Repository\EnemyRepository;
+use TamersNetwork\Repository\DigimonRepository;
 
 try {
     if (!isset($_SESSION['account_uuid'])) {
@@ -24,25 +24,26 @@ try {
 
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
+    $digimonRepo = new DigimonRepository($pdo);
     $account = $accountRepo->findById($_SESSION['account_uuid']);
 
-    switch ($action) {
-        case 'changeBattleStatus':
-            if (isset($_POST['battleStatus'])) {
-                $status = $_POST['battleStatus'];
+    if ($action == 'changeBattleStatus') {
+        if (isset($_POST['battleStatus'])) {
+            $status = $_POST['battleStatus'];
 
-                if ($status === 'true' || $status === true) {
-                    $_SESSION['battleStatus'] = true;
-                } elseif ($status === 'false' || $status === false) {
-                    $_SESSION['battleStatus'] = false;
-                } else {
-                    // Valor inválido, não altera a sessão
-                    error_log("Valor inválido recebido em battleStatus: " . print_r($status, true));
-                }
+            if ($status === 'true' || $status === true) {
+                $_SESSION['battleStatus'] = true;
+            } elseif ($status === 'false' || $status === false) {
+                $_SESSION['battleStatus'] = false;
+            } else {
+                // Valor inválido, não altera a sessão
+                error_log("Valor inválido recebido em battleStatus: " . print_r($status, true));
             }
-
-            echo json_encode(true);
-            break;
+        }
+        echo json_encode(['success' => true, 'message' => 'Status de batalha atualizado.']);
+    } else {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Ação de conta desconhecida.']);
     }
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error

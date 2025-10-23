@@ -88,7 +88,7 @@ $location['FILE ISLAND'] = [
 <div class="pb-4">
     <div class="map-bg bg-dw rounded p-3">
         <span>
-            Digital World
+            <!-- Digital World -->
         </span>
 
     </div>
@@ -97,7 +97,7 @@ $location['FILE ISLAND'] = [
     <?php
     foreach ($location as $mainPlaceName => $mainPlace) {
         echo '<div class="pb-4">';
-        echo '  <div class="font-normal text-sm py-1 pl-3">' . $mainPlaceName . '</div>';
+        echo '  <div class="font-normal py-1 pl-3">' . $mainPlaceName . '</div>';
         echo '  <div class="rounded bg-surface">';
         $last_key = array_key_last($mainPlace);
 

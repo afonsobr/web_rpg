@@ -4,13 +4,16 @@
 <div class="pb-4">
     <div class="map-bg bg-tropical-jg rounded p-3">
         <span>
-            Tropical Jungle
+            <!-- Tropical Jungle -->
         </span>
-
     </div>
 </div>
 
+
+
+
 <?php
+echo mapName('TROPICAL JUNGLE');
 echo findEnemiesBtn();
 echo enemiesTable();
 echo returnToDigitalWorldBtn();

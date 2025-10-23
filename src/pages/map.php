@@ -5,6 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
+use TamersNetwork\Repository\DigimonRepository;
 
 // Toda a lógica de "Chef" que vimos antes fica aqui.
 try {
@@ -21,6 +22,7 @@ try {
 
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
+    $digimonRepo = new DigimonRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
 
@@ -28,6 +30,11 @@ try {
     if (isset($_SESSION['map'])) {
         $map = $_SESSION['map'];
     }
+    $partner = $digimonRepo->getPartnerByAccountId((int) $account->id);
+
+    // Reset - descomente para resetar
+    // $_SESSION['map'] = 'hub';
+
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/maps/' . $map . '.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
@@ -46,6 +53,24 @@ function returnToDigitalWorldBtn()
                     <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> <i class="fa-solid fa-planet-ringed"></i></div>
                     <div class="d-flex w-100 justify-center flex-col">
                         <div class="font-normal">Return to Digital World</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ';
+}
+
+function returnToVBBtn()
+{
+    return '    
+    <div>
+        <div class="pb-4">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap(\'fi_village_of_beginnings\')">
+                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3"> <i class="fa-solid fa-house-tree"></i></div>
+                    <div class="d-flex w-100 justify-center flex-col">
+                        <div class="font-normal">Return to Village of Beginnings</div>
                     </div>
                 </div>
             </div>
@@ -110,5 +135,15 @@ function enemiesTable()
         </div>
     </div>
     ';
+}
+
+function mapName($name)
+{
+    return '
+    <div class="">
+        <div class="font-normal uppercase py-1 pl-3">
+            ' . $name . '
+        </div>
+    </div>';
 }
 ?>

@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.selectPartner = async function (partnerId) {
-        await apiRequest('api/api_equipment', { action: 'equipItem', inventoryId: inventoryId });
-        await fetchContent('pages/bag', '.conteudo-principal', { tab: 'equipment' });
+        await apiRequest('api/api_digimon', { action: 'setPartner', partnerId: partnerId });
+        await fetchContent('pages/home', '.conteudo-principal');
         closeselectPartnerWindow();
     }
 

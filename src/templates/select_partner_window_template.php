@@ -2,10 +2,13 @@
 use TamersNetwork\Helper\Helper;
 ?>
 
-<div class="w-100">
-    <div class="w-100 d-flex items-center pb-3">
+<!-- 1. O wrapper principal agora é um container flex em coluna que ocupa toda a altura -->
+<div class="w-100 d-flex flex-col h-100" id="storage-list">
+
+    <!-- 2. O header não encolhe -->
+    <div class="w-100 d-flex items-center pb-3" style="flex-shrink: 0;">
         <div style="width: 50px; text-align: left;">
-            <!-- <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-arrow-left"></i></button> -->
+            <!-- Botão de voltar pode ser adicionado aqui se necessário -->
         </div>
         <div class="flex-grow text-center">
             Partner Select
@@ -14,6 +17,8 @@ use TamersNetwork\Helper\Helper;
             <button id="modal-close-btn" class="modal-close-button"><i class="fa-solid fa-xmark"></i></button>
         </div>
     </div>
+
+    <!-- 3. O container da lista vai crescer e ter overflow -->
     <div id="storage-list-container" class="pb-4">
         <?php
         foreach ($digimonList as $digimon) {
@@ -42,20 +47,22 @@ use TamersNetwork\Helper\Helper;
 </div>
 
 <style>
-    .search-input input {
-        background-color: transparent;
-        width: 100%;
-        border: 0px;
-        outline: none;
-        color: var(--color-text);
-    }
-
+    /* O container da lista agora cresce para preencher o espaço e tem scroll interno */
     #storage-list-container {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
         gap: 15px;
-        overflow: auto;
-        height: 50vh;
+
+        flex-grow: 1;
+        /* <<-- Ponto Chave 1: Faz a lista ocupar o espaço restante */
+        overflow-y: auto;
+        /* <<-- Ponto Chave 2: Adiciona a barra de rolagem vertical */
+        min-height: 0;
+        /* <<-- Ponto Chave 3: Crucial para o overflow funcionar corretamente em flex children */
+
+        border-top: 1px solid var(--color-text-muted);
+        border-bottom: 1px solid var(--color-text-muted);
+        padding-top: 10px;
     }
 
     #storage-list-container>div {
@@ -72,13 +79,9 @@ use TamersNetwork\Helper\Helper;
     .digimon-name {
         display: block;
         max-width: 100%;
-        /* garante que respeite o card */
         white-space: nowrap;
-        /* impede quebrar em várias linhas */
         overflow: hidden;
-        /* corta o que passar */
         text-overflow: ellipsis;
-        /* adiciona "..." */
         text-align: center;
     }
 
@@ -93,4 +96,19 @@ use TamersNetwork\Helper\Helper;
         top: 4.75rem;
         right: 0.75rem;
     }
+
+    /* Estilo opcional para a barra de rolagem */
+    /* #storage-list-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #storage-list-container::-webkit-scrollbar-track {
+        background: var(--color-background-surface-1);
+        border-radius: 4px;
+    }
+
+    #storage-list-container::-webkit-scrollbar-thumb {
+        background-color: var(--color-text-muted);
+        border-radius: 4px;
+    } */
 </style>

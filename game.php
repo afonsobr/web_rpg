@@ -66,7 +66,7 @@ $_SESSION['account_uuid'] = 1;
                 <span class="material-icons">map</span>
                 <span class="menu-texto">Map</span>
             </a>
-            <a href="javascript:void(0)" id="btn-bag" data-page="chat" class="nav-link">
+            <a href="javascript:void(0)" id="btn-bag" data-page="chat" class="nav-link" style="display: none">
                 <span class="material-icons">chat</span>
                 <span class="menu-texto">Chat</span>
             </a>
@@ -88,6 +88,16 @@ $_SESSION['account_uuid'] = 1;
         </div>
     </div>
 
+    <div id="map-window" class="modal-overlay">
+        <div id="map-window-content" class="modal-content">
+        </div>
+    </div>
+
+    <div id="item-window" class="modal-overlay">
+        <div id="item-window-content" class="modal-content">
+        </div>
+    </div>
+
     <div id="digimon-window" class="modal-overlay">
         <div id="digimon-window-content" class="modal-content">
         </div>
@@ -95,6 +105,21 @@ $_SESSION['account_uuid'] = 1;
 
     <div id="battle-window" class="modal-overlay">
         <div id="battle-window-content" class="modal-content">
+        </div>
+    </div>
+
+    <div hidden id="alert-modal" class="alert-modal">
+        <div id="text-div">
+            TEXT_QUESTION
+        </div>
+        <div id="dismiss-div">
+            OK
+        </div>
+    </div>
+
+    <div hidden id="loading-modal" class="loading-modal">
+        <div id="text-div">
+            <img src="https://i.imgur.com/axas1jd.gif" style="height: 32px" alt="">
         </div>
     </div>
 
@@ -317,10 +342,12 @@ $_SESSION['account_uuid'] = 1;
     <script src="assets/js/battle-prepare.js"></script>
     <script src="assets/js/battle.js"></script>
     <script src="assets/js/digimon.js"></script>
+    <script src="assets/js/item.js"></script>
     <script src="assets/js/partner.js"></script>
     <!-- <script src="assets/js/modal.js"></script> -->
     <script src="assets/js/bag.js"></script>
     <script src="assets/js/api.js"></script>
+    <script src="assets/js/training.js"></script>
 
 </body>
 

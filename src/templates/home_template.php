@@ -28,9 +28,9 @@
         </div>
         <div class="pb-3">
             <div class="rounded bg-surface">
-                <div class="d-flex w-100 cursor-pointer" onclick="openDigimonWindow(1)">
+                <div class="d-flex w-100 cursor-pointer" onclick="openDigimonWindow(<?= $partner->id ?>)">
                     <div class="w-50 text-center p-1">
-                        <img src="assets/img/digis/<?= $partner->digimonData->image ?>.gif" alt="">
+                        <img class="digimon-image" src="assets/img/digis/<?= $partner->digimonData->image ?>.gif" alt="">
                     </div>
                     <div class="d-flex w-50 items-center justify-center flex-col">
                         <div class="font-normal">

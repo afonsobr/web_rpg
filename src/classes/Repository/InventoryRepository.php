@@ -74,4 +74,28 @@ class InventoryRepository
     }
 
 
+    /**
+     * Atualiza a quantidade e o status de bloqueio de um item no inventário.
+     *
+     * @param int $accountId O ID da conta para segurança.
+     * @param InventorySlot $inventorySlot O objeto do slot de inventário com os novos valores.
+     * @return bool Retorna true se a atualização foi bem-sucedida, false caso contrário.
+     */
+    public function saveInventorySlot(int $accountId, InventorySlot $inventorySlot): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE {$this->dbInventory}
+            SET quantity = ?, is_blocked = ?
+            WHERE account_id = ? AND id = ?"
+        );
+
+        // O método execute() já retorna true em caso de sucesso e false em caso de falha.
+        // A linha com fetch() foi removida por ser desnecessária para um UPDATE.
+        return $stmt->execute([
+            $inventorySlot->quantity,
+            (int) $inventorySlot->isBlocked, // Converte o booleano para 0 ou 1 para o banco de dados
+            $accountId,
+            $inventorySlot->id
+        ]);
+    }
 }

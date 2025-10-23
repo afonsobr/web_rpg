@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!enemiesTable) return;
                 await fetchFunc('api/api_search_enemies', '#enemies-table');
                 searchEnemieBtn.classList.remove('disabled');
-            }, 10); //1500
+            }, 1500); //1500
         } catch (error) {
             console.error("Erro ao abrir a janela do Digimon:", error);
         }
@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
             abandonBattle,
             () => {
             });
+    }
+
+    window.abandonBattleWithoutConfirmation = function () {
+        abandonBattle()
     }
 
     async function preloadWindowBattle() {
@@ -83,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function abandonBattle() {
         battleWindow.classList.remove('active');
         console.log('window.preloadWindowBattle');
-        await fetchFunc('pages/battle', '#battle-window-content');
+        // await fetchFunc('pages/battle', '#battle-window-content');
         const modalContent = battleWindow.querySelector('.modal-content');
         if (modalContent) {
             modalContent.scrollTop = 0; // reseta o scroll do conteúdo

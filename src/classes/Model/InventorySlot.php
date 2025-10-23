@@ -8,6 +8,7 @@ class InventorySlot
         public Item $item,
         public readonly int $accountId,
         public int $quantity,
+        public bool $isBlocked = false,
     ) {
     }
 
@@ -20,6 +21,7 @@ class InventorySlot
             item: $item,
             accountId: $data['account_id'],
             quantity: $data['quantity'],
+            isBlocked: (bool) ($data['is_blocked'] ?? false)
         );
     }
 }
