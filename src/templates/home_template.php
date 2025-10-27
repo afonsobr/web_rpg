@@ -52,11 +52,11 @@
             </div>
         </div>
     </div>
-    <div class="pt-4">
+    <div hidden class="pt-4">
         <div class="font-normal text-sm py-1 pl-3">
             ADVENTURE PASS
         </div>
-        <div class="pb-4">
+        <div class="pb-3">
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 flex-col">
                     <div class="d-flex justify-between p-3">
@@ -82,6 +82,66 @@
                         <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="rounded bg-surface">
+            <div class="d-flex justify-between p-3 cursor-pointer" onclick="openSelectPartnerWindow()">
+                <div>
+                    Check Rewards
+                </div>
+                <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+        </div>
+        <div hidden class="rounded bg-surface">
+            <div class="d-flex w-100 flex-col">
+                <div class="d-flex justify-between overflow-auto p-3">
+                    <div>
+                        <table class="table text-center">
+                            <tr>
+                                <td class="p-3" style="">Prizes</td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                                <td class="p-3" style=""><img src="assets/img/digis/groundramon.gif" alt=""></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3" style="">Level</td>
+                                <td class="p-3" style="">1</td>
+                                <td class="p-3" style="">2</td>
+                                <td class="p-3" style="">3</td>
+                                <td class="p-3" style="">4</td>
+                                <td class="p-3" style="">5</td>
+                                <td class="p-3" style="">6</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-4">
+        <div class="font-normal text-sm py-1 pl-3">
+            MAIL
+        </div>
+        <div class="pb-3">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="justify-between p-3 text-center">
+                        <div>
+                            No new messages
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rounded bg-surface">
+            <div class="d-flex justify-between p-3 cursor-pointer" onclick="openMail()">
+                <div>
+                    Check Mail
+                </div>
+                <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
             </div>
         </div>
         <div hidden class="rounded bg-surface">

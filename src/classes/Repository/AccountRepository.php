@@ -74,5 +74,27 @@ class AccountRepository
         ]);
     }
 
+    public function saveInformation(Account $account): bool
+    {
+        $sql = "UPDATE {$this->databaseName}
+            SET
+                level = :level,
+                exp = :exp,
+                coin = :coin,
+                cash = :cash
+            WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            ':level' => $account->level,
+            ':exp' => $account->exp,
+            ':coin' => $account->coin,
+            ':cash' => $account->cash,
+            ':id' => $account->id
+        ]);
+    }
+
+
 
 }

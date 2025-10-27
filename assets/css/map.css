@@ -24,10 +24,7 @@
        background-position: center;
    }
 
-   .bg-tropical-jg {
-       background-image: url('/assets/img/maps/tropical_jg.png');
-       background-position: center;
-   }
+
 
    .bg-jijimon-house {
        background-image: url('/assets/img/maps/jijimons_house.png');
@@ -51,5 +48,20 @@
 
    .bg-greymon-shop {
        background-image: url('/assets/img/maps/greymons_shop.png');
+       background-position: center;
+   }
+
+   .bg-tropical-jg {
+       background-image: url('/assets/img/maps/tropical_jg.png');
+       background-position: center;
+   }
+
+   .bg-railroad-plains {
+       background-image: url('/assets/img/maps/railroad_plains.png');
+       background-position: center;
+   }
+
+   .bg-logic-volcano {
+       background-image: url('/assets/img/maps/logic_volcano.png');
        background-position: center;
    }

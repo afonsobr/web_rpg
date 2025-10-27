@@ -17,13 +17,14 @@ class Enemy
     public int $currentHp = 0;
     public int $maxDs = 0;
     public int $currentDs = 0;
+    public int $hpPercent = 100;
+    public float $criticalRate;
+    public float $criticalDamage;
     public function __construct(
         public readonly int $id,
         public int $enemyClass,
         public int $digimonId,
         public int $level,
-        public int $exp,
-        public int $bit,
         public DigimonData $digimonData,
     ) {
         $this->calculateStats();
@@ -38,8 +39,6 @@ class Enemy
             digimonId: (int) $data['digimon_id'],
             enemyClass: (int) $data['enemy_class'],
             level: (int) $data['level'],
-            exp: (int) $data['exp'],
-            bit: (int) $data['bit'],
             digimonData: DigimonData::fromDatabaseRow($data),
         );
     }
@@ -47,17 +46,17 @@ class Enemy
     public function calculateStats(): void
     {
         $baseValuesFromStage = [
-            'rookie' => 10,
-            'champion' => 50,
-            'ultimate' => 150,
-            'mega' => 300,
+            'rookie' => 20,
+            'champion' => 80,
+            'ultimate' => 190,
+            'mega' => 350,
             'ultra' => 400,
         ];
 
         $baseFromStage = $baseValuesFromStage[$this->digimonData->stage] ?? 20;
 
         $baseValuesFromClass = [
-            1 => 0,
+            1 => -5,
             2 => 80,
             3 => 190,
             4 => 350,
@@ -85,6 +84,9 @@ class Enemy
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
 
+        $this->criticalDamage = 2;
+        $this->criticalRate = 5;
+
         // Size
         $this->attack = floor($this->size / 100 * $this->attack);
         $this->defense = floor($this->size / 100 * $this->defense);
@@ -95,8 +97,13 @@ class Enemy
 
         // Inicia HP e DS
         $this->currentHp = $this->maxHp;
+        $this->currentDs = $this->maxDs;
     }
 
-
+    public function getHpPercent()
+    {
+        $this->hpPercent = ceil($this->currentHp / $this->maxHp * 100);
+        return $this->hpPercent;
+    }
 }
 ?>

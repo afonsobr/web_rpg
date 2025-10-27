@@ -326,7 +326,7 @@ function showTraits(DigimonData $digimonData)
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-between p-3">
+                    <div hidden class="justify-between p-3">
                         <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                             <i class="fa-solid fa-percent"></i>
                         </div>

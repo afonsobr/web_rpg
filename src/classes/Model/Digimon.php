@@ -13,6 +13,7 @@ class Digimon
     public float $criticalRate;
     public float $criticalDamage;
     public int $maxExp;
+    public int $hpPercent;
     public function __construct(
         public readonly int $id,
         public int $digimonId,
@@ -114,7 +115,7 @@ class Digimon
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
 
-        $this->traitRate = floor($this->statInt / 30);
+        $this->traitRate = 1 + floor($this->statInt / 30);
         $this->criticalDamage = 2;
         $this->criticalRate = 5;
 
@@ -128,10 +129,9 @@ class Digimon
 
         $this->maxExp = $this->getRequiredExp();
 
-        // Valores
-        if ($this->currentHp > $this->maxHp) {
-            $this->currentHp = $this->maxHp;
-        }
+        // Padronização de Valores
+        $this->currentHp = min($this->currentHp, $this->maxHp);
+        $this->currentDs = min($this->currentDs, $this->maxDs);
     }
 
     public function addExp(int $amount): void
@@ -143,7 +143,8 @@ class Digimon
     public function checkLevelUp(): void
     {
         while ($this->exp >= $this->getRequiredExp()) {
-            $this->exp -= $this->getRequiredExp();
+            // $this->exp -= $this->getRequiredExp();
+            $this->exp = 0;
             $this->level++;
             $this->calculateStats(); // recalcula stats após subir de nível
         }
@@ -261,7 +262,8 @@ class Digimon
 
     public function getHpPercent()
     {
-        return ceil($this->currentHp / $this->maxHp * 100);
+        $this->hpPercent = ceil($this->currentHp / $this->maxHp * 100);
+        return $this->hpPercent;
     }
 }
 ?>

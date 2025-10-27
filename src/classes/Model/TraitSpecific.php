@@ -18,7 +18,7 @@ class TraitSpecific
     {
         return new self(
             id: (int) $data['id'],
-            name: $data['name'],
+            name: strtoupper($data['name']),
             description: $data['description'],
             icon: $data['icon'],
             type: $data['type'],

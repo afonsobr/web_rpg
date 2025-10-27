@@ -16,13 +16,14 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="pb-4">
         <div class="rounded bg-surface">
             <div class="d-flex w-100 p-3">
-                <div class="d-flex w-100 justify-center items-center">
-                    <div class="font-normal nowrap pr-3">Analyzing & Searching...</div>
+                <div class="d-flex w-100 justify-center items-center" style="min-height: 28px">
+                    <div class="font-normal nowrap pr-3" >Analyzing & Searching...</div>
                 </div>
             </div>
         </div>
     </div>
     `;
+
 
     window.searchForEnemies = async function () {
         const searchEnemieBtn = document.getElementById('search-enemies-btn');
@@ -33,13 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             searchEnemieBtn.classList.add('disabled');
+            enemiesTable.classList.add('disabled');
             enemiesTable.innerHTML = searchLoading;
             // Espera 3 segundos antes de buscar os inimigos
             setTimeout(async () => {
                 if (!enemiesTable) return;
                 await fetchFunc('api/api_search_enemies', '#enemies-table');
                 searchEnemieBtn.classList.remove('disabled');
-            }, 1500); //1500
+                enemiesTable.classList.remove('disabled');
+            }, 800); //1500
         } catch (error) {
             console.error("Erro ao abrir a janela do Digimon:", error);
         }
@@ -61,8 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    window.abandonBattleWithoutConfirmation = function () {
-        abandonBattle()
+    window.abandonBattleWithoutConfirmation = async function () {
+        await fetchFunc('includes/header_hud', '.cabecalho-sobreposto');
+        abandonBattle();
     }
 
     async function preloadWindowBattle() {

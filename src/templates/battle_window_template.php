@@ -8,9 +8,10 @@ $battleCommands = [
     ['icon' => '2', 'name' => ucwords(strtolower($digimon->digimonData->skillText2)), 'cost' => '11 DS', 'disabled' => true],
     ['icon' => '3', 'name' => ucwords(strtolower($digimon->digimonData->skillText3)), 'cost' => '16 DS', 'disabled' => true],
 ];
-$enemyArray = $_SESSION['enemyArray'];
+$spawnArray = $_SESSION['spawnArray'];
 $_SESSION['inBattle'] = true;
-// var_dump($enemyArray);
+// var_dump($spawnArray->enemy);
+// var_dump($tamerEquipment);
 ?>
 <div class="w-100">
     <div class="w-100 d-flex items-center pb-3">
@@ -28,13 +29,21 @@ $_SESSION['inBattle'] = true;
     <div>
         <div class="pb-3">
             <div class="rounded bg-surface">
+                <div class="d-flex w-100 text-xs pt-2">
+                    <div class="w-50 text-center">
+                        <span><?= $digimon->digimonData->name ?> Lv. <?= $digimon->level ?></span>
+                    </div>
+                    <div class="w-50 text-center">
+                        <span><?= $spawnArray->enemy->digimonData->name ?> Lv. <?= $spawnArray->enemy->level ?></span>
+                    </div>
+                </div>
                 <div class="d-flex w-100 battle-area">
                     <div class="w-50 text-center p-1 digimon-side" id="partner">
                         <img id="partner-img" class="digimon-image flip-x" src="assets/img/digis/<?= $digimon->digimonData->image ?>.gif" alt="">
                         <div class="damage-text" id="damage-text-partner">0</div>
                     </div>
                     <div class="w-50 text-center p-1 digimon-side" id="enemy">
-                        <img id="enemy-img" class="digimon-image" src="assets/img/digis/<?= $enemyArray->digimonData->image ?>.gif" alt="">
+                        <img id="enemy-img" class="digimon-image" src="assets/img/digis/<?= $spawnArray->enemy->digimonData->image ?>.gif" alt="">
                         <div class="damage-text" id="damage-text-enemy">0</div>
                     </div>
                 </div>
@@ -103,14 +112,27 @@ $_SESSION['inBattle'] = true;
                     </div>
                     <div class="d-flex justify-between p-3">
                         <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Partner's HP
+                            </div>
+                            <div class="item-name">
+                                <span id="partner-hp-info"><?= $digimon->currentHp ?></span><span class="text-sm"> / <?= $digimon->maxHp ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                             <i class="fa-solid fa-atom"></i>
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
-                                DS
+                                Partner's DS
                             </div>
                             <div class="item-name">
-                                <?= $digimon->currentDs ?><span class="text-sm"> / <?= $digimon->maxDs ?></span>
+                                <span id="partner-ds-info"><?= $digimon->currentDs ?></span><span class="text-sm"> / <?= $digimon->maxDs ?></span>
                             </div>
                         </div>
                     </div>
@@ -123,6 +145,21 @@ $_SESSION['inBattle'] = true;
             </div>
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 flex-col">
+                    <div id="btn-battle-card">
+                        <div class="d-flex justify-between p-3 cursor-pointer" onclick="showAbandonBattleConfirmation()">
+                            <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                                <i class="fa-solid fa-cards-blank"></i>
+                            </div>
+                            <div class="d-flex w-100 items-center justify-between">
+                                <div class="item-name">
+                                    Use Battle Card
+                                </div>
+                                <div class="item-name text-sm">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="btn-abandon-battle">
                         <div class="d-flex justify-between p-3 cursor-pointer" onclick="showAbandonBattleConfirmation()">
                             <div class="d-flex items-center justify-center flex-col icon-div pr-3">
@@ -168,37 +205,37 @@ $_SESSION['inBattle'] = true;
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="">
-                                <?= $enemyArray->digimonData->name ?>
-                                <i class="fa-regular <?= Helper::getEnemyClass($enemyArray->enemyClass); ?>"></i>
+                                <?= $spawnArray->enemy->digimonData->name ?>
+                                <i class="fa-regular <?= Helper::getEnemyClass($spawnArray->enemy->enemyClass); ?>"></i>
                             </div>
                             <div class="item-name">
-                                Lv. <?= $enemyArray->level ?>
+                                Lv. <?= $spawnArray->enemy->level ?>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-between p-3">
                         <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                            <i class="fa-solid <?= Helper::getAttributeIcon($enemyArray->digimonData->attr); ?>"></i>
+                            <i class="fa-solid <?= Helper::getAttributeIcon($spawnArray->enemy->digimonData->attr); ?>"></i>
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
                                 Attribute
                             </div>
                             <div class="item-name">
-                                <?= $enemyArray->digimonData->attrToDisplay ?>
+                                <?= $spawnArray->enemy->digimonData->attrToDisplay ?>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-between p-3">
                         <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                            <i class="fa-solid <?= Helper::getElementIcon($enemyArray->digimonData->element); ?>"></i>
+                            <i class="fa-solid <?= Helper::getElementIcon($spawnArray->enemy->digimonData->element); ?>"></i>
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
                                 Element
                             </div>
                             <div class="item-name">
-                                <?= ucfirst($enemyArray->digimonData->element) ?>
+                                <?= ucfirst($spawnArray->enemy->digimonData->element) ?>
                             </div>
                         </div>
                     </div>
@@ -220,7 +257,7 @@ $_SESSION['inBattle'] = true;
                                 Attack
                             </div>
                             <div class="item-name">
-                                <?= $digimon->attack ?> / <?= $enemyArray->attack ?>
+                                <?= $digimon->attack ?> / <?= $spawnArray->enemy->attack ?>
                             </div>
                         </div>
                     </div>
@@ -233,7 +270,7 @@ $_SESSION['inBattle'] = true;
                                 Defense
                             </div>
                             <div class="item-name">
-                                <?= $digimon->defense ?> / <?= $enemyArray->defense ?>
+                                <?= $digimon->defense ?> / <?= $spawnArray->enemy->defense ?>
                             </div>
                         </div>
                     </div>
@@ -246,7 +283,20 @@ $_SESSION['inBattle'] = true;
                                 Battle Rating
                             </div>
                             <div class="item-name">
-                                <?= $digimon->battleRating ?> / <?= $enemyArray->battleRating ?>
+                                <?= $digimon->battleRating ?> / <?= $spawnArray->enemy->battleRating ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-gauge"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Speed
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->speed ?> / <?= $spawnArray->enemy->speed ?>
                             </div>
                         </div>
                     </div>
@@ -350,7 +400,7 @@ $_SESSION['inBattle'] = true;
         }
     }
 
-    /* 💢 Dano subindo */
+    /* Dano subindo */
     .damage-text {
         position: absolute;
         bottom: 50%;
@@ -363,6 +413,14 @@ $_SESSION['inBattle'] = true;
         pointer-events: none;
         text-shadow: rgb(0, 0, 0) 1px 0px 0px, rgb(0, 0, 0) 0.540302px 0.841471px 0px,
             rgb(0, 0, 0) -0.416147px 0.909297px 0px, rgb(0, 0, 0) -0.989992px 0.14112px 0px;
+    }
+
+    .damage-text.critical-damage {
+        color: yellow;
+    }
+
+    .damage-text.trait-damage {
+        color: cyan;
     }
 
     .damage-rise {

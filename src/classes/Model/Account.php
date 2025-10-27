@@ -2,6 +2,7 @@
 namespace TamersNetwork\Model;
 
 use TamersNetwork\Helper\Helper;
+use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\EquipmentRepository;
 
 class Account
@@ -24,7 +25,7 @@ class Account
         public int $totalDigimon,
         public string $lastIp,
     ) {
-        $this->maxExp = 10 + ($level * 5);
+        $this->maxExp = 10 + ($this->level * 5);
         $this->displayCoin = Helper::formatCoinClassic($coin);
     }
     public static function fromDatabaseRow(array $data): self
@@ -53,6 +54,41 @@ class Account
         // Se precisar armazenar em cache o objeto Equipment na instância Account,
         // adicione uma propriedade $equipment e verifique se já foi carregado.
         return new Equipment($this->id, $repo);
+    }
+
+    public function addCoin(int $amount): void
+    {
+        $this->coin += (int) $amount;
+    }
+    public function addExp(int $amount): void
+    {
+        $this->exp += $amount;
+        $this->checkLevelUp();
+    }
+
+    public function checkLevelUp(): void
+    {
+        while ($this->exp >= $this->getRequiredExp()) {
+            // $this->exp -= $this->getRequiredExp();
+            $this->exp = 0;
+            $this->level++;
+        }
+    }
+
+    public function getRequiredExp()
+    {
+        return (10 + ($this->level * 5));
+    }
+
+    public function save(AccountRepository $accountRepo): bool
+    {
+        try {
+            // Delega a responsabilidade de salvar para o repositório.
+            return $accountRepo->saveInformation($this);
+        } catch (\PDOException $e) {
+            error_log("Erro ao salvar Account (ID: {$this->id}): " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>

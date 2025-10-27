@@ -14,66 +14,75 @@ $location['FILE ISLAND'] = [
             'level' => '1 - 5',
             'goto' => 'fi_tropical_jungle'
         ],
-    'Faulty Ex Machina' =>
-        [
-            'icon' => 'fa-gears',
-            'description' => 'A massive, decaying factory of rusted gears and silent machines frozen in time.',
-            'level' => '6 - 10'
-        ],
-    'Sewers' =>
-        [
-            'icon' => 'fa-faucet',
-            'description' => 'Dark underground tunnels where dripping water echoes and rusted pipes stretch endlessly.',
-            'level' => '11 - 15'
-        ],
     'Railroad Plains' =>
         [
-            'icon' => 'fa-faucet',
+            'icon' => 'fa-sun-bright',
             'description' => 'Vast plains crossed by abandoned tracks and broken railcars, silent under the open sky.',
-            'level' => '16 - 20'
-        ],
-    'Gravel Wasteland' =>
-        [
-            'icon' => 'fa-faucet',
-            'description' => 'A barren land of cracked stone and dust, scattered with jagged rocks and forgotten ruins.',
-            'level' => '21 - 25'
-        ],
-    'Ancient Bone Swamp' =>
-        [
-            'icon' => 'fa-water',
-            'description' => 'A foggy marshland littered with enormous skeletal remains and murky waters.',
-            'level' => '26 - 30'
-        ],
-    'Freezland' =>
-        [
-            'icon' => 'fa-snowflake',
-            'description' => 'A frozen tundra of snowfields and icy peaks, where blizzards never cease.',
-            'level' => '31 - 35'
-        ],
-    'Great Canyon' =>
-        [
-            'icon' => 'fa-mountain-sun',
-            'description' => 'A vast canyon carved by time, with towering cliffs and endless winding paths.',
-            'level' => '36 - 40'
-        ],
-    'Gear Savannah' =>
-        [
-            'icon' => 'fa-cloud',
-            'description' => 'A wide plain where colossal gears rise from the earth among dry grasslands.',
-            'level' => '41 - 45'
+            'level' => '6 - 10',
+            'goto' => 'fi_railroad_plains'
         ],
     'Logic Volcano' =>
         [
             'icon' => 'fa-volcano',
             'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
-            'level' => '46 - 50'
+            'level' => '11 - 15',
+            'goto' => 'fi_logic_volcano'
         ],
-    'Overdell' =>
-        [
-            'icon' => 'fa-tombstone',
-            'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
-            'level' => '51 - 55'
-        ],
+
+    // 'Faulty Ex Machina' =>
+    //     [
+    //         'icon' => 'fa-gears',
+    //         'description' => 'A massive, decaying factory of rusted gears and silent machines frozen in time.',
+    //         'level' => '6 - 10'
+    //     ],
+    // 'Sewers' =>
+    //     [
+    //         'icon' => 'fa-faucet',
+    //         'description' => 'Dark underground tunnels where dripping water echoes and rusted pipes stretch endlessly.',
+    //         'level' => '11 - 15'
+    //     ],
+    // 'Gravel Wasteland' =>
+    //     [
+    //         'icon' => 'fa-faucet',
+    //         'description' => 'A barren land of cracked stone and dust, scattered with jagged rocks and forgotten ruins.',
+    //         'level' => '21 - 25'
+    //     ],
+    // 'Ancient Bone Swamp' =>
+    //     [
+    //         'icon' => 'fa-water',
+    //         'description' => 'A foggy marshland littered with enormous skeletal remains and murky waters.',
+    //         'level' => '26 - 30'
+    //     ],
+    // 'Freezland' =>
+    //     [
+    //         'icon' => 'fa-snowflake',
+    //         'description' => 'A frozen tundra of snowfields and icy peaks, where blizzards never cease.',
+    //         'level' => '31 - 35'
+    //     ],
+    // 'Great Canyon' =>
+    //     [
+    //         'icon' => 'fa-mountain-sun',
+    //         'description' => 'A vast canyon carved by time, with towering cliffs and endless winding paths.',
+    //         'level' => '36 - 40'
+    //     ],
+    // 'Gear Savannah' =>
+    //     [
+    //         'icon' => 'fa-cloud',
+    //         'description' => 'A wide plain where colossal gears rise from the earth among dry grasslands.',
+    //         'level' => '41 - 45'
+    //     ],
+    // 'Logic Volcano' =>
+    //     [
+    //         'icon' => 'fa-volcano',
+    //         'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
+    //         'level' => '46 - 50'
+    //     ],
+    // 'Overdell' =>
+    //     [
+    //         'icon' => 'fa-tombstone',
+    //         'description' => 'A fiery volcano with rivers of lava and trembling ground beneath constant eruptions.',
+    //         'level' => '51 - 55'
+    //     ],
 ];
 
 // $location['None'] = [

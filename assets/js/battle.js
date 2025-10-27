@@ -8,52 +8,51 @@ document.addEventListener('DOMContentLoaded', function () {
             .forEach(id => $(id).classList.toggle('disabled', state === 'lock'));
     }
 
-    window.enableCommands = () => toggleCommands('enable');
+    function checkAndEnableCommands() {
+        const partnerDs = parseInt(document.getElementById('partner-ds-info')?.textContent || 0);
+
+        // Custo das skills (pode mudar depois se quiser)
+        const skillCost = {
+            1: 0,
+            2: 11,
+            3: 16
+        };
+
+        // Verifica cada botão individualmente
+        for (let i = 1; i <= 3; i++) {
+            const el = document.getElementById(`battle-command-${i}`);
+            if (!el) continue;
+
+            // Se o DS for suficiente, habilita; senão, bloqueia
+            if (partnerDs >= skillCost[i]) {
+                el.classList.remove('disabled');
+            } else {
+                el.classList.add('disabled');
+            }
+        }
+    }
+
+    window.enableCommands = () => checkAndEnableCommands();
     window.lockCommands = () => toggleCommands('lock');
 
-    window.digimonAttack = function (attackerSide = 'partner', damageValue = 200) {
-        // Define quem é o atacante e quem é o alvo
-        const attacker = document.getElementById(`${attackerSide}-img`);
-        const targetSide = attackerSide === 'partner' ? 'enemy' : 'partner';
-        const target = document.getElementById(`${targetSide}-img`);
-        const damageText = document.getElementById(`damage-text-${targetSide}`);
-
-        if (!attacker || !target || !damageText) {
-            console.error('Erro: elementos de batalha não encontrados.');
-            return;
-        }
-
-        // 1️⃣ Faz o atacante avançar
-        attacker.classList.add(`${attackerSide}-attack`);
-
-        // 2️⃣ Quando chega no meio do movimento, aplica o hit no alvo
-        setTimeout(() => {
-            target.classList.add('hit');
-
-            // Mostra o dano subindo
-            damageText.textContent = `-${damageValue}`;
-            damageText.classList.add('damage-rise');
-
-            // Remove efeitos depois que terminarem
-            setTimeout(() => {
-                target.classList.remove('hit');
-                damageText.classList.remove('damage-rise');
-            }, 800);
-        }, 300);
-
-        // 3️⃣ Remove a animação de ataque após o ciclo
-        attacker.addEventListener('animationend', () => {
-            attacker.classList.remove(`${attackerSide}-attack`);
-        }, { once: true });
-    };
-
     // Versão async, confiável para parceiros e inimigos
-    window.digimonAttackAsync = function (attackerSide = 'partner', damageValue = 200) {
+    window.digimonAttackAsync = function (attackerSide = 'partner', damageValue = 200, critical = false, trait = false) {
         return new Promise((resolve) => {
             const attacker = document.getElementById(`${attackerSide}-img`);
             const targetSide = attackerSide === 'partner' ? 'enemy' : 'partner';
             const target = document.getElementById(`${targetSide}-img`);
             const damageText = document.getElementById(`damage-text-${targetSide}`);
+
+            if (!trait) {
+                if (!critical) {
+                    damageText.classList.remove('critical-damage');
+                } else {
+                    damageText.classList.add('critical-damage');
+                }
+            }
+            else {
+                damageText.classList.add('trait-damage');
+            }
 
             if (!attacker || !target || !damageText) {
                 console.error('Erro: elementos de batalha não encontrados.');
@@ -66,7 +65,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(() => {
                 target.classList.add('hit');
-                damageText.textContent = `-${damageValue}`;
+                if (critical) {
+                    damageText.textContent = `-${damageValue} (CRIT)`;
+                }
+                else {
+                    damageText.textContent = `-${damageValue}`;
+                }
+
                 damageText.classList.add('damage-rise');
 
                 // Remove efeitos do alvo
@@ -117,8 +122,44 @@ document.addEventListener('DOMContentLoaded', function () {
             enableCommands();
         }
         else {
-            document.getElementById('btn-abandon-battle').hidden = true;
-            document.getElementById('btn-close-battle').hidden = false;
+            // 🧩 Fim de Batalha
+            (() => {
+                const { winner, reward } = battleSequence.data;
+                const partnerImg = document.getElementById('partner-img');
+                const enemyImg = document.getElementById('enemy-img');
+
+                // 🏆 Mensagem de resultado
+                let resultMsg = '';
+
+                if (winner === 'partner') {
+                    resultMsg = `
+                    <div class="text-lg pb-1"><b>Battle Results:</b></div>
+                    You won!
+                    ${reward ? `
+                    <br><br>
+                    +${reward.tamerExp} Tamer EXP<br>
+                    +${reward.digimonExp} Digimon EXP<br>
+                    +${reward.bits} BITs` : ''}`;
+                } else {
+                    resultMsg = `
+                    <div class="text-lg pb-1"><b>Battle Results:</b></div>
+                    You lost!`;
+                }
+
+                showAlertModal(resultMsg.trim(), () => { });
+
+                // 🎛️ Atualiza botões da interface
+                ['btn-battle-card', 'btn-abandon-battle'].forEach(id => {
+                    document.getElementById(id).hidden = true;
+                });
+                document.getElementById('btn-close-battle').hidden = false;
+
+                // 💫 Atualiza status visual dos Digimons
+                [partnerImg, enemyImg].forEach(img => img.classList.remove('defeated-image'));
+
+                const defeatedImg = winner === 'partner' ? enemyImg : partnerImg;
+                defeatedImg.classList.add('defeated-image');
+            })();
         }
         // Ataque do parceiro
         // await digimonAttackAsync('partner', rand(10, 50));
@@ -139,12 +180,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function animateLog(log) {
         if (log.attackerName == 0) {
-            await digimonAttackAsync('partner', log.damage);
-            adjustHP(log.newHpPercent, 'enemy')
+            await digimonAttackAsync('partner', log.damage, log.critical, log.trait);
+            await new Promise(res => setTimeout(res, 100));
+            // Enemy
+            adjustHP(log.defenderArray.hpPercent, 'enemy');
+
+            // Partner
+            adjustHP(log.attackerArray.hpPercent, 'partner');
+            adjustHpAndDs(log.attackerArray.currentHp, log.attackerArray.currentDs);
         }
         else {
-            await digimonAttackAsync('enemy', log.damage);
-            adjustHP(log.newHpPercent, 'partner')
+            await digimonAttackAsync('enemy', log.damage, log.critical, log.trait);
+            await new Promise(res => setTimeout(res, 100));
+
+            // Partner
+            adjustHP(log.defenderArray.hpPercent, 'partner');
+            adjustHpAndDs(log.defenderArray.currentHp, log.defenderArray.currentDs);
+
+            // Enemy
+            adjustHP(log.attackerArray.hpPercent, 'enemy');
         }
     }
 
@@ -178,6 +232,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }, stepTime);
     }
 
+    function adjustHpAndDs(hpVal, dsVal) {
+        const hpText = document.getElementById('partner-hp-info');
+        const dsText = document.getElementById('partner-ds-info');
+        hpText.innerHTML = hpVal;
+        dsText.innerHTML = dsVal;
+    }
 
     function rand(min, max) {
         min = Math.ceil(min); // Ensure min is an integer

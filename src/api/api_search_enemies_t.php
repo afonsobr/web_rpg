@@ -2,22 +2,22 @@
 
 use TamersNetwork\Helper\Helper;
 
-if ($enemyArray) {
+if ($spawnArray) {
     ?>
-    <div>
+    <div style="min-height: 28px">
         <div class="pb-4">
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 p-3 cursor-pointer" onclick="showBattleConfirmation()">
                     <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                        <img class="digimon-image" src="assets/img/digis/<?= $enemyArray->digimonData->image ?>.gif" style="width: 100%">
+                        <img class="digimon-image" src="assets/img/digis/<?= $spawnArray->enemy->digimonData->image ?>.gif" style="width: 100%">
                     </div>
                     <div class="d-flex w-100 items-center">
                         <div class="font-normal nowrap pr-3 text-sm">
-                            <i class="fa-regular <?= Helper::getEnemyClass($enemyArray->enemyClass); ?>"></i>
-                            <i class="fa-regular <?= Helper::getAttributeIcon($enemyArray->digimonData->attr); ?>"></i>
-                            <i class="fa-regular <?= Helper::getElementIcon($enemyArray->digimonData->element); ?>"></i>
+                            <i class="fa-regular <?= Helper::getEnemyClass($spawnArray->enemy->enemyClass); ?>"></i>
+                            <i class="fa-regular <?= Helper::getAttributeIcon($spawnArray->enemy->digimonData->attr); ?>"></i>
+                            <i class="fa-regular <?= Helper::getElementIcon($spawnArray->enemy->digimonData->element); ?>"></i>
                         </div>
-                        <div class="font-normal pr-3"><?= $enemyArray->digimonData->name . ' Lv. ' . $enemyArray->level ?></div>
+                        <div class="font-normal pr-3"><?= $spawnArray->enemy->digimonData->name . ' Lv. ' . $spawnArray->enemy->level ?></div>
                     </div>
                     <div class="d-flex justify-center flex-col">
                         <div class="font-normal"><i class="fa-solid fa-chevron-right"></i></div>
@@ -35,7 +35,7 @@ if ($enemyArray) {
                         HP
                     </div>
                     <div>
-                        <?= $enemyArray->maxHp ?>
+                        <?= $spawnArray->enemy->maxHp ?>
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
@@ -43,7 +43,7 @@ if ($enemyArray) {
                         Atk
                     </div>
                     <div>
-                        <?= $enemyArray->attack ?>
+                        <?= $spawnArray->enemy->attack ?>
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
@@ -51,7 +51,7 @@ if ($enemyArray) {
                         Def
                     </div>
                     <div>
-                        <?= $enemyArray->defense ?>
+                        <?= $spawnArray->enemy->defense ?>
                     </div>
                 </div>
                 <div class="d-flex justify-between p-3">
@@ -59,7 +59,7 @@ if ($enemyArray) {
                         StatSTR
                     </div>
                     <div>
-                        <?= $enemyArray->statStr ?>
+                        <?= $spawnArray->enemy->statStr ?>
                     </div>
                 </div>
             </div>
@@ -68,13 +68,11 @@ if ($enemyArray) {
     <?php
 } else {
     ?>
-    <div>
-        <div class="pb-4">
-            <div class="rounded bg-surface">
-                <div class="d-flex w-100 p-3 cursor-pointer">
-                    <div class="d-flex w-100 items-center justify-center">
-                        <div class="font-normal pr-3">No enemies found</div>
-                    </div>
+    <div class="pb-4">
+        <div class="rounded bg-surface">
+            <div class="d-flex w-100 p-3">
+                <div class="d-flex w-100 justify-center items-center" style="min-height: 28px">
+                    <div class="font-normal nowrap pr-3">No enemies found!</div>
                 </div>
             </div>
         </div>

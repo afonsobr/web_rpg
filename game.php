@@ -231,6 +231,10 @@ $_SESSION['account_uuid'] = 1;
                 if (!response.ok) throw new Error(`Erro na rede: ${response.statusText}`);
 
                 targetElement.innerHTML = await response.text();
+
+                if (resetScroll) {
+                    window.scrollTo({ top: 0, behavior: 'auto' });
+                }
             };
 
 
@@ -343,6 +347,7 @@ $_SESSION['account_uuid'] = 1;
     <script src="assets/js/battle.js"></script>
     <script src="assets/js/digimon.js"></script>
     <script src="assets/js/item.js"></script>
+    <script src="assets/js/mail.js"></script>
     <script src="assets/js/partner.js"></script>
     <!-- <script src="assets/js/modal.js"></script> -->
     <script src="assets/js/bag.js"></script>
