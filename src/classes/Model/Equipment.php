@@ -105,6 +105,75 @@ class Equipment
         return $totalBonus;
     }
 
+    /**
+     * Retorna o total de um stat específico (atk, def, hp, ds, etc.)
+     */
+    public function getTotalStat(string $statName): int
+    {
+        $total = 0;
+
+        foreach (self::AVAILABLE_SLOTS_MAP as $slot) {
+            if (property_exists($this, $slot) && $this->$slot !== null) {
+                $item = $this->$slot;
+
+                if (!empty($item->stats)) {
+                    $stats = json_decode($item->stats, true);
+                    if (isset($stats[$statName])) {
+                        $total += (int) $stats[$statName];
+                    }
+                }
+            }
+        }
+
+        return $total;
+    }
+
+    /**
+     * Retorna todos os bônus de stats dos equipamentos do Tamer/Digimon
+     * Ex: ['atk' => 30, 'def' => 50, 'hp' => 100, 'ds' => 50]
+     */
+    public function getAllStatsBonus(): array
+    {
+        // Lista fixa de stats que queremos garantir
+        $wantedStats = ['hp', 'ds', 'atk', 'def', 'br', 'tamerexp', 'digimonexp', 'cardslash'];
+
+        // Inicializa todos como 0
+        $totalStats = array_fill_keys($wantedStats, 0);
+
+        // Percorre todos os slots equipados
+        foreach (self::AVAILABLE_SLOTS_MAP as $slot) {
+            $stats = $this->decodeStats($this->$slot);
+
+            foreach ($wantedStats as $statName) {
+                if (isset($stats[$statName])) {
+                    $totalStats[$statName] += (int) $stats[$statName];
+                }
+            }
+        }
+
+        return $totalStats;
+    }
+
+
+    public function getOldAllStatsBonus(): array
+    {
+        $totalStats = [];
+
+        foreach (self::AVAILABLE_SLOTS_MAP as $slot) {
+            foreach ($this->decodeStats($this->$slot) as $statName => $value) {
+                $totalStats[$statName] = ($totalStats[$statName] ?? 0) + (int) $value;
+            }
+        }
+
+        return $totalStats;
+    }
+
+    private function decodeStats(?InventorySlot $slot): array
+    {
+        return json_decode($slot?->item->stats ?? '[]', true) ?: [];
+    }
+
+
     public static function getSlotsMap(): array
     {
         return self::AVAILABLE_SLOTS_MAP;

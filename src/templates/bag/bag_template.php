@@ -58,6 +58,10 @@ $slotsToDisplay = Helper::getEquipmentSlotInfo();
     </div>
 </div>
 
+<?php
+// var_dump($tamerEquipment->getAllStatsBonus());
+// var_dump($tamerEquipment->getAllStatsBonus());
+?>
 
 <style>
     .search-input input {

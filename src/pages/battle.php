@@ -32,10 +32,37 @@ try {
     }
 
     // Verifica equipamento pra recuperar
-    if ($tamerEquipment->aura != null) {
-        $digimon->currentHp = $digimon->maxHp;
-        $digimon->currentDs = $digimon->maxDs;
+    $aurasIds = [
+        4201 => 10,
+        4202 => 20,
+        4203 => 40,
+        4204 => 50,
+        4205 => 80,
+        4206 => 100,
+    ];
+
+    if ($tamerEquipment->aura != null && isset($tamerEquipment->aura->item)) {
+        $itemId = $tamerEquipment->aura->item->itemId;
+
+        // Verifica se o item da aura está na lista
+        if (isset($aurasIds[$itemId])) {
+            $percent = $aurasIds[$itemId];
+
+            $hpPercent = floor(($percent / 100) * $digimon->maxHp);
+            $dsPercent = floor(($percent / 100) * $digimon->maxDs);
+
+            // Recupera HP até a % se estiver abaixo
+            if ($digimon->currentHp < $hpPercent) {
+                $digimon->currentHp = $hpPercent;
+            }
+
+            // Recupera DS até a % se estiver abaixo
+            if ($digimon->currentDs < $dsPercent) {
+                $digimon->currentDs = $dsPercent;
+            }
+        }
     }
+
     $digimon->save($digimonRepo);
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/battle_window_template.php'; // Use o nome do seu arquivo de template
 

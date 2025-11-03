@@ -31,6 +31,22 @@ class MailRepository
         return Mail::fromDatabaseRows($data);
     }
 
+    public function countUnreadMails(int $account_id): int
+    {
+        $sql = 'SELECT COUNT(id) as count FROM ' . $this->dbMail . '
+        WHERE ' . $this->dbMail . '.account_id = ? AND is_read = 0';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$account_id]);
+        $data = $stmt->fetch();
+
+        if ($data === false) {
+            return 0;
+        }
+
+        return $data['count'];
+    }
+
     public function getSingleMail(int $account_id, int $id): ?Mail
     {
         $sql = 'SELECT * FROM ' . $this->dbMail . '

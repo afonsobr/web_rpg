@@ -27,7 +27,7 @@ class Item
             description: $data['description'],
             type1: $data['type1'],
             type2: $data['type2'],
-            stats: $data['stats'],
+            stats: $data['stats'] ?? '',
             lore: $data['lore'],
         );
     }

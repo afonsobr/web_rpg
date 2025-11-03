@@ -130,7 +130,12 @@
                 <div class="d-flex w-100 flex-col">
                     <div class="justify-between p-3 text-center">
                         <div>
-                            No new messages
+                            <?php
+                            if ($countUnreadMails == 0)
+                                echo 'No new messages';
+                            else if ($countUnreadMails > 0)
+                                echo 'You have ' . $countUnreadMails . ' new message(s)';
+                            ?>
                         </div>
                     </div>
                 </div>

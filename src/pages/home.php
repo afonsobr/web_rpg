@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
+use TamersNetwork\Repository\MailRepository;
 
 try {
     if (!isset($_SESSION['account_uuid'])) {
@@ -15,9 +16,11 @@ try {
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
+    $mailRepo = new MailRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $partner = $digimonRepo->getPartnerByAccountId((int) $account->id);
+    $countUnreadMails = $mailRepo->countUnreadMails($account->id);
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/home_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
