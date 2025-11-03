@@ -73,6 +73,11 @@ $_SESSION['account_uuid'] = 1;
         </nav>
     </footer>
 
+    <div id="common-window" class="modal-overlay">
+        <div id="common-window-content" class="modal-content">
+        </div>
+    </div>
+
     <div id="select-equipment-window" class="modal-overlay">
         <div id="select-equipment-window-content" class="modal-content">
         </div>
@@ -210,7 +215,7 @@ $_SESSION['account_uuid'] = 1;
             resizeObserver.observe(navContainer);
 
             // --- CARREGAMENTO DE CONTEÚDO ---
-            window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET', resetScroll = true) {
+            window.fetchContent = async function (fileName, targetSelector, params = {}, method = 'GET', resetScroll = false) {
                 const targetElement = document.querySelector(targetSelector);
                 if (!targetElement)
                     return;

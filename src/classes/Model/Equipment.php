@@ -6,21 +6,21 @@ use TamersNetwork\Repository\EquipmentRepository; // Usando o novo repositório
 class Equipment
 {
     // Propriedades públicas para fácil acesso, tipadas como Item ou null
-    public ?Item $hat = null;
-    public ?Item $headset = null;
-    public ?Item $glasses = null;
-    public ?Item $hands = null;
-    public ?Item $jacket = null;
-    public ?Item $upperBody = null; // Renomeado para snake_case como no BD
-    public ?Item $lowerBody = null; // Renomeado para snake_case como no BD
-    public ?Item $boots = null;
-    public ?Item $ring = null; // Poderia ser ring_1, ring_2 se tiver múltiplos
-    public ?Item $bracelet = null;
-    public ?Item $gem = null;
-    public ?Item $backpack = null;
-    public ?Item $digivice = null;
-    public ?Item $chipset = null;
-    public ?Item $aura = null;
+    public ?InventorySlot $hat = null;
+    public ?InventorySlot $headset = null;
+    public ?InventorySlot $glasses = null;
+    public ?InventorySlot $hands = null;
+    public ?InventorySlot $jacket = null;
+    public ?InventorySlot $upperBody = null; // Renomeado para snake_case como no BD
+    public ?InventorySlot $lowerBody = null; // Renomeado para snake_case como no BD
+    public ?InventorySlot $boots = null;
+    public ?InventorySlot $ring = null; // Poderia ser ring_1, ring_2 se tiver múltiplos
+    public ?InventorySlot $bracelet = null;
+    public ?InventorySlot $gem = null;
+    public ?InventorySlot $backpack = null;
+    public ?InventorySlot $digivice = null;
+    public ?InventorySlot $chipset = null;
+    public ?InventorySlot $aura = null;
 
     // Slots disponíveis (poderia vir de uma config ou constante)
     private const AVAILABLE_SLOTS_MAP = [

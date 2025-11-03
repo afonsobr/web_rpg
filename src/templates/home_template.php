@@ -137,7 +137,7 @@
             </div>
         </div>
         <div class="rounded bg-surface">
-            <div class="d-flex justify-between p-3 cursor-pointer" onclick="openMail()">
+            <div class="d-flex justify-between p-3 cursor-pointer" onclick="openMailList()">
                 <div>
                     Check Mail
                 </div>

@@ -18,7 +18,7 @@ class MailRepository
     public function getAccountMailList(int $account_id): ?array
     {
         $sql = 'SELECT * FROM ' . $this->dbMail . '
-        WHERE ' . $this->dbMail . '.account_id = ?';
+        WHERE ' . $this->dbMail . '.account_id = ? ORDER BY ID DESC';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$account_id]);
@@ -67,7 +67,7 @@ class MailRepository
     ): bool {
         $sql = 'INSERT INTO ' . $this->dbMail . ' 
         (account_id, from_id, subject, message, items, coin, is_read, sent_at)
-        VALUES (?, ?, ?, ?, ?, ?, 0, NOW())';
+        VALUES (?, ?, ?, ?, ?, ?, 0, ?)';
 
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
@@ -76,7 +76,8 @@ class MailRepository
             $subject,
             $message,
             $items,
-            $coin
+            $coin,
+            time()
         ]);
     }
 

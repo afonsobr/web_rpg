@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Ajuste do Scroll do Body
             if (document.body.style.position != 'fixed') {
                 const scrollY = window.scrollY;
+                console.log(scrollY);
                 document.body.style.position = 'fixed';
                 document.body.style.top = `-${scrollY}px`;
             }

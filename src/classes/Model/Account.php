@@ -60,19 +60,23 @@ class Account
     {
         $this->coin += (int) $amount;
     }
-    public function addExp(int $amount): void
+    public function addExp(int $amount): bool
     {
         $this->exp += $amount;
-        $this->checkLevelUp();
+        return $this->checkLevelUp();
     }
 
-    public function checkLevelUp(): void
+    public function checkLevelUp(): bool
     {
+        $leveledUp = false;
         while ($this->exp >= $this->getRequiredExp()) {
             // $this->exp -= $this->getRequiredExp();
             $this->exp = 0;
             $this->level++;
+            $leveledUp = true;
         }
+
+        return $leveledUp;
     }
 
     public function getRequiredExp()

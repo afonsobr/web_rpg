@@ -75,3 +75,69 @@ function hideLoadingModal() {
     const modal = document.getElementById('loading-modal');
     modal.classList.remove('active');
 };
+
+
+// digimon.js
+document.addEventListener('DOMContentLoaded', function () {
+    // Certifica que fetchContent existe no window
+    const fetchFunc = window.fetchContent;
+    if (!fetchFunc) {
+        console.error("fetchContent não encontrado! Certifique-se que foi definido antes.");
+        return;
+    }
+
+    const commonWindow = document.getElementById('common-window');
+
+    window.openCommonWindow = async function (page, target, params) {
+        if (!commonWindow) return;
+
+        try {
+            // Usa fetchContent global
+            await fetchFunc(page, target, params);
+
+            // Reset modal scroll
+            const modalContent = commonWindow.querySelector('#common-window-content');
+            if (modalContent) {
+                modalContent.scrollTop = 0; // reseta o scroll do conteúdo
+            }
+
+            commonWindow.classList.add('active');
+            // Ajuste do Scroll do Body
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+        } catch (error) {
+            console.error("Erro ao abrir a janela do CommonWindow:", error);
+        }
+    };
+
+
+    window.closeCommonWindow = function () {
+        if (commonWindow) {
+            commonWindow.classList.remove('active');
+
+            // Ajuste do Scroll do Body
+            const scrollY = Math.abs(parseInt(document.body.style.top || '0'));
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, scrollY);
+        }
+    }
+
+    // Fecha ao clicar no overlay
+    if (commonWindow) {
+        commonWindow.addEventListener('click', function (event) {
+            if (event.target === commonWindow) closeCommonWindow();
+
+            // Fecha se clicou no botão close, mesmo que ele seja carregado dinamicamente
+            if (event.target.closest('#modal-close-btn')) closeCommonWindow();
+        });
+    }
+
+    // Fecha com ESC
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && commonWindow.classList.contains('active')) {
+            closeCommonWindow();
+        }
+    });
+});

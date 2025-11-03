@@ -18,6 +18,7 @@ class Enemy
     public int $maxDs = 0;
     public int $currentDs = 0;
     public int $hpPercent = 100;
+    public float $traitRate;
     public float $criticalRate;
     public float $criticalDamage;
     public function __construct(
@@ -56,7 +57,7 @@ class Enemy
         $baseFromStage = $baseValuesFromStage[$this->digimonData->stage] ?? 20;
 
         $baseValuesFromClass = [
-            1 => -5,
+            1 => 0,
             2 => 80,
             3 => 190,
             4 => 350,
@@ -84,6 +85,7 @@ class Enemy
         $this->maxHp = $this->statStr * 1 + $this->statCon * 3;
         $this->maxDs = $this->statCon * 2 + $this->statCon * 1;
 
+        $this->traitRate = 1 + floor($this->statInt / 30);
         $this->criticalDamage = 2;
         $this->criticalRate = 5;
 

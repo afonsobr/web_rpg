@@ -7,6 +7,7 @@ use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
 use TamersNetwork\Helper\BattleHelper;
+use TamersNetwork\Repository\MailRepository;
 
 /*
  * FUNÇÃO DE ATAQUE
@@ -252,9 +253,17 @@ try {
 
             $partner->addExp($reward['digimonExp']);
 
-            $account->addExp($reward['tamerExp']);
+            $tLvlUp = $account->addExp($reward['tamerExp']);
             $account->addCoin($reward['bits']);
             $account->save($accountRepo);
+
+            if ($tLvlUp) {
+                $mailRepo = new MailRepository($pdo);
+                $msg = "<p>Hello, {$account->username}!</p>
+                <p>Congratulations! You have reached Tamer level <strong>{$account->level}</strong>!</p>
+                <p>Keep progressing on your journey!</p>";
+                $mailRepo->sendSystemMail($account->id, 'Tamer Level Up!', $msg);
+            }
         }
 
         $partner->save($digimonRepo);

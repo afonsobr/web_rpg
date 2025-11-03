@@ -25,12 +25,14 @@ try {
 
     // $digimon->currentHp = $digimon->maxHp;
     if ($digimon->currentHp <= 0) {
-        $digimon->currentHp = $digimon->maxHp;
-        $digimon->currentDs = $digimon->maxDs;
+        // $digimon->currentHp = $digimon->maxHp;
+        // $digimon->currentDs = $digimon->maxDs;
+
+        $digimon->currentHp = 1;
     }
 
     // Verifica equipamento pra recuperar
-    if ($tamerEquipment->gem != null) {
+    if ($tamerEquipment->aura != null) {
         $digimon->currentHp = $digimon->maxHp;
         $digimon->currentDs = $digimon->maxDs;
     }

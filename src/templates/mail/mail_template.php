@@ -26,7 +26,7 @@ use TamersNetwork\Helper\Helper;
                     if (!empty($mailList)) {
                         foreach ($mailList as $mail) {
                             ?>
-                            <div class="d-flex justify-between p-3 cursor-pointer">
+                            <div class="d-flex justify-between p-3 cursor-pointer" onclick="openMail(<?= $mail->id ?>)">
                                 <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                                     <?= $mail->isRead ? '<i class="fa-solid fa-envelope-open"></i>' : '<i class="fa-solid fa-envelope"></i>' ?>
                                 </div>

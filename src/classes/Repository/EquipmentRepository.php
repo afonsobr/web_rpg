@@ -32,12 +32,14 @@ class EquipmentRepository
     public function findByAccountId(int $accountId): array
     {
         $sql = "SELECT
-                    te.slot_name,
-                    fi.* -- Seleciona todas as colunas de fix_item
-                FROM {$this->dbEquipment} te
-                INNER JOIN {$this->dbInventory} vi ON te.inventory_id = vi.id
-                INNER JOIN {$this->dbItem} fi ON vi.item_id = fi.item_id
-                WHERE te.account_id = ?";
+                    var_equipments.slot_name,
+                    var_equipments.inventory_id,
+                    fix_item.*,
+                    var_inventory.*
+                FROM {$this->dbEquipment} var_equipments
+                INNER JOIN {$this->dbInventory} var_inventory ON var_equipments.inventory_id = var_inventory.id
+                INNER JOIN {$this->dbItem} fix_item ON var_inventory.item_id = fix_item.item_id
+                WHERE var_equipments.account_id = ?";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$accountId]);
@@ -48,7 +50,8 @@ class EquipmentRepository
             $slotName = $row['slot_name'];
             // Remove slot_name para passar apenas dados do Item para fromDatabaseRow
             unset($row['slot_name']);
-            $equippedItems[$slotName] = Item::fromDatabaseRow($row);
+            $item = Item::fromDatabaseRow($row);
+            $equippedItems[$slotName] = InventorySlot::fromDatabaseRow($item, $row);
         }
 
         return $equippedItems; // Ex: ['hat' => ItemObject, 'boots' => ItemObject, ...]

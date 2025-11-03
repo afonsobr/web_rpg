@@ -28,8 +28,6 @@ try {
     $f = basename(__FILE__, '.php'); // Specify the extension to remove
 
     include $_SERVER['DOCUMENT_ROOT'] . '/src/api/' . $f . '_t.php'; // Use o nome do seu arquivo de template
-
-
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error
     echo "Ocorreu um erro ao carregar os dados: " . $e->getMessage();
