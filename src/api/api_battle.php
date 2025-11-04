@@ -8,6 +8,7 @@ use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
 use TamersNetwork\Helper\BattleHelper;
 use TamersNetwork\Repository\MailRepository;
+use TamersNetwork\Repository\EquipmentRepository;
 
 /*
  * FUNÇÃO DE ATAQUE
@@ -101,6 +102,17 @@ function performAttack($attacker, $defender, $iid, $skillOption = 1)
     // Aplica o dano
     $dmg = max(1, floor($dmg)); // Garante pelo menos 1 de dano
     $dmg = min(floor($dmg), $defender->maxHp); // Garante pelo menos 1 de dano
+
+    // Verifica se deu miss
+    $related = $defender->battleRating / $attacker->battleRating;
+    $missed = 500 * $related;
+
+    if (mt_rand(1, 10000) <= $missed) {
+        $dmg = 0;
+        $criticalSwitch = 0;
+        $traitSwitch = 0;
+    }
+
     $defender->currentHp -= $dmg;
     if ($defender->currentHp < 0) {
         $defender->currentHp = 0;
@@ -169,9 +181,14 @@ try {
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
+    $equipmentRepo = new EquipmentRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $partner = $digimonRepo->getPartnerByAccountId((int) $account->id);
+    $tamerEquipment = $account->getEquipment($equipmentRepo);
+    $partner->calculateFinalStats($tamerEquipment);
+    $tamerStats = $tamerEquipment->getAllStatsBonus();
+
     $spawnArray = $_SESSION['spawnArray'];
     $enemyArray = $_SESSION['spawnArray']->enemy;
 
@@ -247,22 +264,33 @@ try {
         // Recompensas
         if ($battleOver && $winner == 'partner') {
             $reward = array();
-            $reward['tamerExp'] = mt_rand(3, 5);
-            $reward['digimonExp'] = $spawnArray->expReward;
-            $reward['bits'] = $spawnArray->bitReward;
+            $reward['tamerExp'] = mt_rand(3, 5) + $tamerStats['tamerexp'];
+            $reward['digimonExp'] = $spawnArray->expReward + floor($tamerStats['digimonexp'] * $spawnArray->expReward / 100);
+            $reward['bits'] = $spawnArray->bitReward + floor($tamerStats['bits'] * $spawnArray->bitReward / 100);
 
-            $partner->addExp($reward['digimonExp']);
+            $pLvlUp = $partner->addExp($reward['digimonExp'], $tamerEquipment);
 
             $tLvlUp = $account->addExp($reward['tamerExp']);
             $account->addCoin($reward['bits']);
             $account->save($accountRepo);
 
-            if ($tLvlUp) {
+            if ($tLvlUp || $pLvlUp) {
+                // Instancie o repositório apenas se houver um level up
                 $mailRepo = new MailRepository($pdo);
-                $msg = "<p>Hello, {$account->username}!</p>
-                <p>Congratulations! You have reached Tamer level <strong>{$account->level}</strong>!</p>
-                <p>Keep progressing on your journey!</p>";
-                $mailRepo->sendSystemMail($account->id, 'Tamer Level Up!', $msg);
+
+                if ($tLvlUp) {
+                    $msg = "<p>Hello, {$account->username}!</p>
+                    <p>Congratulations! You have reached Tamer level <strong>{$account->level}</strong>!</p>
+                    <p>Keep progressing on your journey!</p>";
+                    $mailRepo->sendSystemMail($account->id, 'Tamer Level Up!', $msg);
+                }
+
+                if ($pLvlUp) {
+                    $msg = "<p>Hello, {$account->username}!</p>
+                    <p>Congratulations! Your Partnermon {$partner->digimonData->name} reached level <strong>{$partner->level}</strong>!</p>
+                    <p>Keep progressing on your journey!</p>";
+                    $mailRepo->sendSystemMail($account->id, 'Partner Level Up!', $msg);
+                }
             }
         }
 

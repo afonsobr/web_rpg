@@ -135,7 +135,7 @@ class Equipment
     public function getAllStatsBonus(): array
     {
         // Lista fixa de stats que queremos garantir
-        $wantedStats = ['hp', 'ds', 'atk', 'def', 'br', 'tamerexp', 'digimonexp', 'cardslash'];
+        $wantedStats = ['hp', 'ds', 'atk', 'def', 'br', 'spd', 'tamerexp', 'digimonexp', 'bits', 'cardslash'];
 
         // Inicializa todos como 0
         $totalStats = array_fill_keys($wantedStats, 0);

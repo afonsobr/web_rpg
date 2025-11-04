@@ -6,6 +6,8 @@ use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
 use TamersNetwork\Repository\EquipmentRepository;
+use TamersNetwork\Repository\InventoryRepository;
+use TamersNetwork\Model\Inventory;
 
 try {
     if (!isset($_SESSION['account_uuid'])) {
@@ -17,11 +19,17 @@ try {
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
+    $inventoryRepo = new InventoryRepository($pdo);
     $equipmentRepo = new EquipmentRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $digimon = $digimonRepo->getPartnerByAccountId((int) $account->id);
     $tamerEquipment = $account->getEquipment($equipmentRepo);
+    $digimon->calculateFinalStats($tamerEquipment);
+
+    // $inventory = new Inventory($_SESSION['account_uuid'], $inventoryRepo);
+    // $inventory->load();
+    // $inventoryList = $inventory->getItems();
 
     // $digimon->currentHp = $digimon->maxHp;
     if ($digimon->currentHp <= 0) {
@@ -62,9 +70,15 @@ try {
             }
         }
     }
-
     $digimon->save($digimonRepo);
-    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/battle_window_template.php'; // Use o nome do seu arquivo de template
+
+    $battleCard = null;
+    if (isset($_SESSION['battleCard'])) {
+        $battleCard = $_SESSION['battleCard'];
+        $battleCardArray = $inventoryRepo->getSingleInventoryItemByInventoryId($account->id, $battleCard);
+    }
+
+    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/battle/battle_window_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
     http_response_code(500); // Internal Server Error

@@ -10,6 +10,9 @@ $battleCommands = [
 ];
 $spawnArray = $_SESSION['spawnArray'];
 $_SESSION['inBattle'] = true;
+// $_SESSION['battleCard'];
+
+
 // var_dump($spawnArray->enemy);
 // var_dump($tamerEquipment);
 ?>
@@ -146,13 +149,19 @@ $_SESSION['inBattle'] = true;
             <div class="rounded bg-surface">
                 <div class="d-flex w-100 flex-col">
                     <div id="btn-battle-card">
-                        <div class="d-flex justify-between p-3 cursor-pointer" onclick="showAbandonBattleConfirmation()">
+                        <div id="battle-card" class="d-flex justify-between p-3 cursor-pointer" onclick="openBattleCardSelect()">
                             <div class="d-flex items-center justify-center flex-col icon-div pr-3">
                                 <i class="fa-solid fa-cards-blank"></i>
                             </div>
                             <div class="d-flex w-100 items-center justify-between">
                                 <div class="item-name">
-                                    Use Battle Card
+                                    <?php
+                                    if ($battleCard) {
+                                        echo $battleCardArray->item->name . ' (x' . $battleCardArray->quantity . ')';
+                                    } else {
+                                        echo '<span class="opacity-50">No Battle Card Selected</span>';
+                                    }
+                                    ?>
                                 </div>
                                 <div class="item-name text-sm">
                                     <i class="fa-solid fa-chevron-right"></i>
@@ -280,23 +289,23 @@ $_SESSION['inBattle'] = true;
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
-                                Battle Rating
+                                Speed
                             </div>
                             <div class="item-name">
-                                <?= $digimon->battleRating ?> / <?= $spawnArray->enemy->battleRating ?>
+                                <?= $digimon->speed ?> / <?= $spawnArray->enemy->speed ?>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-between p-3">
                         <div class="d-flex items-center justify-center flex-col icon-div pr-3">
-                            <i class="fa-solid fa-gauge"></i>
+                            <i class="fa-solid fa-crosshairs"></i>
                         </div>
                         <div class="d-flex w-100 items-center justify-between">
                             <div class="item-name">
-                                Speed
+                                Battle Rating
                             </div>
                             <div class="item-name">
-                                <?= $digimon->speed ?> / <?= $spawnArray->enemy->speed ?>
+                                <?= $digimon->battleRating ?> / <?= $spawnArray->enemy->battleRating ?>
                             </div>
                         </div>
                     </div>

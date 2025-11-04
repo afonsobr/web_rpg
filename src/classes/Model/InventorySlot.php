@@ -24,5 +24,10 @@ class InventorySlot
             isBlocked: (bool) ($data['is_blocked'] ?? false)
         );
     }
+
+    public function consumeItem()
+    {
+        $this->quantity--;
+    }
 }
 ?>

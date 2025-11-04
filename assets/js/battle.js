@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 🔄 Habilita ou desabilita comandos
     function toggleCommands(state) {
-        ['battle-command-1', 'battle-command-2', 'battle-command-3']
+        ['battle-command-1', 'battle-command-2', 'battle-command-3', 'btn-battle-card', 'btn-abandon-battle']
             .forEach(id => $(id).classList.toggle('disabled', state === 'lock'));
     }
 
@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 el.classList.add('disabled');
             }
         }
+
+        $('btn-abandon-battle').classList.remove('disabled');
+        $('btn-battle-card').classList.remove('disabled');
     }
 
     window.enableCommands = () => checkAndEnableCommands();
@@ -69,7 +72,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     damageText.textContent = `-${damageValue} (CRIT)`;
                 }
                 else {
-                    damageText.textContent = `-${damageValue}`;
+                    if (damageValue == 0)
+                        damageText.textContent = `MISSED`;
+                    else
+                        damageText.textContent = `-${damageValue}`;
                 }
 
                 damageText.classList.add('damage-rise');
@@ -243,5 +249,38 @@ document.addEventListener('DOMContentLoaded', function () {
         min = Math.ceil(min); // Ensure min is an integer
         max = Math.floor(max); // Ensure max is an integer
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    window.openBattleCardSelect = async function () {
+        await openCommonWindow('pages/select_battle_card_window', '#common-window-content');
+    }
+
+    window.selectBattleCard = async function (inventoryId) {
+        const result = await apiRequest('api/api_battle_card', { action: 'selectBattleCard', inventoryId: inventoryId });
+        updateBattleCardInfo(result);
+        closeCommonWindow();
+    }
+
+    window.updateBattleCardInfo = function (battleCard) {
+        if (!battleCard) {
+            display = 'No Battle Card Selected';
+        }
+        else {
+            display = `${battleCard.item.name} (x${battleCard.quantity})`;
+        }
+        const battleCardDiv = document.getElementById('battle-card');
+        battleCardDiv.innerHTML = `
+        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+            <i class="fa-solid fa-cards-blank"></i>
+        </div>
+        <div class="d-flex w-100 items-center justify-between">
+            <div class="item-name">
+                ${display}
+            </div>
+            <div class="item-name text-sm">
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+        `;
     }
 })

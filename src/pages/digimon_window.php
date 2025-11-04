@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\DigimonRepository;
+use TamersNetwork\Repository\EquipmentRepository;
 
 // Toda a lógica de "Chef" que vimos antes fica aqui.
 try {
@@ -27,8 +28,12 @@ try {
     $pdo = DatabaseManager::getConnection();
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
+    $equipmentRepo = new EquipmentRepository($pdo);
+
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
+    $tamerEquipment = $account->getEquipment($equipmentRepo);
+
     // $digimons = $digimonRepo->findAllByOwnerUuid($account->uuid);
     // $partner = $digimons[0] ?? null;
 
@@ -39,6 +44,7 @@ try {
         echo json_encode(['error' => 'Digimon não encontrado.']);
         exit();
     }
+    $digimon->calculateFinalStats($tamerEquipment);
 
     include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/digimon_window_template.php'; // Use o nome do seu arquivo de template
 

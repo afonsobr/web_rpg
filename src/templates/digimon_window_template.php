@@ -236,6 +236,19 @@ function showTraits(DigimonData $digimonData)
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid fa-crosshairs"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                Battle Rating
+                            </div>
+                            <div class="item-name">
+                                <?= $digimon->battleRating ?>
+                            </div>
+                        </div>
+                    </div>
                     <div id="aditional-info">
                         <div class="d-flex justify-between p-3">
                             <div class="d-flex items-center justify-center flex-col icon-div pr-3">

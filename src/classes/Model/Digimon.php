@@ -42,7 +42,7 @@ class Digimon
         public string $hatchedAt = '',
         public string $updatedAt = '',
     ) {
-        $this->calculateStats();
+        $this->calculateBaseStats();
     }
 
     public static function fromDatabaseRow(array $data): self
@@ -79,7 +79,7 @@ class Digimon
         );
     }
 
-    public function calculateStats(): void
+    public function calculateBaseStats(): void
     {
         $baseValues = [
             'rookie' => 20,
@@ -119,6 +119,33 @@ class Digimon
         $this->criticalDamage = 2;
         $this->criticalRate = 5;
 
+        $this->maxExp = $this->getRequiredExp();
+
+        // Padronização de Valores
+        $this->currentHp = min($this->currentHp, $this->maxHp);
+        $this->currentDs = min($this->currentDs, $this->maxDs);
+    }
+
+    function calculateFinalStats(?Equipment $equipment): void
+    {
+        // Garante que pegou os stats base
+        $this->calculateBaseStats();
+
+        // Aplica bônus de equipamento
+        if ($equipment !== null) {
+            $bonuses = $equipment->getAllStatsBonus(); //
+
+            // Mapeia os bônus do equipamento para os stats do Digimon
+            // Cuidado com os nomes: 'atk' (equip) -> 'attack' (digimon)
+            $this->attack += $bonuses['atk'] ?? 0;
+            $this->defense += $bonuses['def'] ?? 0;
+            $this->speed += $bonuses['spd'] ?? 0;
+            $this->maxHp += $bonuses['hp'] ?? 0;
+            $this->maxDs += $bonuses['ds'] ?? 0;
+            $this->battleRating += $bonuses['br'] ?? 0;
+            // Adicione outros stats se necessário (ex: speed, criticals, etc.)
+        }
+
         // Size
         $this->attack = floor($this->size / 100 * $this->attack);
         $this->defense = floor($this->size / 100 * $this->defense);
@@ -127,27 +154,50 @@ class Digimon
         $this->maxHp = floor($this->size / 100 * $this->maxHp);
         $this->maxDs = floor($this->size / 100 * $this->maxDs);
 
-        $this->maxExp = $this->getRequiredExp();
-
         // Padronização de Valores
         $this->currentHp = min($this->currentHp, $this->maxHp);
         $this->currentDs = min($this->currentDs, $this->maxDs);
     }
 
-    public function addExp(int $amount): void
+    /**
+     * Adiciona experiência ao Digimon e verifica se ele subiu de nível.
+     *
+     * @param int $amount A quantidade de experiência a ser adicionada.
+     * @param Equipment|null $equipment Os equipamentos do Tamer (necessário se houver level up).
+     * @return bool Retorna true se o Digimon subiu de nível, false caso contrário.
+     */
+    public function addExp(int $amount, ?Equipment $equipment): bool
     {
         $this->exp += $amount;
-        $this->checkLevelUp();
+
+        // Captura e retorna o status de level up
+        return $this->checkLevelUp($equipment);
     }
 
-    public function checkLevelUp(): void
+    /**
+     * Verifica se o Digimon subiu de nível e recalcula os stats.
+     *
+     * @param Equipment|null $equipment Os equipamentos do Tamer para recalcular os bônus.
+     * @return bool Retorna true se o Digimon subiu de nível, false caso contrário.
+     */
+    public function checkLevelUp(?Equipment $equipment): bool
     {
+        $didLevelUp = false; // Flag para rastrear se um level up ocorreu
+
+        // O loop continua enquanto o Digimon tiver EXP para subir de nível
         while ($this->exp >= $this->getRequiredExp()) {
-            // $this->exp -= $this->getRequiredExp();
-            $this->exp = 0;
+            $didLevelUp = true; // Confirma que pelo menos um nível foi ganho
+
+            // $this->exp -= $this->getRequiredExp(); // Opção 1: Subtrair a exp (permite acumular)
+            $this->exp = 0; // Opção 2 (do seu código): Zera a exp ao upar.
+
             $this->level++;
-            $this->calculateStats(); // recalcula stats após subir de nível
+
+            // Recalcula os stats finais com os bônus do equipamento
+            $this->calculateFinalStats($equipment);
         }
+
+        return $didLevelUp;
     }
 
     public function save(DigimonRepository $digimonRepository): bool

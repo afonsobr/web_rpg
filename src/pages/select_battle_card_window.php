@@ -23,13 +23,12 @@ try {
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $inventory = new Inventory($_SESSION['account_uuid'], $inventoryRepo);
-    $inventory->load();
-
     $tamerEquipment = $account->getEquipment($equipmentRepo);
+    $inventory->load();
 
     $inventoryList = $inventory->getItems();
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/bag/bag_template.php'; // Use o nome do seu arquivo de template
+    include $_SERVER['DOCUMENT_ROOT'] . '/src/templates/battle/select_battle_card_window_template.php'; // Use o nome do seu arquivo de template
 
 } catch (Exception $e) {
     // http_response_code(500); // Internal Server Error

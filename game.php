@@ -73,6 +73,11 @@ $_SESSION['account_uuid'] = 1;
         </nav>
     </footer>
 
+    <div id="battle-window" class="modal-overlay">
+        <div id="battle-window-content" class="modal-content">
+        </div>
+    </div>
+
     <div id="common-window" class="modal-overlay">
         <div id="common-window-content" class="modal-content">
         </div>
@@ -105,11 +110,6 @@ $_SESSION['account_uuid'] = 1;
 
     <div id="digimon-window" class="modal-overlay">
         <div id="digimon-window-content" class="modal-content">
-        </div>
-    </div>
-
-    <div id="battle-window" class="modal-overlay">
-        <div id="battle-window-content" class="modal-content">
         </div>
     </div>
 
