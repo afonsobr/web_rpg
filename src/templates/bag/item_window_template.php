@@ -26,11 +26,36 @@
         </div>
     </div>
     <div>
-        <div class="text-center text-xs font-normal" id="item-quantity">
+        <div class="text-center text-xs font-normal pb-3" id="item-quantity">
             <span>
                 QUANTITY: <?= $itemArray->quantity ?>
             </span>
         </div>
+        <div hidden class="text-center text-xs font-normal" id="item-quantity">
+            <span>
+                TYPE: <?= strtoupper($itemArray->item->type1) ?>
+            </span>
+        </div>
+        <div class="pb-3">
+            <div class="rounded bg-surface">
+                <div class="d-flex w-100 flex-col">
+                    <div class="d-flex justify-between p-3">
+                        <div class="d-flex items-center justify-center flex-col icon-div pr-3">
+                            <i class="fa-solid <?= $itemArray->item->icon ?>"></i>
+                        </div>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                <?= ucfirst($itemArray->item->type1) ?>
+                            </div>
+                            <div class="item-name">
+                                <?= ucfirst($itemArray->item->type2) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="pb-3">
             <!-- <hr> -->
         </div>

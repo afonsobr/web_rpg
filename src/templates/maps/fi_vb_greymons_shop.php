@@ -1,4 +1,6 @@
 <?php
+
+use TamersNetwork\Repository\ItemRepository;
 // $_SESSION['map'] = null;
 ?>
 <div class="pb-4">
@@ -47,19 +49,31 @@ echo returnToVBBtn();
         </div>
         <div class="rounded bg-surface">
             <div class="d-flex w-100 flex-col">
-                <div class="d-flex justify-between p-3 cursor-pointer">
-                    <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
-                        <i class="fa-solid fa-file"></i>
-                    </div>
-                    <div class="d-flex w-100 items-center justify-between">
-                        <div class="item-name">
-                            Select a Data
+                <?php
+                $availableItems = [10, 11, 12, 30];
+                $itemRepo = new ItemRepository($pdo);
+
+                foreach ($availableItems as $i) {
+                    $itemArray = $itemRepo->getItem($i);
+                    ?>
+                    <div class="d-flex justify-between p-3 cursor-pointer" onclick="openShopItemWindow(<?= $i ?>)">
+                        <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
+                            <i class="fa-solid <?= $itemArray->icon ?>"></i>
                         </div>
-                        <div class="item-name">
-                            <i class="fa-solid fa-chevron-right"></i>
+                        <div class="d-flex w-100 items-center justify-between">
+                            <div class="item-name">
+                                <?= $itemArray->name ?>
+                            </div>
+                            <div class="item-name">
+                                <i class="fa-solid fa-coins"></i>
+                                <?= $itemArray->price ?>
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </div>

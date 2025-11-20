@@ -11,6 +11,8 @@ class Item
         public string $description,
         public string $type1,
         public string $type2,
+        public int $multiplier,
+        public int $price,
         public string $stats,
         public string $lore,
     ) {
@@ -27,6 +29,8 @@ class Item
             description: $data['description'],
             type1: $data['type1'],
             type2: $data['type2'],
+            multiplier: $data['multiplier'] ?? 0,
+            price: $data['price'] ?? 0,
             stats: $data['stats'] ?? '',
             lore: $data['lore'],
         );

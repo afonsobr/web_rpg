@@ -347,16 +347,18 @@ $_SESSION['account_uuid'] = 1;
         });
 
     </script>
+    <script src="assets/js/api.js"></script>
     <script src="assets/js/window-base.js"></script>
     <script src="assets/js/battle-prepare.js"></script>
     <script src="assets/js/battle.js"></script>
+
+    <script src="assets/js/bag.js"></script>
     <script src="assets/js/digimon.js"></script>
     <script src="assets/js/item.js"></script>
     <script src="assets/js/mail.js"></script>
     <script src="assets/js/partner.js"></script>
+    <script src="assets/js/shop.js"></script>
     <!-- <script src="assets/js/modal.js"></script> -->
-    <script src="assets/js/bag.js"></script>
-    <script src="assets/js/api.js"></script>
     <script src="assets/js/training.js"></script>
 
 </body>

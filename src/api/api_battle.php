@@ -9,6 +9,8 @@ use TamersNetwork\Repository\DigimonRepository;
 use TamersNetwork\Helper\BattleHelper;
 use TamersNetwork\Repository\MailRepository;
 use TamersNetwork\Repository\EquipmentRepository;
+use TamersNetwork\Repository\InventoryRepository;
+use TamersNetwork\Model\Account;
 
 /*
  * FUNÇÃO DE ATAQUE
@@ -21,7 +23,7 @@ use TamersNetwork\Repository\EquipmentRepository;
  * 'attack', 'defense' ou 'maxHp' não existam, e adicionei os nomes
  * ao log, o que ajuda muito no front-end.
  */
-function performAttack($attacker, $defender, $iid, $skillOption = 1)
+function performAttack($attacker, $defender, $iid, $skillOption = 1, $battleCard = null)
 {
     // Garante que os valores são numéricos e evita erros
     $atk = $attacker->attack ?? 1;
@@ -29,6 +31,8 @@ function performAttack($attacker, $defender, $iid, $skillOption = 1)
     $maxHp = $defender->maxHp ?? 1;
     $criticalSwitch = false;
     $traitSwitch = false;
+    $drillSwitch = false;
+    $cardConsumeSwitch = false;
 
     // Trait de Redução de Dano
     if ($defender->digimonData->traitCommon) {
@@ -97,7 +101,31 @@ function performAttack($attacker, $defender, $iid, $skillOption = 1)
         }
     }
 
+    // Card de Dano
+    if ($iid == 0 && $battleCard) {
+        if ($battleCard->item->type2 == 'damage') {
+            $dmg += floor($dmg * $battleCard->item->multiplier / 100);
+            $cardConsumeSwitch = true;
+        } else if ($battleCard->item->type2 == 'rk') {
+            $drillSwitch = true;
+            $chances = [300, 500, 700];
+            shuffle($chances);
+            $dmg += floor($dmg * $chances[0] / 100);
+            $cardConsumeSwitch = true;
+        }
 
+        if (in_array($battleCard->item->itemId, [2, 4])) {
+            $drillSwitch = true;
+        }
+    }
+
+    // Card de Defesa
+    if ($iid == 1 && $battleCard) {
+        if ($battleCard->item->type2 == 'defense') {
+            $dmg -= floor($dmg * $battleCard->item->multiplier / 100);
+            $cardConsumeSwitch = true;
+        }
+    }
 
     // Aplica o dano
     $dmg = max(1, floor($dmg)); // Garante pelo menos 1 de dano
@@ -107,10 +135,12 @@ function performAttack($attacker, $defender, $iid, $skillOption = 1)
     $related = $defender->battleRating / $attacker->battleRating;
     $missed = 500 * $related;
 
-    if (mt_rand(1, 10000) <= $missed) {
-        $dmg = 0;
-        $criticalSwitch = 0;
-        $traitSwitch = 0;
+    if ($drillSwitch == false) {
+        if (mt_rand(1, 10000) <= $missed) {
+            $dmg = 0;
+            $criticalSwitch = 0;
+            $traitSwitch = 0;
+        }
     }
 
     $defender->currentHp -= $dmg;
@@ -126,6 +156,8 @@ function performAttack($attacker, $defender, $iid, $skillOption = 1)
         'attackerName' => $iid ?? 'Attacker', // Útil para o log no front-end
         // 'defenderName' => $iid ?? 'Defender', // Útil para o log no front-end
         'damage' => $dmg,
+        'battleCardView' => $battleCard,
+        'battleCard' => $cardConsumeSwitch,
         'critical' => $criticalSwitch,
         'trait' => $traitSwitch,
         'newHp' => $defender->currentHp,
@@ -163,6 +195,16 @@ function processPartnerSkill($attacker, $skillOption, $dmg)
     return $dmg;
 }
 
+function processBattleCard(Account $account, $log, $inventoryRepository)
+{
+    if ($log['battleCardView'] && $log['battleCard'] == true) {
+        $log['battleCardView']->consumeItem();
+        $log['battleCardView']->save($account, $inventoryRepository);
+    }
+
+    return $log;
+}
+
 try {
     if (!isset($_SESSION['account_uuid'])) {
         http_response_code(401); // Unauthorized
@@ -182,6 +224,7 @@ try {
     $accountRepo = new AccountRepository($pdo);
     $digimonRepo = new DigimonRepository($pdo);
     $equipmentRepo = new EquipmentRepository($pdo);
+    $inventoryRepo = new InventoryRepository($pdo);
 
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $partner = $digimonRepo->getPartnerByAccountId((int) $account->id);
@@ -223,6 +266,17 @@ try {
         $partnerSpeed += mt_rand(0, 5);
         $enemySpeed += mt_rand(0, 5);
 
+        // Battle Card
+        $battleCardId = $_SESSION['battleCard'] ?? 0;
+        $battleCard = null;
+        if ($battleCardId > 0) {
+            $battleCard = $inventoryRepo->getSingleInventoryItemByInventoryId($account->id, $battleCardId);
+            if ($battleCard->quantity <= 0) {
+                $battleCard = null;
+            }
+        }
+
+        // Ajustes finais
         $log = [];
         $firstAttacker = 0; // 0 = Partner, 1 = Enemy
         $turnResult = null; // Para armazenar o resultado de cada ataque
@@ -231,7 +285,9 @@ try {
             $firstAttacker = 0; // Partner ataca primeiro
 
             // 1. Partner ataca Inimigo
-            $turnResult = performAttack($partner, $enemyArray, 0, $skillOption);
+            $turnResult = performAttack($partner, $enemyArray, 0, $skillOption, $battleCard);
+            $turnResult = processBattleCard($account, $turnResult, $inventoryRepo);
+
             $log[] = $turnResult;
 
             // 2. Inimigo ataca Partner (APENAS se o inimigo ainda estiver vivo)
@@ -249,7 +305,7 @@ try {
 
             // 2. Partner ataca Inimigo (APENAS se o partner ainda estiver vivo)
             if ($turnResult['isFainted'] === false) {
-                $log[] = performAttack($partner, $enemyArray, 0, $skillOption);
+                $log[] = performAttack($partner, $enemyArray, 0, $skillOption, $battleCard);
             }
         }
 

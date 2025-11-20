@@ -30,6 +30,7 @@
             --color-primary: #5b8ec8;
             --color-primary-hover: #4a7bb5;
             --color-online: #4CAF50;
+            --color-red: #d54d4dff;
             /* Verde para status "Online" */
         }
 
@@ -502,47 +503,51 @@
             line-height: 22px;
         }
 
-
-        /* =============================================
-         * RESPONSIVIDADE (MOBILE)
-         * =============================================
-        */
-        @media (max-width: 900px) {
-            .game-container {
-                /* Em telas menores, muda para 1 coluna */
-                grid-template-areas:
-                    "header"
-                    "nav-left"
-                    "main"
-                    "nav-right"
-                    /* A barra da direita vai para baixo do 'main' */
-                    "footer";
-                grid-template-columns: 1fr;
-                /* Coluna única */
-                max-width: 100%;
-                /* Ocupa a largura total */
-                margin-top: 10px;
-                grid-gap: 10px;
-            }
-
-            /* Faz o menu da esquerda rolar horizontalmente */
-            .game-nav-left ul {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 10px;
-            }
-
-            .game-nav-left li {
-                margin-bottom: 0;
-                margin-right: 8px;
-                flex-shrink: 0;
-            }
-
-            /* Faz a barra da direita se parecer com o 'main' */
-            .game-sidebar-right {
-                padding: 0;
-            }
+        /* --- Form --- */
+        .login-input {
+            padding: 8px 12px;
+            background-color: white;
+            border-radius: 4px;
+            border: 0px;
+            width: 100%;
+            margin-bottom: 4px;
+            color: #242424;
+            font-weight: bold;
         }
+
+        .login-input:focus {
+            outline: none;
+            background-color: #fffb91ff;
+
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(180deg, #5b8ec8 0%, #4a7bb5 100%);
+            color: #fff;
+            border: 0px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 18px;
+            font-weight: bold;
+            font-size: 1em;
+            border-radius: 4px;
+            font-style: italic;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(180deg, #6fa3db 0%, #5b8ec8 100%);
+        }
+
+        .login-btn:active {
+            transform: translateY(1px);
+            background: linear-gradient(180deg, #4a7bb5 0%, #3a699f 100%);
+            box-shadow:
+                inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
 
         .html {
             overflow: auto;
@@ -556,7 +561,7 @@
     </style>
 </head>
 
-<body>
+<body onload="document.body.focus()">
 
     <header class="body-header">
         <div>Login</div>
@@ -590,16 +595,17 @@
                 <div class="card">
                     <form action="">
                         <div>
-                            <input type="text">
-                            <input type="text">
+                            <input autocomplete="false" tabindex="-1" placeholder="username" class="login-input" type="text">
+                            <input placeholder="password" class="login-input" type="password">
                         </div>
-                        <button>Enter</button>
+                        <button class="login-btn">Enter</button>
                         <div>
-                            <p> or Register.</p>
-                            <p>Forgot my password!</p>
+                            <p> or <a href="">Register</a>.</p>
+                            <p><a href="">Forgot my password!</a></p>
                         </div>
                     </form>
                 </div>
+
                 <h3>Navegação</h3>
                 <ul>
                     <li><a href="#" class="active">Cidade</a></li>

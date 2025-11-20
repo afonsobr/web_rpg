@@ -1,6 +1,8 @@
 <?php
 namespace TamersNetwork\Model;
 
+use TamersNetwork\Repository\InventoryRepository;
+
 class InventorySlot
 {
     public function __construct(
@@ -28,6 +30,17 @@ class InventorySlot
     public function consumeItem()
     {
         $this->quantity--;
+    }
+
+    public function save(Account $account, InventoryRepository $inventoryRepository)
+    {
+        try {
+            // Delega a responsabilidade de salvar para o repositório.
+            return $inventoryRepository->saveInventorySlot($account->id, $this);
+        } catch (\PDOException $e) {
+            error_log("Erro ao salvar INventorySlot (ID: {$this->id}): " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>

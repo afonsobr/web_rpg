@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         battleSequence = await requestBattleTurns(skillNumber);
         console.log(battleSequence);
+        updateBattleCardInfo(battleSequence.data.log[0].battleCardView);
 
         await animateLog(battleSequence.data.log[0]);
         if (battleSequence.data.log[1]) {
