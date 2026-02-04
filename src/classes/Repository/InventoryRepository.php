@@ -98,4 +98,9 @@ class InventoryRepository
             $inventorySlot->id
         ]);
     }
+
+    public function addItem(int $accounId, Item $itemObj, int $itemQuantity)
+    {
+        // adiciona o item no inventario
+    }
 }

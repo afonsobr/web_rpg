@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
 use TamersNetwork\Repository\ItemRepository;
+use TamersNetwork\Repository\InventoryRepository;
 
 try {
     if (!isset($_SESSION['account_uuid'])) {
@@ -26,6 +27,7 @@ try {
     $accountRepo = new AccountRepository($pdo);
     $account = $accountRepo->findById($_SESSION['account_uuid']);
     $itemRepo = new ItemRepository($pdo);
+    $inventoryRepo = new InventoryRepository($pdo);
 
     if ($action == 'buyItem') {
         $itemId = (int) $_POST['itemId'];
@@ -43,7 +45,7 @@ try {
             exit();
         }
 
-        if (($itemQuantity * $itemPrice != $itemCost) || ($itemPrice != $itemArray->price)) {
+        if (($itemQuantity * $itemPrice != $itemCost) || ($itemPrice != $itemArray->price) || ($itemArray->isPurchasable != 1)) {
             echo json_encode($r);
             exit();
         }
@@ -60,8 +62,22 @@ try {
         ];
 
         $r['itemArray'] = $itemArray;
-        $account->addCoin(($itemCost * -1));
-        $account->save($accountRepo);
+
+        try {
+            // 3. Descontar o dinheiro
+            $account->addCoin(($itemCost * -1));
+            $account->save($accountRepo);
+
+            // 4. Adicionar item ao inventário
+            $inventoryRepo->addItem($account->id, $itemArray, $itemQuantity);
+
+            echo json_encode(['status' => 'success', 'message' => 'Item comprado com sucesso!', 'new_balance' => $newBalance]);
+
+        } catch (Exception $e) {
+            echo json_encode(['status' => 'error', 'message' => 'Erro ao processar compra: ' . $e->getMessage()]);
+        }
+
+
         echo json_encode($r);
 
     }
