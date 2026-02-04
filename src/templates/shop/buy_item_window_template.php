@@ -4,6 +4,14 @@ $costEach = $itemArray->price;
 $costTotal = $costEach;
 ?>
 
+<script type="application/json" id="buy-data">
+<?= json_encode([
+    'quantity' => $quantity,
+    'costEach' => $costEach,
+    'costTotal' => $costTotal,
+]); ?>
+</script>
+
 <div class="w-100">
     <div class="w-100 d-flex items-center pb-3">
         <div style="width: 50px; text-align: left;">
@@ -69,25 +77,25 @@ $costTotal = $costEach;
             <div class="text-center pb-3">Choose the quantity:</div>
 
             <div class="text-center quantity-controller">
-                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="-10">-10</button>
-                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="-1">-1</button>
+                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="-10" onclick="changeItemQuantity(-10)">-10</button>
+                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="-1" onclick="changeItemQuantity(-1)">-1</button>
 
                 <span class="w-20 qtd-value" id="qtd-value"><?= $quantity ?></span>
 
-                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="1">+1</button>
-                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="10">+10</button>
+                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="1" onclick="changeItemQuantity(1)">+1</button>
+                <button class="w-20 rounded bg-surface p-3 qtd-btn" data-change="10" onclick="changeItemQuantity(10)">+10</button>
             </div>
         </div>
         <div class="pb-3">
             <div class="text-center pb-3">Total Cost:</div>
 
-            <div class="w-100 text-center qtd-value" id="qtd-value">
+            <div class="w-100 text-center">
                 <i class="fa-solid fa-coins"></i>
-                <?= $costTotal ?>
+                <span id="total-value"><?= $costTotal ?></span>
             </div>
         </div>
         <div class="font-normal rounded bg-surface">
-            <div class="d-flex justify-between p-3 cursor-pointer" onclick="closeCommonWindow()">
+            <div class="d-flex justify-between p-3 cursor-pointer" onclick="buyItemQuantity()">
                 <div class="color-blue">
                     Buy
                 </div>

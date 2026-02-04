@@ -1,7 +1,6 @@
 <?php
 
 ?>
-
 <div class="w-100">
     <div class="w-100 d-flex items-center pb-3">
         <div style="width: 50px; text-align: left;">

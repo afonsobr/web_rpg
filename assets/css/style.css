@@ -382,14 +382,13 @@ html {
     /* 2. Posição fixa para cobrir a tela inteira, não importa o scroll */
     position: fixed;
     inset: 0;
-    /* cobre 100% da tela */
-    width: 100vw;
+    /* 1º: Fallback mais básico para navegadores muito antigos */
     height: 100vh;
-    /* fallback */
+    /* 2º: Hack antigo para Safari iOS (opcional, mas mal não faz se vier antes) */
+    height: -webkit-fill-available;
+    /* 3º: O Padrão Moderno (Vence todos os anteriores se o navegador suportar) */
     height: 100dvh;
     /* suporte a navegadores modernos */
-    height: -webkit-fill-available;
-    /* suporte iOS Safari */
 
     /* 3. Fundo semi-transparente */
     background-color: var(--color-transparent-background);
@@ -478,12 +477,13 @@ html {
     inset: 0;
     /* cobre 100% da tela */
     width: 100vw;
+    /* 1º: Fallback mais básico para navegadores muito antigos */
     height: 100vh;
-    /* fallback */
+    /* 2º: Hack antigo para Safari iOS (opcional, mas mal não faz se vier antes) */
+    height: -webkit-fill-available;
+    /* 3º: O Padrão Moderno (Vence todos os anteriores se o navegador suportar) */
     height: 100dvh;
     /* suporte a navegadores modernos */
-    height: -webkit-fill-available;
-    /* suporte iOS Safari */
 
     /* 3. Fundo semi-transparente */
     background-color: var(--color-transparent-background);
@@ -558,12 +558,13 @@ html {
     inset: 0;
     /* cobre 100% da tela */
     width: 100vw;
+    /* 1º: Fallback mais básico para navegadores muito antigos */
     height: 100vh;
-    /* fallback */
+    /* 2º: Hack antigo para Safari iOS (opcional, mas mal não faz se vier antes) */
+    height: -webkit-fill-available;
+    /* 3º: O Padrão Moderno (Vence todos os anteriores se o navegador suportar) */
     height: 100dvh;
     /* suporte a navegadores modernos */
-    height: -webkit-fill-available;
-    /* suporte iOS Safari */
 
     /* 3. Fundo semi-transparente */
     background-color: var(--color-transparent-background);

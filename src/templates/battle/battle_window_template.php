@@ -157,7 +157,7 @@ $_SESSION['inBattle'] = true;
                                 <div class="item-name">
                                     <?php
                                     if ($battleCard) {
-                                        echo $battleCardArray->item->name . ' (x' . $battleCardArray->quantity . ')';
+                                        echo $battleCardArray->item->name . ' <small class="opacity-50">(x' . $battleCardArray->quantity . ')</small>';
                                     } else {
                                         echo '<span class="opacity-50">No Battle Card Selected</span>';
                                     }

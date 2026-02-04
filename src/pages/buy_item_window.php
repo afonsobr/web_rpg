@@ -5,8 +5,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/src/bootstrap.php';
 
 use TamersNetwork\Database\DatabaseManager;
 use TamersNetwork\Repository\AccountRepository;
-use TamersNetwork\Repository\DigimonRepository;
-use TamersNetwork\Repository\InventoryRepository;
 use TamersNetwork\Repository\ItemRepository;
 
 // Toda a lógica de "Chef" que vimos antes fica aqui.
@@ -17,7 +15,7 @@ try {
         exit();
     }
 
-    // 2️⃣ Pega e valida o ID do Digimon
+    // 2️⃣ Pega e valida o ID do Item
     $itemId = $_GET['itemId'] ?? null;
     if (!$itemId || !is_numeric($itemId)) {
         http_response_code(400);

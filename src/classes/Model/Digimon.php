@@ -216,6 +216,12 @@ class Digimon
         return $this->level * 8 + floor(pow(($this->level), 3) * 4);
     }
 
+    public function fullRecover(): void
+    {
+        $this->currentHp = $this->maxHp;
+        $this->currentDs = $this->maxDs;
+    }
+
     private function baseCalcExp(): int
     {
         return $this->level * 8 + floor(pow(($this->level), 3) * 4);

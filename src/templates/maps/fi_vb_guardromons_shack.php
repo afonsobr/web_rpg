@@ -1,16 +1,16 @@
 <?php
 // $_SESSION['map'] = null;
 ?>
+
 <div class="pb-4">
     <div class="map-bg bg-guardromon-shack rounded p-3">
-        <span>
-            Guardromon's Shack
-        </span>
-
     </div>
 </div>
 
 <div class="">
+    <div class="font-normal py-1 pl-3">
+        GUARDROMON'S SHACK
+    </div>
     <div class="font-normal text-sm py-1 pl-3">
         GUARDROMON
     </div>

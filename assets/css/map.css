@@ -51,6 +51,11 @@
        background-position: center;
    }
 
+   .bg-birdramon-inn {
+       background-image: url('/assets/img/maps/birdramons_inn.png');
+       background-position: center;
+   }
+
    .bg-tropical-jg {
        background-image: url('/assets/img/maps/tropical_jg.png');
        background-position: center;

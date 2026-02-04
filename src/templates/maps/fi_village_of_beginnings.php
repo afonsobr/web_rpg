@@ -51,12 +51,20 @@
                     <div class="font-normal">Greymon's Shop</div>
                 </div>
             </div>
-            <div class="disabled d-flex w-100 p-3 cursor-pointer" onclick="loadMap('fi_vb_guardromons_shack')">
+            <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap('fi_vb_guardromons_shack')">
                 <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
                     <i class="fa-solid fa-industry-windows"></i>
                 </div>
                 <div class="d-flex w-100 justify-center flex-col">
                     <div class="font-normal">Guardromon's Shack</div>
+                </div>
+            </div>
+            <div class="d-flex w-100 p-3 cursor-pointer" onclick="loadMap('fi_vb_birdramons_inn')">
+                <div class="d-flex items-center justify-center flex-col text-xl icon-div pr-3">
+                    <i class="fa-solid fa-house-chimney-window"></i>
+                </div>
+                <div class="d-flex w-100 justify-center flex-col">
+                    <div class="font-normal">Birdramon's Inn</div>
                 </div>
             </div>
         </div>

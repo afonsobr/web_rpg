@@ -18,7 +18,7 @@ $_SESSION['account_uuid'] = 1;
 
     <title>Title</title>
     <link rel="stylesheet" href="assets/css/map.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= filemtime('assets/css/style.css') ?>">
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/utilities.css">
@@ -360,6 +360,9 @@ $_SESSION['account_uuid'] = 1;
     <script src="assets/js/shop.js"></script>
     <!-- <script src="assets/js/modal.js"></script> -->
     <script src="assets/js/training.js"></script>
+
+    <script src="assets/js/village_of_beginnings.js"></script>
+
 
 </body>
 

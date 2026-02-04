@@ -78,7 +78,7 @@ function showTraits(DigimonData $digimonData)
         </div>
     </div>
 
-    <div class="pb-3">
+    <div hidden class="pb-3">
         <div class="w-100 d-flex items-center text-center dw-btn-stage" style="gap: 10px">
             <div class="text-sm rounded bg-surface-1 w-100 py-4 px-1 active" onclick="">
                 SIMPLIFIED

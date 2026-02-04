@@ -48,8 +48,12 @@ $slotsToDisplay = Helper::getEquipmentSlotInfo();
                         <div class="font-normal item-name">
                             <?= ($playerItem->item->name . $add) ?>
                         </div>
-                        <div class="text-sm">
-                            x<?= $playerItem->quantity ?>
+                        <div class="text-sm pl-2">
+                            <?php
+                            if ($playerItem->item->type1 != 'equipment') {
+                                echo 'x' . $playerItem->quantity;
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

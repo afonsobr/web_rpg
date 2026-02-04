@@ -263,11 +263,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.updateBattleCardInfo = function (battleCard) {
+        let displayClass = '';
         if (!battleCard) {
             display = 'No Battle Card Selected';
+            displayClass = 'opacity-50';
         }
+
         else {
-            display = `${battleCard.item.name} (x${battleCard.quantity})`;
+            display = `${battleCard.item.name} <small class='opacity-50'>(x${battleCard.quantity})</small>`;
         }
         const battleCardDiv = document.getElementById('battle-card');
         battleCardDiv.innerHTML = `
@@ -275,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <i class="fa-solid fa-cards-blank"></i>
         </div>
         <div class="d-flex w-100 items-center justify-between">
-            <div class="item-name">
+            <div class="item-name ${displayClass}">
                 ${display}
             </div>
             <div class="item-name text-sm">

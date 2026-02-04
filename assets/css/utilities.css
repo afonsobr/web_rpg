@@ -47,7 +47,8 @@
     /* Cores (exemplo) */
     --color-primary: #0d6efd;
     --color-secondary: #6c757d;
-    --color-success: #198754;
+    /* --color-success: #198754; */
+    --color-success: #15ff93;
     --color-danger: #ff5c6c;
     --color-danger2: #dc3545;
     --color-warning: #ffc107;
